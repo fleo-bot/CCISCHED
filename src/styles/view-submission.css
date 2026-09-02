@@ -1,0 +1,499 @@
+/* =============================================
+   CCISched — View Full Submission
+   Faculty · Detailed availability timetable
+============================================= */
+
+/* ── Page header ── */
+.vs-page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.vs-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.vs-breadcrumb__link {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.vs-breadcrumb__link:hover { color: var(--maroon); }
+
+.vs-breadcrumb__current {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--maroon);
+}
+
+.vs-page-title {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: var(--black);
+  letter-spacing: -0.01em;
+  margin-bottom: 3px;
+}
+
+.vs-page-sub {
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.vs-page-header__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+/* Dynamic status badge (replaces hard-coded .vs-badge-submitted) */
+.vs-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 7px 16px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+.vs-badge--submitted {
+  background: var(--maroon);
+  color: var(--white);
+}
+
+.vs-badge--pending {
+  background: #FFF7E6;
+  color: #B45309;
+  border: 1.5px solid #F59E0B;
+}
+
+/* Finalize button */
+.vs-finalize-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--maroon);
+  background: var(--maroon);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--white);
+  cursor: pointer;
+  transition: background 0.16s, color 0.16s, border-color 0.16s, opacity 0.16s;
+}
+
+.vs-finalize-btn:hover:not(:disabled) {
+  background: var(--maroon-dk, #600000);
+  border-color: var(--maroon-dk, #600000);
+}
+
+.vs-finalize-btn--done,
+.vs-finalize-btn:disabled {
+  background: #E5E7EB;
+  border-color: #D1D5DB;
+  color: #9CA3AF;
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.vs-print-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid rgba(128,0,0,0.30);
+  background: var(--white);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--maroon);
+  cursor: pointer;
+  transition: background 0.16s, color 0.16s;
+}
+
+.vs-print-btn:hover {
+  background: var(--maroon);
+  color: var(--white);
+  border-color: var(--maroon);
+}
+
+.vs-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid rgba(128,0,0,0.30);
+  background: transparent;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--maroon);
+  text-decoration: none;
+  transition: background 0.16s, color 0.16s;
+}
+
+.vs-back-btn:hover {
+  background: rgba(128,0,0,0.06);
+}
+
+/* ── Summary strip ── */
+.vs-summary {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.vs-summary-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--white);
+  border: 1.5px solid rgba(128,0,0,0.12);
+  border-radius: 14px;
+  padding: 12px 18px;
+  box-shadow: var(--shadow-sm);
+  flex: 1;
+  min-width: 160px;
+}
+
+.vs-summary-chip__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--maroon-lt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.vs-summary-chip__val {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--black);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.vs-summary-chip__lbl {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* ── Slot section ── */
+.vs-slot {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1.5px solid rgba(128,0,0,0.10);
+}
+
+/* Slot header — maroon band */
+.vs-slot__header {
+  background: var(--maroon);
+  padding: 16px 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.vs-slot__header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.vs-slot__num {
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  color: var(--white);
+}
+
+.vs-slot__time-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: var(--radius-pill);
+  padding: 5px 14px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.vs-slot__days-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vs-slot__day-pill {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.vs-slot__day-pill--on {
+  background: var(--white);
+  color: var(--maroon);
+}
+
+.vs-slot__day-pill--off {
+  background: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.40);
+}
+
+.vs-slot__edit-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid rgba(255,255,255,0.40);
+  background: transparent;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.70rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.vs-slot__edit-link:hover {
+  background: rgba(255,255,255,0.15);
+  color: var(--white);
+}
+
+/* Locked label shown when finalized */
+.vs-slot__locked-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid rgba(255,255,255,0.20);
+  background: rgba(255,255,255,0.06);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.70rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.45);
+  flex-shrink: 0;
+  cursor: default;
+}
+
+/* ── Timetable grid ── */
+.vs-table-wrap {
+  overflow-x: auto;
+}
+
+.vs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Raleway', sans-serif;
+}
+
+/* Column headers */
+.vs-table__th {
+  padding: 13px 10px;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  color: var(--maroon);
+  text-align: center;
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+  background: var(--white);
+}
+
+.vs-table__th--time {
+  text-align: left;
+  padding-left: 26px;
+  width: 140px;
+  color: var(--black);
+}
+
+.vs-table__th--sat { color: var(--text-muted); }
+
+/* Body rows */
+.vs-table tbody tr { transition: background 0.10s; }
+
+.vs-table tbody tr:last-child td { border-bottom: none; }
+
+.vs-table td {
+  padding: 0;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Time label cell */
+.vs-table td:first-child {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--black);
+  text-align: left;
+  padding: 13px 10px 13px 26px;
+  white-space: nowrap;
+  background: #FAFAFA;
+  border-right: 2px solid var(--border);
+}
+
+/* Day cells */
+.vs-table__cell {
+  height: 46px;
+  width: 100%;
+}
+
+/* Checked — filled maroon */
+.vs-table__cell--checked {
+  background: var(--maroon);
+  position: relative;
+}
+
+.vs-table__cell--checked::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 6L5 9L10 3' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Unchecked — subtle grey */
+.vs-table__cell--empty {
+  background: var(--white);
+}
+
+/* Hover highlight on checked rows */
+.vs-table tbody tr:has(.vs-table__cell--checked):hover td {
+  background-color: rgba(128,0,0,0.04);
+}
+
+.vs-table tbody tr:has(.vs-table__cell--checked):hover td:first-child {
+  background: rgba(128,0,0,0.06);
+}
+
+.vs-table tbody tr:has(.vs-table__cell--checked):hover .vs-table__cell--checked {
+  background: var(--maroon-dk);
+}
+
+/* ── Empty state ── */
+.vs-empty {
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--text-muted);
+}
+
+.vs-empty__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--maroon-lt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.vs-empty__title {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--black);
+  margin-bottom: 6px;
+}
+
+.vs-empty__sub {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.vs-empty__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 28px;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: var(--maroon);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--white);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.18s;
+}
+
+.vs-empty__btn:hover { background: var(--maroon-dk); }
+
+/* ── Print styles ── */
+@media print {
+  .sidebar,
+  .topbar,
+  .vs-page-header__right,
+  .vs-slot__edit-link,
+  .vs-finalize-btn { display: none !important; }
+
+  .layout { display: block; }
+  .content-area { overflow: visible; }
+  .page-body { padding: 16px; }
+
+  .vs-slot {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #CCC;
+    margin-bottom: 24px;
+  }
+
+  .vs-slot__header { background: #800000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .vs-table__cell--checked { background: #800000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* ── Slot list spacing ── */
+.vs-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}

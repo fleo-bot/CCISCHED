@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Faculty</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/faculty-dashboard.css" />
+  <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg" />
+</head>
+<body>
+
+  <div class="layout">
+
+    <!-- ═══════════════════════════════════
+         LEFT SIDEBAR
+    ════════════════════════════════════ -->
+    <aside class="sidebar">
+
+      <div class="sidebar__logo">
+        <img src="../assets/images/logo.svg" alt="CCISched logo" width="38" height="38" />
+        <span class="sidebar__logo-text">CCISCHED</span>
+      </div>
+
+      <nav class="sidebar__nav">
+
+        <a href="dashboard.html" class="sidebar__link sidebar__link--active">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="2" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="schedule.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="15" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M2 8H18" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="6" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+            <rect x="12" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+            <rect x="5" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor" opacity="0.5"/>
+            <rect x="9" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor"/>
+            <rect x="13" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor" opacity="0.5"/>
+          </svg>
+          <span>My Schedule</span>
+        </a>
+
+        <a href="notifications.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Notifications</span>
+        </a>
+
+        <a href="profile.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M3 19C3 15.686 6.134 13 10 13C13.866 13 17 15.686 17 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span>Profile</span>
+        </a>
+
+      </nav>
+
+      <!-- ── SIDEBAR ILLUSTRATION ── -->
+      <div class="sidebar__illustration" aria-hidden="true">
+        <svg width="140" height="180" viewBox="0 0 140 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Large background circle -->
+          <circle cx="70" cy="100" r="58" stroke="white" stroke-width="1.2" opacity="0.10"/>
+          <circle cx="70" cy="100" r="42" stroke="white" stroke-width="1" opacity="0.10"/>
+
+          <!-- Calendar card -->
+          <rect x="30" y="62" width="80" height="72" rx="10" fill="white" opacity="0.08"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" stroke="white" stroke-width="1.2" opacity="0.18"/>
+          <!-- Calendar header band -->
+          <rect x="30" y="62" width="80" height="18" rx="10" fill="white" opacity="0.10"/>
+          <rect x="30" y="72" width="80" height="8" fill="white" opacity="0.10"/>
+          <!-- Calendar pegs -->
+          <rect x="48" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+          <rect x="86" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+
+          <!-- Calendar dot grid -->
+          <circle cx="47" cy="97" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="61" cy="97" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="75" cy="97" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="89" cy="97" r="3.5" fill="white" opacity="0.25"/>
+
+          <circle cx="47" cy="112" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="61" cy="112" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="75" cy="112" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="89" cy="112" r="3.5" fill="white" opacity="0.25"/>
+
+          <!-- Connector lines (circuit style) -->
+          <line x1="47" y1="97" x2="61" y2="97" stroke="white" stroke-width="1" opacity="0.20"/>
+          <line x1="61" y1="97" x2="61" y2="112" stroke="white" stroke-width="1" opacity="0.20"/>
+          <line x1="61" y1="112" x2="75" y2="112" stroke="white" stroke-width="1" opacity="0.20"/>
+
+          <!-- Small floating card top-right -->
+          <rect x="88" y="38" width="36" height="22" rx="6" fill="white" opacity="0.08" stroke="white" stroke-width="1" opacity="0.15"/>
+          <circle cx="98" cy="49" r="4" fill="white" opacity="0.20"/>
+          <rect x="106" y="44" width="12" height="3" rx="1.5" fill="white" opacity="0.20"/>
+          <rect x="106" y="50" width="8" height="3" rx="1.5" fill="white" opacity="0.15"/>
+
+          <!-- Small floating card bottom-left -->
+          <rect x="16" y="128" width="34" height="22" rx="6" fill="white" opacity="0.08" stroke="white" stroke-width="1" opacity="0.15"/>
+          <rect x="24" y="135" width="18" height="3" rx="1.5" fill="white" opacity="0.20"/>
+          <rect x="24" y="141" width="12" height="3" rx="1.5" fill="white" opacity="0.15"/>
+
+          <!-- Dot accents -->
+          <circle cx="18" cy="72" r="2.5" fill="white" opacity="0.15"/>
+          <circle cx="122" cy="130" r="2.5" fill="white" opacity="0.15"/>
+          <circle cx="112" cy="58" r="1.8" fill="white" opacity="0.20"/>
+          <circle cx="28" cy="148" r="1.8" fill="white" opacity="0.20"/>
+        </svg>
+      </div>
+
+      <button class="sidebar__logout" onclick="window.location.href='../login.html'">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3v9" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <path d="M6.343 5.343a9 9 0 1 0 11.314 0" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+        </svg>
+        <span>Logout</span>
+      </button>
+
+    </aside>
+
+    <!-- ═══════════════════════════════════
+         CONTENT AREA (header + body)
+    ════════════════════════════════════ -->
+    <div class="content-area">
+
+      <!-- ── HEADER BAR ── -->
+      <header class="topbar">
+        <div class="topbar__search">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <circle cx="7" cy="7" r="5" stroke="#AAAAAA" stroke-width="1.6"/>
+            <path d="M11 11L14 14" stroke="#AAAAAA" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <input type="text" placeholder="Search schedule, availability, notifications…" class="topbar__input" />
+        </div>
+
+        <div class="topbar__right">
+          <span class="topbar__date" id="topbarDate"></span>
+
+          <button class="topbar__icon-btn" id="notifBtn" title="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="notif-badge" id="notifBadge">3</span>
+          </button>
+
+        </div>
+      </header>
+
+      <!-- ── PAGE BODY ── -->
+      <div class="page-body">
+
+        <!-- Welcome -->
+        <div class="welcome-banner">
+          <div>
+            <p class="welcome-banner__greeting">Hello, <strong>Maria Santos</strong></p>
+            <p class="welcome-banner__sub">1st Semester · AY 2025–2026 · Here's your dashboard overview.</p>
+          </div>
+          <svg class="welcome-banner__deco" width="130" height="80" viewBox="0 0 130 80" fill="none" opacity="0.15">
+            <rect x="10" y="10" width="40" height="40" rx="6" stroke="white" stroke-width="2"/>
+            <rect x="30" y="30" width="40" height="40" rx="6" stroke="white" stroke-width="2"/>
+            <rect x="78" y="5" width="30" height="30" rx="6" stroke="white" stroke-width="2"/>
+            <circle cx="108" cy="62" r="14" stroke="white" stroke-width="2"/>
+          </svg>
+        </div>
+
+        <!-- Stat cards row -->
+        <div class="stat-cards">
+
+          <!-- Availability Form card — clickable, badge driven by localStorage -->
+          <div class="stat-card stat-card--clickable" id="availCard" role="button" tabindex="0"
+               title="View your availability submission"
+               onclick="window.location.href='view-submission.html'"
+               onkeydown="if(event.key==='Enter'||event.key===' ')window.location.href='view-submission.html'">
+            <div class="stat-card__icon">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <rect x="2" y="4" width="18" height="16" rx="3" stroke="#800000" stroke-width="1.8"/>
+                <path d="M2 9H20" stroke="#800000" stroke-width="1.8"/>
+                <rect x="5" y="2" width="2" height="4" rx="1" fill="#800000"/>
+                <rect x="15" y="2" width="2" height="4" rx="1" fill="#800000"/>
+                <path d="M6 13H10M6 16H14" stroke="#800000" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="stat-card__body">
+              <p class="stat-card__label">Availability Form</p>
+              <p class="stat-card__value">Submission</p>
+            </div>
+            <span class="stat-card__badge" id="availStatBadge">—</span>
+          </div>
+
+          <!-- Teaching Assignments card — clickable, routes to detail page -->
+          <div class="stat-card stat-card--clickable" role="button" tabindex="0"
+               title="View your teaching assignments"
+               onclick="window.location.href='teaching-assignments.html'"
+               onkeydown="if(event.key==='Enter'||event.key===' ')window.location.href='teaching-assignments.html'">
+            <div class="stat-card__icon">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <circle cx="9" cy="7" r="4" stroke="#800000" stroke-width="1.8"/>
+                <path d="M3 20C3 16.686 5.686 14 9 14" stroke="#800000" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M15 13V20M12 16.5H18" stroke="#800000" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="stat-card__body">
+              <p class="stat-card__label">Teaching Assignments</p>
+              <p class="stat-card__value">3 Sections</p>
+            </div>
+            <span class="stat-card__badge stat-card__badge--maroon">Active</span>
+          </div>
+
+          <!-- Current Semester card — clickable, routes to schedule -->
+          <div class="stat-card stat-card--clickable" role="button" tabindex="0"
+               title="View your semester schedule"
+               onclick="window.location.href='schedule.html'"
+               onkeydown="if(event.key==='Enter'||event.key===' ')window.location.href='schedule.html'">
+            <div class="stat-card__icon">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <circle cx="11" cy="11" r="8" stroke="#800000" stroke-width="1.8"/>
+                <path d="M11 7V11L14 14" stroke="#800000" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="stat-card__body">
+              <p class="stat-card__label">Current Semester</p>
+              <p class="stat-card__value">1st Sem</p>
+            </div>
+            <span class="stat-card__badge stat-card__badge--blue">AY 25–26</span>
+          </div>
+
+        </div>
+
+        <!-- Two-column lower section -->
+        <div class="lower-grid">
+
+          <!-- LEFT: Availability card -->
+          <div class="avail-card">
+
+            <div class="avail-card__header">
+              <div class="avail-card__header-left">
+                <div class="avail-card__header-icon">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <circle cx="9" cy="9" r="7" stroke="#800000" stroke-width="1.6"/>
+                    <path d="M9 5V9L12 12" stroke="#800000" stroke-width="1.6" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="avail-card__title">Submitted Availability</p>
+                  <p class="avail-card__sub">1st Sem · AY 2025–2026</p>
+                </div>
+              </div>
+              <span class="badge" id="dashStatusBadge">
+                <!-- injected by JS -->
+              </span>
+            </div>
+
+            <p class="avail-card__note">
+              Your schedule preferences for this semester. The Chairperson uses this to generate the timetable.
+              <a href="view-submission.html" class="avail-card__link">View full submission →</a>
+            </p>
+
+            <div class="slots" id="slotsContainer">
+              <!-- slots rendered by faculty-dashboard.js from localStorage -->
+            </div>
+
+            <div class="avail-card__footer">
+              <button class="btn-add-avail" id="addSlotBtn" onclick="window.location.href='add-availability.html'">+ ADD AVAILABILITY</button>
+              <a href="view-submission.html" class="btn-view-submission">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                  <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4"/>
+                  <path d="M4.5 7h5M7 4.5l2.5 2.5L7 9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                VIEW MY SUBMISSION
+              </a>
+            </div>
+
+          </div>
+
+          <!-- RIGHT: Profile panel -->
+          <aside class="profile-panel">
+
+            <div class="profile-panel__avatar-wrap">
+              <img src="../assets/images/avatar-female.svg" alt="Faculty avatar" class="profile-panel__avatar-img" />
+            </div>
+            <p class="profile-panel__name">Maria Santos</p>
+            <p class="profile-panel__role">Faculty</p>
+
+            <button class="btn-edit-profile" onclick="window.location.href='profile.html'">
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                <path d="M9.5 2.5L11.5 4.5L4.5 11.5H2.5V9.5L9.5 2.5Z" stroke="#800000" stroke-width="1.4" stroke-linejoin="round"/>
+              </svg>
+              EDIT PROFILE
+            </button>
+
+            <div class="profile-panel__divider"></div>
+
+            <div class="profile-stats">
+              <div class="profile-stat">
+                <p class="profile-stat__val">3</p>
+                <p class="profile-stat__lbl">Sections</p>
+              </div>
+              <div class="profile-stat">
+                <p class="profile-stat__val">1st</p>
+                <p class="profile-stat__lbl">Semester</p>
+              </div>
+              <div class="profile-stat">
+                <p class="profile-stat__val" id="slotCountStat">3</p>
+                <p class="profile-stat__lbl">Slots</p>
+              </div>
+            </div>
+
+            <div class="profile-panel__divider"></div>
+
+            <div class="upcoming">
+              <p class="upcoming__title">Availability Slots</p>
+
+              <div class="upcoming__item">
+                <div class="upcoming__dot upcoming__dot--maroon"></div>
+                <div class="upcoming__info">
+                  <p class="upcoming__label">Slot 1</p>
+                  <p class="upcoming__time">7:00 AM – 5:00 PM</p>
+                </div>
+              </div>
+
+              <div class="upcoming__item">
+                <div class="upcoming__dot upcoming__dot--light"></div>
+                <div class="upcoming__info">
+                  <p class="upcoming__label">Slot 2</p>
+                  <p class="upcoming__time">8:00 AM – 4:00 PM</p>
+                </div>
+              </div>
+
+              <div class="upcoming__item">
+                <div class="upcoming__dot upcoming__dot--gold"></div>
+                <div class="upcoming__info">
+                  <p class="upcoming__label">Slot 3</p>
+                  <p class="upcoming__time">6:00 PM – 9:00 PM</p>
+                </div>
+              </div>
+            </div>
+
+          </aside>
+
+        </div><!-- /lower-grid -->
+
+      </div><!-- /page-body -->
+    </div><!-- /content-area -->
+
+  </div><!-- /layout -->
+
+  <script src="../scripts/api.js"></script>
+  <script src="../scripts/auth-check.js"></script>
+  <script src="../scripts/faculty-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,1801 @@
+/* =============================================
+   CCISched — Chairperson Faculty Page
+   Extends faculty-dashboard.css variables/base
+============================================= */
+
+/* ═══════════════════════════════════
+   FACULTY MANAGEMENT & ASSIGNMENT CARD
+═══════════════════════════════════ */
+.fm-card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid rgba(128, 0, 0, 0.20);
+  overflow: hidden;
+}
+
+.fm-card__header {
+  background: var(--maroon);
+  padding: 16px 24px;
+}
+
+.fm-card__title {
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: var(--white);
+}
+
+.fm-card__body {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+/* Big stat number */
+.fm-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 90px;
+  flex-shrink: 0;
+}
+
+.fm-stat__val {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--maroon);
+  line-height: 1;
+}
+
+.fm-stat__lbl {
+  font-size: 0.60rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-top: 4px;
+  text-align: center;
+}
+
+/* Action buttons row */
+.fm-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.fm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
+  white-space: nowrap;
+  border: 2px solid transparent;
+}
+
+.fm-btn--outline {
+  background: var(--white);
+  border-color: rgba(128, 0, 0, 0.35);
+  color: var(--maroon);
+}
+
+.fm-btn--outline:hover {
+  background: var(--maroon);
+  color: var(--white);
+  border-color: var(--maroon);
+}
+
+.fm-btn--disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background: rgba(128, 0, 0, 0.05) !important;
+  color: rgba(128, 0, 0, 0.40) !important;
+  border-color: rgba(128, 0, 0, 0.18) !important;
+}
+
+.fm-btn--disabled:hover {
+  background: rgba(128, 0, 0, 0.05) !important;
+  color: rgba(128, 0, 0, 0.40) !important;
+  border-color: rgba(128, 0, 0, 0.18) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.fm-btn--solid {
+  background: var(--maroon);
+  color: var(--white);
+  border-color: var(--maroon);
+}
+
+.fm-btn--solid:hover {
+  background: var(--maroon-dk);
+  box-shadow: 0 4px 14px rgba(128, 0, 0, 0.28);
+}
+
+/* Type filter dropdown */
+.fm-filter-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--white);
+  border: 2px solid rgba(128, 0, 0, 0.35);
+  border-radius: var(--radius-pill);
+  padding: 9px 16px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.fm-filter-wrap:focus-within {
+  border-color: var(--maroon);
+}
+
+.fm-filter-select {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--maroon);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  min-width: 60px;
+}
+
+.fm-filter-wrap svg path {
+  stroke: var(--maroon);
+}
+
+/* ═══════════════════════════════════
+   FACULTY LOAD SUMMARY CARD
+═══════════════════════════════════ */
+.fl-card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid rgba(128, 0, 0, 0.20);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Sticky thead area ── */
+.fl-card__thead {
+  background: var(--maroon);
+  position: sticky;
+  top: 0;
+  z-index: 4;
+}
+
+/* Title row */
+.fl-thead-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.fl-thead-title__text {
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: var(--white);
+  white-space: nowrap;
+}
+
+/* Inline search */
+.fl-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-pill);
+  padding: 7px 16px;
+  transition: background 0.15s;
+}
+
+.fl-search-wrap:focus-within {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.fl-search {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--white);
+  width: 160px;
+}
+
+.fl-search::placeholder { color: rgba(255, 255, 255, 0.50); }
+
+/* Column header row */
+.fl-col-headers {
+  display: grid;
+  grid-template-columns: 2fr 1.6fr 2.5fr 1.4fr;
+  padding: 10px 24px;
+  gap: 12px;
+}
+
+.fl-col {
+  font-size: 0.60rem;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  color: rgba(255, 255, 255, 0.80);
+  text-transform: uppercase;
+}
+
+.fl-col--load,
+.fl-col--actions { text-align: center; }
+
+/* ── Scrollable body ── */
+.fl-body {
+  overflow-y: auto;
+  max-height: 380px;
+}
+
+.fl-body::-webkit-scrollbar { width: 5px; }
+.fl-body::-webkit-scrollbar-track { background: transparent; }
+.fl-body::-webkit-scrollbar-thumb {
+  background: rgba(128, 0, 0, 0.20);
+  border-radius: 4px;
+}
+
+/* ── Faculty row ── */
+.fl-row {
+  display: grid;
+  grid-template-columns: 2fr 1.6fr 2.5fr 1.4fr;
+  padding: 12px 24px;
+  gap: 12px;
+  border-bottom: 1px solid rgba(128, 0, 0, 0.07);
+  align-items: center;
+  transition: background 0.14s;
+}
+
+.fl-row:last-child { border-bottom: none; }
+.fl-row:hover { background: #FFF8F8; }
+
+/* Hidden when filtered */
+.fl-row[hidden] { display: none; }
+
+.fl-row__name {
+  font-size: 0.80rem;
+  font-weight: 800;
+  color: var(--black);
+}
+
+.fl-row__type {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Teaching load progress bar */
+.fl-load {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fl-load__track {
+  flex: 1;
+  height: 7px;
+  background: rgba(128, 0, 0, 0.10);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.fl-load__fill {
+  height: 100%;
+  border-radius: 99px;
+  background: var(--maroon);
+  transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 0%;
+}
+
+/* Overloaded — slightly lighter second colour */
+.fl-load__fill--over {
+  background: linear-gradient(90deg, var(--maroon) 60%, rgba(128,0,0,0.50));
+}
+
+.fl-load__label {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: var(--maroon);
+  white-space: nowrap;
+  min-width: 32px;
+  text-align: right;
+}
+
+/* View Availability button */
+.fl-row__actions {
+  display: flex;
+  justify-content: center;
+}
+
+.fl-avail-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--maroon);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 7px 14px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--white);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.18s, box-shadow 0.18s;
+}
+
+.fl-avail-btn:hover {
+  background: var(--maroon-dk);
+  box-shadow: 0 3px 10px rgba(128, 0, 0, 0.30);
+}
+
+/* ═══════════════════════════════════
+   ADD FACULTY MODAL — Add Course style
+═══════════════════════════════════ */
+.fl-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.52);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 600;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.20s;
+}
+
+.fl-modal-overlay--open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.fl-modal {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  width: 100%;
+  max-width: 560px;
+  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+  transform: translateY(14px);
+  transition: transform 0.22s;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+.fl-modal-overlay--open .fl-modal {
+  transform: translateY(0);
+}
+
+/* Maroon header — same as Add Course */
+.fl-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 26px;
+  background: var(--maroon);
+  flex-shrink: 0;
+}
+
+.fl-modal__title {
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: var(--white);
+}
+
+/* Circular X close button */
+.fl-modal__close {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.50);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.fl-modal__close:hover { background: rgba(255, 255, 255, 0.18); }
+
+/* White scrollable body */
+.fl-modal__body {
+  background: var(--white);
+  padding: 26px 26px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.fl-modal__body::-webkit-scrollbar { width: 5px; }
+.fl-modal__body::-webkit-scrollbar-track { background: transparent; }
+.fl-modal__body::-webkit-scrollbar-thumb {
+  background: rgba(128, 0, 0, 0.18);
+  border-radius: 4px;
+}
+
+/* Field rows */
+.fl-modal__row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.fl-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+/* Label — uppercase maroon small-caps */
+.fl-modal__label {
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  color: var(--maroon);
+  text-transform: uppercase;
+}
+
+/* Input — light grey rounded field */
+.fl-modal__input {
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: none;
+  background: #F2F2F2;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.80rem;
+  font-weight: 500;
+  color: var(--black);
+  outline: none;
+  width: 100%;
+  transition: box-shadow 0.15s, background 0.15s;
+}
+
+.fl-modal__input::placeholder { color: #BBBBBB; }
+
+.fl-modal__input:focus {
+  background: #EBEBEB;
+  box-shadow: 0 0 0 2px rgba(128, 0, 0, 0.22);
+}
+
+/* White footer — centered pill buttons */
+.fl-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 18px 26px;
+  background: var(--white);
+  border-top: 1px solid #EEEEEE;
+  flex-shrink: 0;
+}
+
+/* Shared button base */
+.fl-modal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 28px;
+  border-radius: var(--radius-pill);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s, border-color 0.18s;
+  border: 2px solid transparent;
+}
+
+/* Discard — outlined */
+.fl-modal-btn--discard {
+  background: var(--white);
+  border-color: rgba(128, 0, 0, 0.40);
+  color: var(--maroon);
+}
+
+.fl-modal-btn--discard:hover {
+  background: var(--maroon-lt);
+}
+
+/* Save Changes — solid maroon */
+.fl-modal-btn--save {
+  background: var(--maroon);
+  color: var(--white);
+  border-color: var(--maroon);
+}
+
+.fl-modal-btn--save:hover {
+  background: var(--maroon-dk);
+  box-shadow: 0 4px 14px rgba(128, 0, 0, 0.30);
+}
+
+/* Screen-reader only */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 580px) {
+  .fl-modal__row { grid-template-columns: 1fr; }
+  .fl-modal { max-width: 100%; }
+}
+
+/* ── Toast ── */
+.fl-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: var(--maroon);
+  color: var(--white);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 11px 26px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s, transform 0.22s;
+  z-index: 9999;
+  white-space: nowrap;
+}
+
+.fl-toast--show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .fl-col-headers,
+  .fl-row {
+    grid-template-columns: 1.6fr 1.4fr 2fr 1.2fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .fm-card__body { flex-direction: column; align-items: flex-start; }
+  .fl-modal__row { grid-template-columns: 1fr; }
+  .fl-col-headers,
+  .fl-row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .fl-col--load, .fl-row__load { display: none; }
+}
+
+/* ═══════════════════════════════════
+   VIEW AVAILABILITY MODAL
+═══════════════════════════════════ */
+.va-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.52);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 800;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s;
+}
+
+.va-modal-overlay--open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.va-modal {
+  width: 100%;
+  max-width: 720px;
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+  transform: translateY(14px);
+  transition: transform 0.24s;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+.va-modal-overlay--open .va-modal {
+  transform: translateY(0);
+}
+
+/* ── Maroon header ── */
+.va-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 26px;
+  background: var(--maroon);
+  flex-shrink: 0;
+}
+
+.va-modal__title {
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: var(--white);
+}
+
+.va-modal__close {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.50);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.va-modal__close:hover { 
+  background: rgba(255, 255, 255, 0.18); 
+}
+
+/* ── White scrollable body ── */
+.va-modal__content {
+  background: var(--white);
+  padding: 26px 26px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.va-modal__content::-webkit-scrollbar { width: 5px; }
+.va-modal__content::-webkit-scrollbar-track { background: transparent; }
+.va-modal__content::-webkit-scrollbar-thumb {
+  background: rgba(128, 0, 0, 0.18);
+  border-radius: 4px;
+}
+
+/* Faculty info section */
+.va-modal__info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Name badge — dark maroon pill */
+.va-name-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 18px;
+  background: var(--maroon);
+  border-radius: var(--radius-pill);
+  font-size: 0.80rem;
+  font-weight: 800;
+  color: var(--white);
+  align-self: flex-start;
+}
+
+.va-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.va-info-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.va-info-label {
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  color: var(--maroon);
+  text-transform: uppercase;
+}
+
+.va-info-value {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #F2F2F2;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.80rem;
+  font-weight: 600;
+  color: var(--black);
+}
+
+/* View History button */
+.va-history-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px;
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  border: 2px solid rgba(128, 0, 0, 0.35);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--maroon);
+  cursor: pointer;
+  transition: background 0.15s;
+  align-self: flex-start;
+}
+
+.va-history-btn:hover {
+  background: var(--maroon-lt);
+}
+
+/* Section label above table */
+.va-section-label {
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  color: var(--maroon);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* Availability table */
+.va-table-wrap {
+  overflow-x: auto;
+  border-radius: 10px;
+  background: #F2F2F2;
+  padding: 2px;
+}
+
+.va-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Raleway', sans-serif;
+  background: var(--white);
+  border-radius: 8px;
+  overflow: hidden;
+  min-width: 600px;
+}
+
+.va-table thead {
+  background: #F2F2F2;
+}
+
+.va-table th {
+  padding: 10px 12px;
+  font-size: 0.60rem;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  color: var(--maroon);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.va-table th:first-child {
+  text-align: left;
+  min-width: 100px;
+}
+
+.va-table tbody tr {
+  border-top: 1px solid #F2F2F2;
+  transition: background 0.13s;
+}
+
+.va-table tbody tr:hover {
+  background: #FAFAFA;
+}
+
+.va-table td {
+  padding: 10px 12px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--black);
+  text-align: center;
+}
+
+.va-table td:first-child {
+  text-align: left;
+  font-weight: 700;
+  color: var(--black);
+  white-space: nowrap;
+}
+
+/* Available badge */
+.va-available {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--maroon);
+  font-size: 0.66rem;
+  font-weight: 800;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Preference row */
+.va-preference {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 4px 0 8px;
+}
+
+.va-pref-label {
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  color: var(--maroon);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.va-pref-value {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #F2F2F2;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.80rem;
+  font-weight: 700;
+  color: var(--black);
+}
+
+/* ── No-availability empty state ── */
+.va-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.va-empty__icon {
+  width: 64px;
+  height: 64px;
+  background: var(--maroon);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.va-empty__title {
+  font-size: 1.00rem;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  color: var(--maroon);
+  margin: 0;
+}
+
+.va-empty__sub {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  line-height: 1.55;
+  max-width: 380px;
+  margin: 0;
+}
+
+/* ── White footer ── */
+.va-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 18px 26px;
+  background: var(--white);
+  border-top: 1px solid #EEEEEE;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.va-modal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 28px;
+  border-radius: var(--radius-pill);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.18s, box-shadow 0.18s, border-color 0.18s;
+  border: 2px solid transparent;
+}
+
+/* Outlined close */
+.va-modal-btn--close {
+  background: var(--white);
+  border-color: rgba(128, 0, 0, 0.40);
+  color: var(--maroon);
+}
+
+.va-modal-btn--close:hover {
+  background: var(--maroon-lt);
+}
+
+/* Solid maroon — Send Reminder */
+.va-modal-btn--remind {
+  background: var(--maroon);
+  color: var(--white);
+  border-color: var(--maroon);
+}
+
+.va-modal-btn--remind:hover {
+  background: var(--maroon-dk);
+  box-shadow: 0 4px 14px rgba(128, 0, 0, 0.30);
+}
+
+/* ── Responsive ── */
+@media (max-width: 740px) {
+  .va-modal { max-width: 100%; }
+
+  .va-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .va-preference {
+    grid-template-columns: 1fr;
+  }
+
+  .va-table th,
+  .va-table td {
+    padding: 8px 6px;
+    font-size: 0.64rem;
+  }
+
+  .va-available {
+    font-size: 0.60rem;
+    padding: 4px 8px;
+  }
+}
+
+/* ═══════════════════════════════════
+   GENERATE FACULTY ASSIGNMENT OVERLAY
+═══════════════════════════════════ */
+.gen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  /* Blurs the page behind */
+  backdrop-filter: blur(6px) brightness(0.45);
+  -webkit-backdrop-filter: blur(6px) brightness(0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+
+.gen-overlay--open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Centre card */
+.gen-card {
+  background: var(--maroon);
+  border-radius: var(--radius-card);
+  padding: 40px 48px 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  min-width: 340px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+  transform: translateY(10px) scale(0.97);
+  transition: transform 0.25s;
+}
+
+.gen-overlay--open .gen-card {
+  transform: translateY(0) scale(1);
+}
+
+/* Sparkle icon */
+.gen-card__icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Title */
+.gen-card__title {
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  color: var(--white);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Progress section */
+.gen-progress {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gen-progress__bar {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.20);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.gen-progress__fill {
+  height: 100%;
+  border-radius: 99px;
+  background: var(--white);
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+.gen-progress__label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gen-progress__pct {
+  font-size: 0.88rem;
+  font-weight: 900;
+  color: var(--white);
+  min-width: 38px;
+}
+
+.gen-progress__status {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.02em;
+}
+
+/* ═══════════════════════════════════
+   VIEW HISTORY MODAL
+═══════════════════════════════════ */
+.vh-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.52);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 900;           /* above VA modal (z:800) */
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s;
+}
+
+.vh-modal-overlay--open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.vh-modal {
+  width: 100%;
+  max-width: 960px;
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+  transform: translateY(14px);
+  transition: transform 0.24s;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+.vh-modal-overlay--open .vh-modal {
+  transform: translateY(0);
+}
+
+/* ── Maroon header ── */
+.vh-modal__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 26px;
+  background: var(--maroon);
+  flex-shrink: 0;
+}
+
+.vh-modal__title {
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: var(--white);
+  flex-shrink: 0;
+  margin-right: auto;
+}
+
+/* Filters group — keeps both dropdowns on one line */
+.vh-modal__filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Academic Yr / Semester dropdown pill */
+.vh-filter-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--white);
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.vh-filter-select {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--maroon);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 1;
+}
+
+.vh-filter-wrap svg path {
+  stroke: var(--maroon);
+}
+
+/* Circular X close — matches other modals */
+.vh-modal__close {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.50);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.vh-modal__close:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* ── White scrollable body ── */
+.vh-modal__body {
+  background: var(--white);
+  padding: 20px 20px 8px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.vh-modal__body::-webkit-scrollbar { width: 5px; }
+.vh-modal__body::-webkit-scrollbar-track { background: transparent; }
+.vh-modal__body::-webkit-scrollbar-thumb {
+  background: rgba(128, 0, 0, 0.18);
+  border-radius: 4px;
+}
+
+/* Schedule grid wrapper — adds the card border */
+.vh-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-card);
+  border: 2px solid rgba(128, 0, 0, 0.18);
+  background: var(--white);
+}
+
+/* ── Schedule table styles matching faculty-schedule.css ── */
+.vh-sched-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Raleway', sans-serif;
+  min-width: 700px;
+}
+
+/* Header row */
+.vh-sched-table thead tr {
+  background: var(--white);
+}
+
+.vh-sched-table th {
+  padding: 14px 8px;
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  color: var(--maroon);
+  text-align: center;
+  border-bottom: 2px solid rgba(128, 0, 0, 0.18);
+  border-right: 1px solid rgba(128, 0, 0, 0.10);
+  white-space: nowrap;
+  position: relative;
+}
+
+.vh-sched-table th:last-child {
+  border-right: none;
+}
+
+/* Day label column header */
+.vh-sched-table th.th-day {
+  width: 110px;
+  text-align: left;
+  padding-left: 20px;
+  color: var(--black);
+  font-size: 0.68rem;
+}
+
+/* Body rows */
+.vh-sched-table tbody tr {
+  border-bottom: 1px solid rgba(128, 0, 0, 0.10);
+}
+
+.vh-sched-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* Day label cell */
+.vh-sched-table td.td-day {
+  padding: 0 8px 0 20px;
+  font-size: 0.80rem;
+  font-weight: 800;
+  color: var(--maroon);
+  text-align: left;
+  white-space: nowrap;
+  background: var(--white);
+  border-right: 2px solid rgba(128, 0, 0, 0.18);
+  height: 82px;
+  vertical-align: middle;
+}
+
+/* Regular time slot cells */
+.vh-sched-table td.td-slot {
+  padding: 6px 4px;
+  text-align: center;
+  vertical-align: middle;
+  height: 82px;
+  position: relative;
+  border-right: 1px solid rgba(128, 0, 0, 0.10);
+  /* Two dashed lines as background */
+  background-image:
+    linear-gradient(rgba(128, 0, 0, 0.28) 50%, transparent 50%),
+    linear-gradient(rgba(128, 0, 0, 0.28) 50%, transparent 50%);
+  background-size: 1px 6px, 1px 6px;
+  background-repeat: repeat-y, repeat-y;
+  background-position: calc(50% - 22px) 0, calc(50% + 22px) 0;
+}
+
+.vh-sched-table td.td-slot:last-child {
+  border-right: none;
+}
+
+/* Class block inside a cell */
+.sched-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 6px 4px;
+  border-radius: 8px;
+  background: #F9EDED;
+  border: 1.5px solid rgba(128, 0, 0, 0.22);
+  cursor: default;
+  transition: background 0.15s, border-color 0.15s;
+  height: 100%;
+  min-height: 68px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
+
+/* Laboratory → maroon tint */
+.sched-block--laboratory {
+  background: #F9EDED;
+  border-color: rgba(128, 0, 0, 0.30);
+}
+
+.sched-block--laboratory:hover {
+  background: #F2DADA;
+  border-color: rgba(128, 0, 0, 0.55);
+}
+
+.sched-block--laboratory .sched-block__code,
+.sched-block--laboratory .sched-block__name {
+  color: var(--maroon);
+}
+
+.sched-block--laboratory .sched-block__section,
+.sched-block--laboratory .sched-block__type {
+  color: rgba(128, 0, 0, 0.65);
+}
+
+/* Lecture → blue tint */
+.sched-block--lecture {
+  background: #EEF2FF;
+  border-color: rgba(43, 95, 217, 0.30);
+}
+
+.sched-block--lecture:hover {
+  background: #DBEAFE;
+  border-color: rgba(43, 95, 217, 0.55);
+}
+
+.sched-block--lecture .sched-block__code,
+.sched-block--lecture .sched-block__name {
+  color: #2B5FD9;
+}
+
+.sched-block--lecture .sched-block__section,
+.sched-block--lecture .sched-block__type {
+  color: rgba(43, 95, 217, 0.65);
+}
+
+/* Highlighted block */
+.sched-block--highlight {
+  background: rgba(30, 100, 200, 0.08);
+}
+
+.sched-block--highlight:hover {
+  background: rgba(30, 100, 200, 0.14);
+}
+
+.sched-block__code {
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.sched-block__name {
+  font-size: 0.63rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.sched-block__section {
+  font-size: 0.60rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.sched-block__type {
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
+/* Highlighted variant forces blue text */
+.sched-block--highlight .sched-block__code,
+.sched-block--highlight .sched-block__name {
+  color: #1e4db7;
+}
+
+.sched-block--highlight .sched-block__section,
+.sched-block--highlight .sched-block__type {
+  color: rgba(30, 77, 183, 0.65);
+}
+
+/* ── White footer ── */
+.vh-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 26px;
+  background: var(--white);
+  border-top: 1px solid #EEEEEE;
+  flex-shrink: 0;
+}
+
+.vh-modal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 32px;
+  border-radius: var(--radius-pill);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s;
+  border: 2px solid transparent;
+}
+
+.vh-modal-btn--close {
+  background: var(--white);
+  border-color: rgba(128, 0, 0, 0.40);
+  color: var(--maroon);
+}
+
+.vh-modal-btn--close:hover {
+  background: var(--maroon-lt);
+}
+
+/* ── Responsive ── */
+@media (max-width: 740px) {
+  .vh-modal {
+    max-width: 100%;
+  }
+
+  .vh-modal__header {
+    gap: 10px;
+  }
+
+  .vh-filter-wrap {
+    min-width: 120px;
+    padding: 7px 12px;
+  }
+}
+
+/* ── Wand icon animations ── */
+
+/* Whole wand swings like a magic wave */
+@keyframes wandSwing {
+  0%   { transform: rotate(-8deg); }
+  50%  { transform: rotate(8deg); }
+  100% { transform: rotate(-8deg); }
+}
+
+/* Star at wand tip spins and pulses */
+@keyframes starSpin {
+  0%   { transform: rotate(0deg) scale(1);    opacity: 0.95; }
+  50%  { transform: rotate(180deg) scale(1.3); opacity: 1;    }
+  100% { transform: rotate(360deg) scale(1);  opacity: 0.95; }
+}
+
+/* Wand glows */
+@keyframes wandGlow {
+  0%, 100% { filter: drop-shadow(0 0 3px rgba(255,255,255,0.20)); }
+  50%       { filter: drop-shadow(0 0 10px rgba(255,255,255,0.55)); }
+}
+
+/* Sparkle dots twinkle in/out with stagger */
+@keyframes sparkleTwinkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50%       { opacity: 1; transform: scale(1.4); }
+}
+
+/* Cross sparkle fades and rotates */
+@keyframes crossSpin {
+  0%   { opacity: 0.2; transform: rotate(0deg)   scale(0.8); }
+  50%  { opacity: 0.9; transform: rotate(45deg)  scale(1.3); }
+  100% { opacity: 0.2; transform: rotate(90deg)  scale(0.8); }
+}
+
+/* Apply to the whole SVG */
+.gen-wand-icon {
+  animation: wandSwing 2s ease-in-out infinite,
+             wandGlow  2s ease-in-out infinite;
+  transform-origin: 20px 38px; /* pivot near wand base */
+}
+
+/* Star tip */
+.gen-wand-star {
+  transform-origin: 30px 15px;
+  animation: starSpin 2s linear infinite;
+}
+
+/* Sparkle dots — staggered */
+.gen-sparkle {
+  animation: sparkleTwinkle 1.6s ease-in-out infinite;
+  transform-origin: center;
+}
+.gen-sparkle:nth-child(3) { animation-delay: 0.0s; }
+.gen-sparkle:nth-child(4) { animation-delay: 0.4s; }
+.gen-sparkle:nth-child(5) { animation-delay: 0.8s; }
+
+/* Cross sparkle */
+.gen-sparkle-cross {
+  transform-origin: 42px 14px;
+  animation: crossSpin 1.6s ease-in-out infinite;
+  animation-delay: 0.2s;
+}
+
+
+/* ═══════════════════════════════════
+   PENDING AVAILABILITY MODAL
+═══════════════════════════════════ */
+.pending-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.pending-modal-overlay--open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.pending-modal {
+  background: var(--white);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  transform: scale(0.95);
+  transition: transform 0.25s ease;
+}
+
+.pending-modal-overlay--open .pending-modal {
+  transform: scale(1);
+}
+
+/* Header — maroon background with warning icon */
+.pending-modal__header {
+  background: var(--maroon);
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.pending-modal__header svg {
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+.pending-modal__title {
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: var(--white);
+  margin: 0;
+}
+
+/* Body — white background */
+.pending-modal__body {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+.pending-modal__message {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--maroon);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.pending-modal__message strong {
+  font-weight: 900;
+  color: #C0392B;
+}
+
+.pending-modal__sub {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.55);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Pending list header */
+.pending-list-header {
+  padding: 10px 0 8px;
+  border-bottom: 2px solid rgba(128, 0, 0, 0.12);
+  margin-top: 6px;
+}
+
+.pending-list-header span {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--maroon);
+  text-transform: uppercase;
+}
+
+/* Pending list */
+.pending-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 240px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.pending-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.pending-list::-webkit-scrollbar-track {
+  background: rgba(128, 0, 0, 0.05);
+  border-radius: 3px;
+}
+
+.pending-list::-webkit-scrollbar-thumb {
+  background: rgba(128, 0, 0, 0.25);
+  border-radius: 3px;
+}
+
+.pending-faculty-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: rgba(243, 156, 18, 0.06);
+  border: 1.5px solid rgba(243, 156, 18, 0.22);
+  border-radius: 10px;
+  gap: 12px;
+}
+
+.pending-faculty-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.pending-faculty-name {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--maroon);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pending-faculty-type {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.pending-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  background: rgba(243, 156, 18, 0.15);
+  border: 1px solid rgba(243, 156, 18, 0.35);
+  border-radius: 20px;
+  font-size: 0.70rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #b7770d;
+  white-space: nowrap;
+}
+
+/* Footer */
+.pending-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 28px;
+  border-top: 1px solid rgba(128, 0, 0, 0.10);
+  background: rgba(128, 0, 0, 0.02);
+}
+
+.pending-modal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.80rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pending-modal-btn--primary {
+  background: var(--maroon);
+  color: var(--white);
+}
+
+.pending-modal-btn--primary:hover {
+  background: #6a0000;
+  box-shadow: 0 4px 12px rgba(128, 0, 0, 0.28);
+}
+
+.pending-modal-btn--secondary {
+  background: var(--white);
+  color: var(--maroon);
+  border: 2px solid rgba(128, 0, 0, 0.30);
+}
+
+.pending-modal-btn--secondary:hover {
+  background: rgba(128, 0, 0, 0.06);
+  border-color: var(--maroon);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .pending-modal {
+    max-width: 100%;
+  }
+
+  .pending-modal__header {
+    padding: 20px 22px;
+  }
+
+  .pending-modal__body {
+    padding: 22px;
+  }
+
+  .pending-modal__footer {
+    flex-direction: column-reverse;
+    padding: 18px 22px;
+  }
+
+  .pending-modal-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

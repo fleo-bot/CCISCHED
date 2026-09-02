@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Faculty Availability Submissions | Chairperson</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/faculty-dashboard.css" />
+  <link rel="stylesheet" href="../styles/faculty-availability-submissions.css" />
+  <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg" />
+</head>
+<body>
+
+  <div class="layout">
+
+    <!-- ═══════════════════════════════════
+         LEFT SIDEBAR
+    ════════════════════════════════════ -->
+    <aside class="sidebar">
+      <div class="sidebar__logo">
+        <img src="../assets/images/logo.svg" alt="CCISched logo" width="38" height="38" />
+        <span class="sidebar__logo-text">CCISCHED</span>
+      </div>
+
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link sidebar__link--active">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="2" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="courses.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="14" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M6 7H14M6 11H11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <span>Courses</span>
+        </a>
+        <a href="faculty.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <circle cx="7" cy="7" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M2 18C2 14.686 4.686 12 8 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="14" cy="7" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M10 18C10 14.686 12.686 12 16 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span>Faculty</span>
+        </a>
+        <a href="schedule.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="15" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M2 8H18" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="6" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+            <rect x="12" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+          </svg>
+          <span>Schedule</span>
+        </a>
+        <a href="notifications.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Notifications</span>
+        </a>
+      </nav>
+
+      <div class="sidebar__illustration" aria-hidden="true">
+        <svg width="140" height="180" viewBox="0 0 140 180" fill="none">
+          <circle cx="70" cy="100" r="58" stroke="white" stroke-width="1.2" opacity="0.10"/>
+          <circle cx="70" cy="100" r="42" stroke="white" stroke-width="1" opacity="0.10"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" fill="white" opacity="0.08"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" stroke="white" stroke-width="1.2" opacity="0.18"/>
+          <rect x="30" y="62" width="80" height="18" rx="10" fill="white" opacity="0.10"/>
+          <rect x="48" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+          <rect x="86" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+        </svg>
+      </div>
+
+      <button class="sidebar__logout" onclick="window.location.href='../login.html'">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3v9" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <path d="M6.343 5.343a9 9 0 1 0 11.314 0" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+        </svg>
+        <span>Logout</span>
+      </button>
+    </aside>
+
+    <!-- ═══════════════════════════════════
+         CONTENT AREA
+    ════════════════════════════════════ -->
+    <div class="content-area">
+
+      <header class="topbar">
+        <div class="topbar__search">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <circle cx="7" cy="7" r="5" stroke="#AAAAAA" stroke-width="1.6"/>
+            <path d="M11 11L14 14" stroke="#AAAAAA" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <input type="text" id="searchInput" placeholder="Search faculty name…" class="topbar__input" />
+        </div>
+        <div class="topbar__right">
+          <span class="topbar__date" id="topbarDate"></span>
+          <button class="topbar__icon-btn" id="notifBtn" title="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="notif-badge" id="notifBadge">4</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="page-body">
+
+        <!-- Page header -->
+        <div class="page-header">
+          <button class="back-btn" onclick="window.location.href='dashboard.html'">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Back to Dashboard
+          </button>
+          <h1 class="page-title">Faculty Availability Submissions</h1>
+          <p class="page-subtitle">Track which faculty have submitted their availability for this semester</p>
+        </div>
+
+        <!-- Summary stats -->
+        <div class="avail-summary">
+          <div class="avail-stat avail-stat--total">
+            <div class="avail-stat__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M16 11l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <p class="avail-stat__val" id="statTotal">0</p>
+              <p class="avail-stat__lbl">Total Faculty</p>
+            </div>
+          </div>
+          <div class="avail-stat avail-stat--submitted">
+            <div class="avail-stat__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <p class="avail-stat__val" id="statSubmitted">0</p>
+              <p class="avail-stat__lbl">Submitted</p>
+            </div>
+          </div>
+          <div class="avail-stat avail-stat--pending">
+            <div class="avail-stat__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <p class="avail-stat__val" id="statPending">0</p>
+              <p class="avail-stat__lbl">Pending</p>
+            </div>
+          </div>
+          <div class="avail-stat avail-stat--rate">
+            <div class="avail-stat__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <p class="avail-stat__val" id="statRate">0%</p>
+              <p class="avail-stat__lbl">Submission Rate</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter tabs -->
+        <div class="filter-tabs">
+          <button class="filter-tab filter-tab--active" data-filter="all">All</button>
+          <button class="filter-tab" data-filter="submitted">Submitted</button>
+          <button class="filter-tab" data-filter="pending">Pending</button>
+        </div>
+
+        <!-- Submissions table card -->
+        <div class="submissions-card">
+          <div class="submissions-table-wrap">
+            <table class="submissions-table">
+              <thead>
+                <tr>
+                  <th>Faculty</th>
+                  <th>Department</th>
+                  <th>Submitted On</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="submissionsTableBody">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+          <p class="empty-state" id="emptyState" style="display:none;">No records found.</p>
+        </div>
+
+      </div><!-- /page-body -->
+    </div><!-- /content-area -->
+
+  </div><!-- /layout -->
+
+  <script src="../scripts/faculty-availability-submissions.js"></script>
+</body>
+</html>

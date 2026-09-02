@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Room Availability | Chairperson</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/faculty-dashboard.css" />
+  <link rel="stylesheet" href="../styles/room-availability.css" />
+  <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg" />
+</head>
+<body>
+
+  <div class="layout">
+
+    <!-- ═══════════════════════════════════
+         LEFT SIDEBAR
+    ════════════════════════════════════ -->
+    <aside class="sidebar">
+      <div class="sidebar__logo">
+        <img src="../assets/images/logo.svg" alt="CCISched logo" width="38" height="38" />
+        <span class="sidebar__logo-text">CCISCHED</span>
+      </div>
+
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link sidebar__link--active">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="2" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="courses.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="14" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M6 7H14M6 11H11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <span>Courses</span>
+        </a>
+        <a href="faculty.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <circle cx="7" cy="7" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M2 18C2 14.686 4.686 12 8 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="14" cy="7" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M10 18C10 14.686 12.686 12 16 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span>Faculty</span>
+        </a>
+        <a href="schedule.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="15" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M2 8H18" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="6" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+            <rect x="12" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+          </svg>
+          <span>Schedule</span>
+        </a>
+        <a href="notifications.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Notifications</span>
+        </a>
+      </nav>
+
+      <div class="sidebar__illustration" aria-hidden="true">
+        <svg width="140" height="180" viewBox="0 0 140 180" fill="none">
+          <circle cx="70" cy="100" r="58" stroke="white" stroke-width="1.2" opacity="0.10"/>
+          <circle cx="70" cy="100" r="42" stroke="white" stroke-width="1" opacity="0.10"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" fill="white" opacity="0.08"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" stroke="white" stroke-width="1.2" opacity="0.18"/>
+          <rect x="30" y="62" width="80" height="18" rx="10" fill="white" opacity="0.10"/>
+          <rect x="48" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+          <rect x="86" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+        </svg>
+      </div>
+
+      <button class="sidebar__logout" onclick="window.location.href='../login.html'">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3v9" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <path d="M6.343 5.343a9 9 0 1 0 11.314 0" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+        </svg>
+        <span>Logout</span>
+      </button>
+    </aside>
+
+    <!-- ═══════════════════════════════════
+         CONTENT AREA
+    ════════════════════════════════════ -->
+    <div class="content-area">
+
+      <header class="topbar">
+        <div class="topbar__search">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <circle cx="7" cy="7" r="5" stroke="#AAAAAA" stroke-width="1.6"/>
+            <path d="M11 11L14 14" stroke="#AAAAAA" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <input type="text" id="searchInput" placeholder="Search room number…" class="topbar__input" />
+        </div>
+        <div class="topbar__right">
+          <span class="topbar__date" id="topbarDate"></span>
+          <button class="topbar__icon-btn" id="notifBtn" title="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="notif-badge" id="notifBadge">4</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="page-body">
+
+        <!-- Page header -->
+        <div class="page-header">
+          <button class="back-btn" onclick="window.location.href='dashboard.html'">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Back to Dashboard
+          </button>
+          <h1 class="page-title">Room Availability</h1>
+          <p class="page-subtitle">Overview of all rooms and their current availability status</p>
+        </div>
+
+        <!-- Summary stats -->
+        <div class="room-summary">
+          <div class="room-stat room-stat--total">
+            <div class="room-stat__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <p class="room-stat__val" id="statTotal">0</p>
+              <p class="room-stat__lbl">Total Rooms</p>
+            </div>
+          </div>
+          <div class="room-stat room-stat--available">
+            <div class="room-stat__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M9 11l3 3 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <p class="room-stat__val" id="statAvailable">0</p>
+              <p class="room-stat__lbl">Available</p>
+            </div>
+          </div>
+          <div class="room-stat room-stat--occupied">
+            <div class="room-stat__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M15 9l-6 6M9 9l6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <p class="room-stat__val" id="statOccupied">0</p>
+              <p class="room-stat__lbl">Occupied</p>
+            </div>
+          </div>
+          <div class="room-stat room-stat--lecture">
+            <div class="room-stat__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="5" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M7 9h10M7 12h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <p class="room-stat__val" id="statLecture">0</p>
+              <p class="room-stat__lbl">Lecture Rooms</p>
+            </div>
+          </div>
+          <div class="room-stat room-stat--lab">
+            <div class="room-stat__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M9 3v7l-4 8h14l-4-8V3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 3h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <p class="room-stat__val" id="statLab">0</p>
+              <p class="room-stat__lbl">Lab Rooms</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter tabs -->
+        <div class="room-filters">
+          <div class="filter-tabs">
+            <button class="filter-tab filter-tab--active" data-filter="all">All Rooms</button>
+            <button class="filter-tab" data-filter="available">Available</button>
+            <button class="filter-tab" data-filter="occupied">Occupied</button>
+          </div>
+          <div class="type-tabs">
+            <button class="type-tab type-tab--active" data-type="all">All Types</button>
+            <button class="type-tab" data-type="Lecture">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="5" width="18" height="13" rx="2" stroke="currentColor" stroke-width="2"/>
+                <path d="M7 9h10M7 12h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+              Lecture
+            </button>
+            <button class="type-tab" data-type="Laboratory">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path d="M9 3v7l-4 8h14l-4-8V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 3h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+              Laboratory
+            </button>
+          </div>
+        </div>
+
+        <!-- Rooms grid -->
+        <div class="rooms-grid" id="roomsGrid">
+          <!-- Populated by JS -->
+        </div>
+
+        <p class="rooms-empty" id="roomsEmpty" style="display:none;">No rooms match your filter.</p>
+
+      </div><!-- /page-body -->
+    </div><!-- /content-area -->
+
+  </div><!-- /layout -->
+
+  <script src="../scripts/room-availability.js"></script>
+</body>
+</html>

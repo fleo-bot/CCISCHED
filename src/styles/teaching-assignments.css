@@ -1,0 +1,381 @@
+/* =============================================
+   CCISched — Teaching Assignments Page
+   Extends faculty-dashboard.css
+============================================= */
+
+/* ── Page header ── */
+.ta-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.ta-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.ta-breadcrumb__link {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.ta-breadcrumb__link:hover { color: var(--maroon); }
+
+.ta-breadcrumb__current {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--maroon);
+}
+
+.ta-page-title {
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: var(--black);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.ta-page-sub {
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.ta-page-header__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+
+.ta-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  background: var(--maroon-lt);
+  color: var(--maroon);
+  font-size: 0.70rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.ta-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid rgba(128, 0, 0, 0.35);
+  background: var(--white);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--maroon);
+  text-decoration: none;
+  transition: background 0.18s, color 0.18s;
+}
+
+.ta-back-btn:hover {
+  background: var(--maroon);
+  color: var(--white);
+}
+
+/* ── Summary strip ── */
+.ta-summary {
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  border-radius: var(--radius-card);
+  border: 2px solid rgba(128, 0, 0, 0.18);
+  box-shadow: var(--shadow-sm);
+  padding: 18px 28px;
+  gap: 0;
+}
+
+.ta-summary__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.ta-summary__val {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--maroon);
+}
+
+.ta-summary__lbl {
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ta-summary__divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(128, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+/* ── Section cards grid ── */
+.ta-sections {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+/* ── Section card ── */
+.ta-card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid rgba(128, 0, 0, 0.22);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.ta-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* Color accent strip on top */
+.ta-card::before {
+  content: '';
+  display: block;
+  height: 5px;
+  width: 100%;
+}
+
+.ta-card--maroon::before { background: var(--maroon); }
+.ta-card--blue::before   { background: #2B5FD9; }
+.ta-card--gold::before   { background: #D97706; }
+
+/* Header */
+.ta-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px 10px;
+  gap: 10px;
+}
+
+.ta-card__header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ta-card__num {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--maroon-lt);
+  color: var(--maroon);
+  font-size: 0.90rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ta-card--blue .ta-card__num  { background: #EEF2FF; color: #2B5FD9; }
+.ta-card--gold .ta-card__num  { background: #FEF3C7; color: #D97706; }
+
+.ta-card__section {
+  font-size: 1.00rem;
+  font-weight: 900;
+  color: var(--black);
+}
+
+.ta-card__program {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.ta-card__count {
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--maroon-lt);
+  color: var(--maroon);
+  white-space: nowrap;
+}
+
+.ta-card--blue .ta-card__count { background: #EEF2FF; color: #2B5FD9; }
+.ta-card--gold .ta-card__count { background: #FEF3C7; color: #D97706; }
+
+.ta-card__prog-full {
+  font-size: 0.70rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 0 20px 12px;
+  border-bottom: 1px solid rgba(128, 0, 0, 0.10);
+}
+
+/* Subjects container */
+.ta-card__subjects {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex: 1;
+}
+
+/* Individual subject block */
+.ta-subject {
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(128, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ta-subject:last-child { border-bottom: none; }
+
+.ta-subject__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ta-subject__code {
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: var(--maroon);
+  letter-spacing: 0.04em;
+}
+
+.ta-card--blue .ta-subject__code { color: #2B5FD9; }
+.ta-card--gold .ta-subject__code { color: #D97706; }
+
+.ta-subject__name {
+  font-size: 0.90rem;
+  font-weight: 800;
+  color: var(--black);
+  margin-top: 2px;
+  line-height: 1.3;
+}
+
+.ta-subject__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.ta-subject__type-badge {
+  font-size: 0.60rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--maroon-lt);
+  color: var(--maroon);
+}
+
+.ta-card--blue .ta-subject__type-badge { background: #EEF2FF; color: #2B5FD9; }
+.ta-card--gold .ta-subject__type-badge { background: #FEF3C7; color: #D97706; }
+
+.ta-subject__units {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+/* Room pill */
+.ta-subject__room {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid rgba(128, 0, 0, 0.22);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--maroon);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ta-card--blue .ta-subject__room { border-color: rgba(43, 95, 217, 0.30); color: #2B5FD9; }
+.ta-card--gold .ta-subject__room { border-color: rgba(217, 119, 6, 0.30); color: #D97706; }
+
+/* Schedule rows */
+.ta-subject__schedule {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ta-sched-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #FAFAFA;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 7px 14px;
+}
+
+.ta-sched-row__day {
+  font-size: 0.68rem;
+  font-weight: 900;
+  color: var(--maroon);
+  letter-spacing: 0.04em;
+  min-width: 34px;
+}
+
+.ta-card--blue .ta-sched-row__day { color: #2B5FD9; }
+.ta-card--gold .ta-sched-row__day { color: #D97706; }
+
+.ta-sched-row__time {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--black);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .ta-sections {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .ta-sections {
+    grid-template-columns: 1fr;
+  }
+
+  .ta-summary {
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 16px 20px;
+  }
+
+  .ta-summary__divider { display: none; }
+}

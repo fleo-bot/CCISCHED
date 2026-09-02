@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage Course Offerings | Chairperson</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/faculty-dashboard.css" />
+  <link rel="stylesheet" href="../styles/manage-courses.css" />
+  <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg" />
+</head>
+<body>
+
+  <div class="layout">
+
+    <!-- ═══════════════════════════════════
+         LEFT SIDEBAR
+    ════════════════════════════════════ -->
+    <aside class="sidebar">
+
+      <div class="sidebar__logo">
+        <img src="../assets/images/logo.svg" alt="CCISched logo" width="38" height="38" />
+        <span class="sidebar__logo-text">CCISCHED</span>
+      </div>
+
+      <nav class="sidebar__nav">
+
+        <a href="dashboard.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="2" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="courses.html" class="sidebar__link sidebar__link--active">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="14" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M6 7H14M6 11H11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <span>Courses</span>
+        </a>
+
+        <a href="faculty.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <circle cx="7" cy="7" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M2 18C2 14.686 4.686 12 8 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="14" cy="7" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M10 18C10 14.686 12.686 12 16 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span>Faculty</span>
+        </a>
+
+        <a href="schedule.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="15" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M2 8H18" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="6" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+            <rect x="12" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+            <rect x="5" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor" opacity="0.5"/>
+            <rect x="9" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor"/>
+            <rect x="13" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor" opacity="0.5"/>
+          </svg>
+          <span>Schedule</span>
+        </a>
+
+        <a href="notifications.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Notifications</span>
+        </a>
+
+      </nav>
+
+      <!-- Sidebar illustration -->
+      <div class="sidebar__illustration" aria-hidden="true">
+        <svg width="140" height="180" viewBox="0 0 140 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="70" cy="100" r="58" stroke="white" stroke-width="1.2" opacity="0.10"/>
+          <circle cx="70" cy="100" r="42" stroke="white" stroke-width="1" opacity="0.10"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" fill="white" opacity="0.08"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" stroke="white" stroke-width="1.2" opacity="0.18"/>
+          <rect x="30" y="62" width="80" height="18" rx="10" fill="white" opacity="0.10"/>
+          <rect x="30" y="72" width="80" height="8" fill="white" opacity="0.10"/>
+          <rect x="48" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+          <rect x="86" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+          <circle cx="47" cy="97" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="61" cy="97" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="75" cy="97" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="89" cy="97" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="47" cy="112" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="61" cy="112" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="75" cy="112" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="89" cy="112" r="3.5" fill="white" opacity="0.25"/>
+          <line x1="47" y1="97" x2="61" y2="97" stroke="white" stroke-width="1" opacity="0.20"/>
+          <line x1="61" y1="97" x2="61" y2="112" stroke="white" stroke-width="1" opacity="0.20"/>
+          <line x1="61" y1="112" x2="75" y2="112" stroke="white" stroke-width="1" opacity="0.20"/>
+          <rect x="88" y="38" width="36" height="22" rx="6" fill="white" opacity="0.08"/>
+          <circle cx="98" cy="49" r="4" fill="white" opacity="0.20"/>
+          <rect x="106" y="44" width="12" height="3" rx="1.5" fill="white" opacity="0.20"/>
+          <rect x="106" y="50" width="8" height="3" rx="1.5" fill="white" opacity="0.15"/>
+          <rect x="16" y="128" width="34" height="22" rx="6" fill="white" opacity="0.08"/>
+          <rect x="24" y="135" width="18" height="3" rx="1.5" fill="white" opacity="0.20"/>
+          <rect x="24" y="141" width="12" height="3" rx="1.5" fill="white" opacity="0.15"/>
+          <circle cx="18" cy="72" r="2.5" fill="white" opacity="0.15"/>
+          <circle cx="122" cy="130" r="2.5" fill="white" opacity="0.15"/>
+        </svg>
+      </div>
+
+      <button class="sidebar__logout" onclick="window.location.href='../login.html'">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3v9" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <path d="M6.343 5.343a9 9 0 1 0 11.314 0" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+        </svg>
+        <span>Logout</span>
+      </button>
+
+    </aside>
+
+    <!-- ═══════════════════════════════════
+         CONTENT AREA
+    ════════════════════════════════════ -->
+    <div class="content-area">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar__search">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <circle cx="7" cy="7" r="5" stroke="#AAAAAA" stroke-width="1.6"/>
+            <path d="M11 11L14 14" stroke="#AAAAAA" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <input type="text" placeholder="Search schedule, availability, notifications…" class="topbar__input" />
+        </div>
+        <div class="topbar__right">
+          <span class="topbar__date" id="topbarDate"></span>
+          <button class="topbar__icon-btn" id="notifBtn" title="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="notif-badge">4</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- PAGE BODY -->
+      <div class="page-body">
+
+        <!-- Breadcrumb -->
+        <div class="mc-breadcrumb">
+          <a href="courses.html" class="mc-breadcrumb__link">Courses</a>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M4 2L8 6L4 10" stroke="#AAAAAA" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="mc-breadcrumb__current">Manage Course Offerings</span>
+        </div>
+
+        <!-- Main card -->
+        <div class="mc-card">
+
+          <!-- Scrollable table area — thead contains both the title row and column headers -->
+          <div class="mc-table-wrap">
+            <table class="mc-table" id="mcTable">
+              <thead>
+                <!-- Title row -->
+                <tr class="mc-thead-title">
+                  <th colspan="7" class="mc-th-title">MANAGE COURSE OFFERINGS</th>
+                </tr>
+                <!-- Column headers -->
+                <tr>
+                  <th class="mc-th">COURSE CODE</th>
+                  <th class="mc-th">COURSE TITLE</th>
+                  <th class="mc-th">CLASSIFICATION</th>
+                  <th class="mc-th mc-th--center">YEAR LEVEL</th>
+                  <th class="mc-th mc-th--center">NO. OF UNITS</th>
+                  <th class="mc-th mc-th--center">ALLOCATED NO. OF SECTIONS</th>
+                  <th class="mc-th mc-th--center">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody id="mcTableBody">
+                <!-- rows injected by JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Footer actions -->
+          <div class="mc-card__footer">
+            <button class="mc-btn mc-btn--add" id="addCourseBtn">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M8 5v6M5 8h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+              Add Course
+            </button>
+            <button class="mc-btn mc-btn--cancel" id="cancelBtn">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M2 2L14 14M14 2L2 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+              Cancel
+            </button>
+            <button class="mc-btn mc-btn--save" id="saveBtn">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M2 9l4 4 8-8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Save Changes
+            </button>
+          </div>
+
+        </div><!-- /mc-card -->
+
+      </div><!-- /page-body -->
+    </div><!-- /content-area -->
+
+  </div><!-- /layout -->
+
+  <!-- Add / Edit course modal -->
+  <div class="mc-modal-overlay" id="editOverlay">
+    <div class="mc-modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+
+      <div class="mc-modal__header">
+        <p class="mc-modal__title" id="editModalTitle">ADD COURSE</p>
+        <button class="mc-modal__close" id="editModalClose">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+            <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="mc-modal__body">
+        <input type="hidden" id="editRowIndex" />
+
+        <!-- Row 1: Course Code + No. of Units -->
+        <div class="mc-modal__row">
+          <div class="mc-modal__field">
+            <label class="mc-modal__label">Course Code</label>
+            <input type="text" class="mc-modal__input" id="editCode" placeholder="eg. IT - 303" />
+          </div>
+          <div class="mc-modal__field">
+            <label class="mc-modal__label">No. of Units</label>
+            <input type="number" class="mc-modal__input" id="editUnits" placeholder="" min="1" max="6" />
+          </div>
+        </div>
+
+        <!-- Row 2: Course Title (full width) -->
+        <div class="mc-modal__field">
+          <label class="mc-modal__label">Course Title</label>
+          <input type="text" class="mc-modal__input" id="editTitle" placeholder="eg. Web Development" />
+        </div>
+
+        <!-- Row 3: Course Classification (full width, text input) -->
+        <div class="mc-modal__field">
+          <label class="mc-modal__label">Course Classification</label>
+          <input type="text" class="mc-modal__input" id="editClassification" placeholder="Enter course classification" />
+        </div>
+
+        <!-- Row 4: Year Level + No. of Sections -->
+        <div class="mc-modal__row">
+          <div class="mc-modal__field">
+            <label class="mc-modal__label">Year Level</label>
+            <input type="text" class="mc-modal__input" id="editYearLevel" placeholder="eg. 2nd Year" />
+          </div>
+          <div class="mc-modal__field">
+            <label class="mc-modal__label">No. of Sections</label>
+            <input type="number" class="mc-modal__input" id="editSections" placeholder="eg. 10" min="1" max="30" />
+          </div>
+        </div>
+
+        <!-- Row 5: Course Description (full width textarea) -->
+        <div class="mc-modal__field">
+          <label class="mc-modal__label">Course Description</label>
+          <textarea class="mc-modal__input mc-modal__textarea" id="editDescription" placeholder="Brief description of the course" rows="4"></textarea>
+        </div>
+
+      </div><!-- /mc-modal__body -->
+
+      <div class="mc-modal__footer">
+        <button class="mc-btn mc-btn--cancel" id="editCancelBtn">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+            <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          Discard
+        </button>
+        <button class="mc-btn mc-btn--save" id="editSaveBtn">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+            <path d="M2 8L5.5 11.5L12 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Save Changes
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="../scripts/manage-courses.js"></script>
+</body>
+</html>

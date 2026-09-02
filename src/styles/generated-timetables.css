@@ -1,0 +1,362 @@
+/* =============================================
+   CCISched — Generated Timetables Page
+   Extends faculty-dashboard.css variables/base
+============================================= */
+
+/* ═══════════════════════════════════
+   PAGE BODY SPACING
+═══════════════════════════════════ */
+.page-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 28px 32px;
+}
+
+/* ═══════════════════════════════════
+   HEADER CARD
+═══════════════════════════════════ */
+.gt-header-card {
+  background: var(--maroon-dk);
+  border-radius: var(--radius-card);
+  padding: 22px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 18px rgba(128, 0, 0, 0.28);
+}
+
+.gt-header-card__left {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.gt-header-card__title {
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: var(--white);
+  line-height: 1.2;
+}
+
+.gt-header-card__meta {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.60);
+  letter-spacing: 0.06em;
+}
+
+.gt-header-card__controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Search box */
+.gt-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  border-radius: var(--radius-pill);
+  padding: 10px 18px;
+  min-width: 200px;
+  transition: border-color 0.16s, background 0.16s;
+}
+
+.gt-search-wrap:focus-within {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.gt-search-wrap svg { color: rgba(255, 255, 255, 0.60); flex-shrink: 0; }
+
+.gt-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--white);
+}
+
+.gt-search-input::placeholder { color: rgba(255, 255, 255, 0.50); }
+
+/* Term dropdown */
+.gt-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  border-radius: var(--radius-pill);
+  padding: 10px 18px;
+  min-width: 160px;
+  cursor: pointer;
+  transition: border-color 0.16s, background 0.16s;
+}
+
+.gt-select-wrap:focus-within {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.gt-select-wrap svg path { stroke: rgba(255, 255, 255, 0.60); }
+
+.gt-select {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: var(--white);
+  cursor: pointer;
+  letter-spacing: 0.06em;
+}
+
+.gt-select option { color: var(--black); background: var(--white); }
+
+/* ═══════════════════════════════════
+   ACTION ROW
+═══════════════════════════════════ */
+.gt-action-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.gt-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  border-radius: var(--radius-pill);
+  padding: 12px 26px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
+  white-space: nowrap;
+}
+
+/* Outlined variant */
+.gt-action-btn--outline {
+  background: var(--white);
+  border: 2px solid rgba(128, 0, 0, 0.35);
+  color: var(--maroon);
+}
+
+.gt-action-btn--outline:hover {
+  background: var(--maroon);
+  color: var(--white);
+  border-color: var(--maroon);
+  box-shadow: 0 4px 16px rgba(128, 0, 0, 0.28);
+}
+
+/* Filled maroon variant */
+.gt-action-btn--filled {
+  background: var(--maroon);
+  border: 2px solid var(--maroon);
+  color: var(--white);
+}
+
+.gt-action-btn--filled:hover {
+  background: var(--maroon-dk);
+  border-color: var(--maroon-dk);
+  box-shadow: 0 4px 16px rgba(128, 0, 0, 0.32);
+}
+
+/* ═══════════════════════════════════
+   FACULTY TABLE CARD
+═══════════════════════════════════ */
+.gt-table-card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(128, 0, 0, 0.14);
+  border: 2px solid rgba(128, 0, 0, 0.15);
+}
+
+/* Column header row */
+.gt-table-head {
+  display: grid;
+  grid-template-columns: 1fr 1.8fr;
+  padding: 14px 28px;
+  background: var(--maroon);
+  border-bottom: 1px solid rgba(128, 0, 0, 0.12);
+  gap: 20px;
+}
+
+.gt-th {
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  color: var(--white);
+  text-transform: uppercase;
+}
+
+.gt-th--right { text-align: left; }
+
+/* Table body — scrollable */
+.gt-table-body {
+  max-height: 460px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(128, 0, 0, 0.25) transparent;
+}
+
+.gt-table-body::-webkit-scrollbar { width: 6px; }
+.gt-table-body::-webkit-scrollbar-track { background: transparent; }
+.gt-table-body::-webkit-scrollbar-thumb {
+  background: rgba(128, 0, 0, 0.25);
+  border-radius: 99px;
+}
+
+/* ── Faculty row ── */
+.gt-row {
+  display: grid;
+  grid-template-columns: 1fr 1.8fr;
+  gap: 20px;
+  padding: 20px 28px;
+  border-bottom: 1px solid rgba(128, 0, 0, 0.08);
+  transition: background 0.14s;
+  align-items: start;
+  animation: rowFadeIn 0.35s ease both;
+}
+
+.gt-row:last-child { border-bottom: none; }
+.gt-row:hover      { background: #FFF5F5; }
+
+@keyframes rowFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Faculty member column */
+.gt-row__faculty {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gt-row__name {
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: var(--maroon);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(128, 0, 0, 0.35);
+  cursor: pointer;
+  transition: text-decoration-color 0.15s;
+}
+
+.gt-row__name:hover {
+  text-decoration-color: var(--maroon);
+}
+
+.gt-profile-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--white);
+  border: 1.5px solid rgba(128, 0, 0, 0.40);
+  border-radius: var(--radius-pill);
+  padding: 6px 18px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--maroon);
+  cursor: pointer;
+  transition: background 0.16s, border-color 0.16s, color 0.16s;
+  width: fit-content;
+}
+
+.gt-profile-btn:hover {
+  background: var(--maroon);
+  border-color: var(--maroon);
+  color: var(--white);
+}
+
+/* Courses column */
+.gt-row__courses {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 3px;
+}
+
+.gt-course-item {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--black);
+  line-height: 1.45;
+  padding: 2px 0;
+}
+
+/* Empty / no results state */
+.gt-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 52px 24px;
+  gap: 12px;
+  color: rgba(128, 0, 0, 0.40);
+}
+
+.gt-empty svg { opacity: 0.35; color: var(--maroon); }
+
+.gt-empty__text {
+  font-size: 0.80rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: rgba(128, 0, 0, 0.45);
+}
+
+/* ── Toast ── */
+.gt-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: var(--maroon);
+  color: var(--white);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 11px 26px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s, transform 0.22s;
+  z-index: 9999;
+  white-space: nowrap;
+}
+
+.gt-toast--show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Responsive ── */
+@media (max-width: 720px) {
+  .gt-header-card { flex-direction: column; align-items: flex-start; }
+  .gt-table-head,
+  .gt-row { grid-template-columns: 1fr; }
+  .gt-th--right { display: none; }
+}

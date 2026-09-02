@@ -1,0 +1,340 @@
+/* =============================================
+   Faculty Availability Submissions Page
+============================================= */
+
+/* ── Page header (shared pattern) ── */
+.page-header {
+  margin-bottom: 28px;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: var(--maroon);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  margin-bottom: 16px;
+}
+
+.back-btn:hover {
+  background: rgba(128, 0, 0, 0.08);
+}
+
+.page-title {
+  font-size: 1.80rem;
+  font-weight: 900;
+  color: var(--maroon);
+  margin: 0 0 8px 0;
+}
+
+.page-subtitle {
+  font-size: 0.92rem;
+  color: rgba(128, 0, 0, 0.65);
+  margin: 0;
+}
+
+/* ═══════════════════════════════════
+   SUMMARY STATS
+═══════════════════════════════════ */
+.avail-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.avail-stat {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 22px;
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid rgba(128, 0, 0, 0.18);
+}
+
+.avail-stat__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.avail-stat--total   .avail-stat__icon { background: rgba(128, 0, 0, 0.08); color: var(--maroon); }
+.avail-stat--submitted .avail-stat__icon { background: rgba(39, 174, 96, 0.10); color: #27AE60; }
+.avail-stat--pending .avail-stat__icon { background: rgba(243, 156, 18, 0.10); color: #E67E22; }
+.avail-stat--rate    .avail-stat__icon { background: rgba(52, 152, 219, 0.10); color: #2980B9; }
+
+.avail-stat__val {
+  font-size: 1.70rem;
+  font-weight: 900;
+  color: var(--maroon);
+  margin: 0 0 2px 0;
+  line-height: 1;
+}
+
+.avail-stat--submitted .avail-stat__val { color: #27AE60; }
+.avail-stat--pending   .avail-stat__val { color: #E67E22; }
+.avail-stat--rate      .avail-stat__val { color: #2980B9; }
+
+.avail-stat__lbl {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgba(0, 0, 0, 0.45);
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════
+   FILTER TABS
+═══════════════════════════════════ */
+.filter-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-tab {
+  padding: 10px 24px;
+  background: var(--white);
+  border: 2px solid rgba(128, 0, 0, 0.20);
+  border-radius: 50px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.80rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--maroon);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-tab:hover {
+  background: rgba(128, 0, 0, 0.05);
+}
+
+.filter-tab--active {
+  background: var(--maroon);
+  color: var(--white);
+  border-color: var(--maroon);
+}
+
+/* ═══════════════════════════════════
+   SUBMISSIONS TABLE CARD
+═══════════════════════════════════ */
+.submissions-card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid rgba(128, 0, 0, 0.18);
+  overflow: hidden;
+}
+
+.submissions-table-wrap {
+  overflow-x: auto;
+}
+
+.submissions-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.submissions-table thead tr {
+  background: rgba(128, 0, 0, 0.05);
+  border-bottom: 2px solid rgba(128, 0, 0, 0.15);
+}
+
+.submissions-table th {
+  padding: 14px 20px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--maroon);
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.submissions-table tbody tr {
+  border-bottom: 1px solid rgba(128, 0, 0, 0.08);
+  transition: background 0.15s;
+}
+
+.submissions-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.submissions-table tbody tr:hover {
+  background: rgba(128, 0, 0, 0.03);
+}
+
+.submissions-table td {
+  padding: 16px 20px;
+  font-size: 0.85rem;
+  color: #333;
+  vertical-align: middle;
+}
+
+/* Faculty cell with avatar */
+.td-faculty {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.td-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(128,0,0,0.08), rgba(128,0,0,0.16));
+  border: 2px solid rgba(128,0,0,0.20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.td-avatar img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.td-name {
+  font-weight: 800;
+  color: var(--maroon);
+  margin: 0 0 3px 0;
+  font-size: 0.88rem;
+}
+
+.td-id {
+  font-size: 0.72rem;
+  color: rgba(128, 0, 0, 0.50);
+  margin: 0;
+}
+
+/* Department badge */
+.dept-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.dept-badge--bsit {
+  background: rgba(128, 0, 0, 0.08);
+  color: var(--maroon);
+  border: 1px solid rgba(128, 0, 0, 0.20);
+}
+
+.dept-badge--bscs {
+  background: rgba(52, 100, 180, 0.08);
+  color: #2756b1;
+  border: 1px solid rgba(52, 100, 180, 0.20);
+}
+
+/* Status badge */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.status-badge::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-badge--submitted {
+  background: rgba(39, 174, 96, 0.10);
+  color: #1e8449;
+}
+
+.status-badge--submitted::before {
+  background: #27AE60;
+}
+
+.status-badge--pending {
+  background: rgba(243, 156, 18, 0.12);
+  color: #b7770d;
+}
+
+.status-badge--pending::before {
+  background: #F39C12;
+}
+
+/* Action button */
+.view-btn {
+  padding: 8px 18px;
+  background: transparent;
+  border: 2px solid var(--maroon);
+  border-radius: 8px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--maroon);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.view-btn:hover {
+  background: var(--maroon);
+  color: var(--white);
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: rgba(128, 0, 0, 0.45);
+}
+
+/* ═══════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════ */
+@media (max-width: 900px) {
+  .avail-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .avail-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-tabs {
+    flex-wrap: wrap;
+  }
+
+  .submissions-table th,
+  .submissions-table td {
+    padding: 12px 14px;
+  }
+}

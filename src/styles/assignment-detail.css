@@ -1,0 +1,528 @@
+/* =============================================
+   CCISched — Assignment Detail Page
+   Extends faculty-dashboard.css variables/base
+============================================= */
+
+/* ═══════════════════════════════════
+   MAIN CARD
+═══════════════════════════════════ */
+.ad-card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid rgba(128, 0, 0, 0.18);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Maroon header ── */
+.ad-card__header {
+  background: var(--maroon);
+  padding: 18px 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ad-card__title {
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  color: var(--white);
+}
+
+/* Row with back button + search */
+.ad-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Back button */
+.ad-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.80);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s;
+  padding: 0;
+}
+
+.ad-back-btn:hover { color: var(--white); }
+
+/* Inline search — white pill */
+.ad-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--white);
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+  min-width: 200px;
+}
+
+.ad-search {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--black);
+  flex: 1;
+}
+
+.ad-search::placeholder { color: #BBBBBB; }
+
+/* ── Table section ── */
+.ad-table-wrap {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Sub-title inside white area */
+.ad-table-title {
+  padding: 14px 24px 10px;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  color: var(--maroon);
+  border-bottom: 1px solid rgba(128, 0, 0, 0.10);
+}
+
+/* Column headers */
+.ad-col-headers {
+  display: grid;
+  grid-template-columns: 1.8fr 1.4fr 2fr 1.2fr;
+  padding: 10px 24px;
+  gap: 12px;
+  background: rgba(128, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(128, 0, 0, 0.10);
+}
+
+.ad-col {
+  font-size: 0.60rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  color: var(--maroon);
+  text-transform: uppercase;
+}
+
+.ad-col--center { text-align: center; }
+.ad-col--instructor { } /* left-aligned default */
+
+/* Scrollable rows area */
+.ad-rows {
+  overflow-y: auto;
+  max-height: 360px;
+}
+
+.ad-rows::-webkit-scrollbar { width: 5px; }
+.ad-rows::-webkit-scrollbar-track { background: transparent; }
+.ad-rows::-webkit-scrollbar-thumb {
+  background: rgba(128, 0, 0, 0.18);
+  border-radius: 4px;
+}
+
+/* Individual faculty row */
+.ad-row {
+  display: grid;
+  grid-template-columns: 1.8fr 1.4fr 2fr 1.2fr;
+  padding: 12px 24px;
+  gap: 12px;
+  border-bottom: 1px solid rgba(128, 0, 0, 0.06);
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.13s;
+}
+
+.ad-row:last-child { border-bottom: none; }
+
+.ad-row:hover { background: #FFF8F8; }
+
+/* Instructor name — underlined link style */
+.ad-row__name {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--maroon);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ad-row__type {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--black);
+}
+
+/* Generated load progress */
+.ad-load {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ad-load__track {
+  flex: 1;
+  height: 6px;
+  background: rgba(128, 0, 0, 0.10);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.ad-load__fill {
+  height: 100%;
+  border-radius: 99px;
+  background: var(--maroon);
+  transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 0%;
+}
+
+.ad-load__label {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: var(--maroon);
+  white-space: nowrap;
+  min-width: 32px;
+  text-align: right;
+}
+
+/* Avg match score */
+.ad-row__score {
+  font-size: 0.80rem;
+  font-weight: 900;
+  color: var(--maroon);
+  text-align: center;
+}
+
+/* ── Footer hint bar ── */
+.ad-hint-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--maroon);
+  padding: 14px 24px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.ad-hint-bar svg { flex-shrink: 0; color: rgba(255,255,255,0.70); }
+
+/* ── Responsive ── */
+@media (max-width: 740px) {
+  .ad-col-headers,
+  .ad-row {
+    grid-template-columns: 1.4fr 1.2fr 1.8fr 1fr;
+  }
+}
+
+/* ═══════════════════════════════════
+   INSTRUCTOR ASSIGNMENT MODAL
+═══════════════════════════════════ */
+.ia-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.52);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 800;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s;
+}
+
+.ia-modal-overlay--open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.ia-modal {
+  width: 100%;
+  max-width: 680px;
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+  transform: translateY(14px);
+  transition: transform 0.24s;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+.ia-modal-overlay--open .ia-modal {
+  transform: translateY(0);
+}
+
+/* ── Maroon header with title and close button ── */
+.ia-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 26px;
+  background: var(--maroon);
+  flex-shrink: 0;
+}
+
+.ia-modal__title {
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: var(--white);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Circular X close button */
+.ia-modal__close {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.50);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.ia-modal__close:hover { 
+  background: rgba(255, 255, 255, 0.18); 
+}
+
+/* ── White scrollable body ── */
+.ia-modal__body {
+  background: var(--white);
+  padding: 26px 26px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.ia-modal__body::-webkit-scrollbar { width: 5px; }
+.ia-modal__body::-webkit-scrollbar-track { background: transparent; }
+.ia-modal__body::-webkit-scrollbar-thumb {
+  background: rgba(128, 0, 0, 0.18);
+  border-radius: 4px;
+}
+
+/* Info row — Department + Model Score */
+.ia-modal__info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.ia-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.ia-modal__label {
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  color: var(--maroon);
+  text-transform: uppercase;
+}
+
+.ia-modal__value {
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: none;
+  background: #F2F2F2;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.80rem;
+  font-weight: 600;
+  color: var(--black);
+}
+
+/* Section title */
+.ia-modal__section-title {
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  color: var(--maroon);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* Table wrapper */
+.ia-table-wrap {
+  overflow-x: auto;
+  border-radius: 10px;
+  background: #F2F2F2;
+  padding: 2px;
+}
+
+/* Table */
+.ia-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Raleway', sans-serif;
+  background: var(--white);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ia-table thead {
+  background: #F2F2F2;
+}
+
+.ia-table th {
+  padding: 11px 14px;
+  font-size: 0.60rem;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  color: var(--maroon);
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.ia-table th:nth-child(3),
+.ia-table th:nth-child(4) {
+  text-align: center;
+}
+
+.ia-table tbody tr {
+  border-top: 1px solid #F2F2F2;
+  transition: background 0.13s;
+}
+
+.ia-table tbody tr:hover {
+  background: #FAFAFA;
+}
+
+.ia-table td {
+  padding: 12px 14px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.ia-table td:first-child {
+  font-weight: 800;
+  color: var(--maroon);
+}
+
+.ia-table td:nth-child(3),
+.ia-table td:nth-child(4) {
+  text-align: center;
+  font-weight: 700;
+}
+
+/* Justification section */
+.ia-modal__just-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 4px;
+}
+
+.ia-modal__just-text {
+  padding: 11px 14px;
+  border-radius: 10px;
+  background: #F2F2F2;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: var(--black);
+  line-height: 1.5;
+  min-height: 60px;
+}
+
+/* ── White footer with centered pill buttons ── */
+.ia-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 18px 26px;
+  background: var(--white);
+  border-top: 1px solid #EEEEEE;
+  flex-shrink: 0;
+}
+
+.ia-modal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 28px;
+  border-radius: var(--radius-pill);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s, border-color 0.18s;
+  border: 2px solid transparent;
+}
+
+.ia-modal-btn--reject {
+  background: var(--white);
+  border-color: rgba(128, 0, 0, 0.40);
+  color: var(--maroon);
+}
+
+.ia-modal-btn--reject:hover {
+  background: var(--maroon-lt);
+}
+
+.ia-modal-btn--approve {
+  background: var(--maroon);
+  color: var(--white);
+  border-color: var(--maroon);
+}
+
+.ia-modal-btn--approve:hover {
+  background: var(--maroon-dk);
+  box-shadow: 0 4px 14px rgba(128, 0, 0, 0.30);
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .ia-modal {
+    max-width: 100%;
+  }
+
+  .ia-modal__info {
+    grid-template-columns: 1fr;
+  }
+
+  .ia-table th,
+  .ia-table td {
+    padding: 9px 10px;
+    font-size: 0.70rem;
+  }
+
+  .ia-modal__footer {
+    flex-direction: column;
+  }
+
+  .ia-modal-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

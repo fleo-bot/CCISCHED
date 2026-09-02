@@ -1,0 +1,502 @@
+/* =============================================
+   CCISched — Chairperson Dashboard
+   Extends faculty-dashboard.css variables/base
+============================================= */
+
+/* ── Main two-column layout: wide left + narrow profile right ── */
+.cp-layout {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ── Left column stacks vertically ── */
+.cp-main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ═══════════════════════════════════
+   SHARED CARD BASE
+═══════════════════════════════════ */
+.cp-card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid rgba(128, 0, 0, 0.22);
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cp-card--clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cp-card--clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(128, 0, 0, 0.15);
+  border-color: rgba(128, 0, 0, 0.35);
+}
+
+.cp-card__title {
+  font-size: 0.70rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  color: var(--maroon);
+  text-align: center;
+}
+
+/* ═══════════════════════════════════
+   SCHEDULE COMPLETION — donut row
+═══════════════════════════════════ */
+.cp-card--progress {
+  padding-bottom: 28px;
+}
+
+.cp-donut-row {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.cp-donut-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Donut container — fixed square so SVG + label layer nicely */
+.cp-donut {
+  position: relative;
+  width: 130px;
+  height: 130px;
+}
+
+.cp-donut__svg {
+  width: 130px;
+  height: 130px;
+  transform: rotate(-90deg); /* start from 12 o'clock */
+}
+
+/* Track ring (faint maroon) */
+.cp-donut__track {
+  fill: none;
+  stroke: rgba(128, 0, 0, 0.12);
+  stroke-width: 16;
+}
+
+/* Progress arc */
+.cp-donut__fill {
+  fill: none;
+  stroke: var(--maroon);
+  stroke-width: 16;
+  stroke-linecap: butt;
+  /* circumference ≈ 2π×38 ≈ 238.76 */
+  stroke-dasharray: 238.76;
+  stroke-dashoffset: 238.76; /* 0% by default; JS overrides */
+  transition: stroke-dashoffset 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Percentage text in the centre */
+.cp-donut__label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.30rem;
+  font-weight: 900;
+  color: var(--maroon);
+  pointer-events: none;
+}
+
+.cp-donut__caption {
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  color: var(--maroon);
+  text-align: center;
+}
+
+/* ═══════════════════════════════════
+   TOP ROW — schedule + rooms side by side
+═══════════════════════════════════ */
+.cp-top-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* Schedule card takes a bit more weight visually */
+.cp-top-row .cp-card--progress {
+  padding-bottom: 24px;
+}
+
+/* ═══════════════════════════════════
+   ROOM AVAILABILITY
+═══════════════════════════════════ */
+.cp-card--rooms {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+}
+
+.cp-rooms-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.cp-room-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cp-room-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+.cp-room-icon--lecture {
+  background: linear-gradient(135deg, rgba(128, 0, 0, 0.08), rgba(128, 0, 0, 0.15));
+  border: 2px solid rgba(128, 0, 0, 0.20);
+  color: var(--maroon);
+}
+
+.cp-room-icon--lab {
+  background: linear-gradient(135deg, rgba(128, 0, 0, 0.12), rgba(128, 0, 0, 0.20));
+  border: 2px solid rgba(128, 0, 0, 0.25);
+  color: var(--maroon);
+}
+
+.cp-card--rooms:hover .cp-room-icon {
+  transform: scale(1.06);
+}
+
+.cp-room-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cp-room-count {
+  font-size: 1.60rem;
+  font-weight: 900;
+  color: var(--maroon);
+  line-height: 1;
+  margin: 0;
+}
+
+.cp-room-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  color: rgba(128, 0, 0, 0.60);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.cp-rooms-hint {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: rgba(128, 0, 0, 0.40);
+  text-align: center;
+  margin: 0;
+  letter-spacing: 0.03em;
+}
+
+/* ═══════════════════════════════════
+   BOTTOM ROW — two side-by-side cards
+═══════════════════════════════════ */
+.cp-bottom-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* ── Faculty Availability bar chart ── */
+.cp-card--avail {
+  gap: 14px;
+}
+
+.cp-bar-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 28px;
+  height: 110px;
+  padding: 0 16px;
+}
+
+.cp-bar {
+  width: 44px;
+  border-radius: 6px 6px 0 0;
+  background: var(--maroon);
+  transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 4px;
+}
+
+/* Second (pending) bar — slightly lighter */
+.cp-bar:nth-child(2) {
+  background: rgba(128, 0, 0, 0.45);
+}
+
+.cp-bar-labels {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.cp-bar-labels span {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--maroon);
+  letter-spacing: 0.04em;
+}
+
+/* ── Unassigned Courses ── */
+.cp-card--unassigned {
+  gap: 14px;
+}
+
+.cp-unassigned-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0;
+}
+
+.cp-unassigned-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--maroon);
+  padding: 8px 12px;
+  background: var(--maroon-lt);
+  border-radius: 10px;
+  border-left: 3px solid var(--maroon);
+  transition: background 0.15s;
+}
+
+.cp-unassigned-list li:hover {
+  background: rgba(128, 0, 0, 0.10);
+}
+
+.cp-unassigned-list li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--maroon);
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════
+   RIGHT PROFILE PANEL
+═══════════════════════════════════ */
+.cp-profile {
+  background: var(--maroon);
+  border-radius: var(--radius-card);
+  padding: 28px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 80px; /* stay visible while scrolling */
+}
+
+.cp-profile__avatar-wrap {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid rgba(255, 255, 255, 0.40);
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.cp-profile__avatar-img {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+}
+
+.cp-profile__name {
+  font-size: 1.00rem;
+  font-weight: 900;
+  color: var(--white);
+  text-align: center;
+}
+
+.cp-profile__role {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.60);
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+
+.cp-profile__edit-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--white);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 9px 18px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  color: var(--maroon);
+  cursor: pointer;
+  transition: background 0.18s, box-shadow 0.18s;
+}
+
+.cp-profile__edit-btn:hover {
+  background: var(--maroon-lt);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+}
+
+/* Divider */
+.cp-profile__divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.18);
+  margin: 4px 0;
+}
+
+/* ── Stats grid (3 tiles) ── */
+.cp-profile-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  width: 100%;
+}
+
+.cp-profile-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 12px 4px;
+}
+
+.cp-profile-stat__val {
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: var(--white);
+}
+
+.cp-profile-stat__lbl {
+  font-size: 0.60rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.60);
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+/* ── Overview list ── */
+.cp-profile-overview {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cp-profile-overview__title {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.cp-profile-overview__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cp-profile-overview__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cp-profile-overview__dot--white { background: var(--white); }
+.cp-profile-overview__dot--light { background: rgba(255, 255, 255, 0.45); }
+.cp-profile-overview__dot--gold  { background: #FFD166; }
+
+.cp-profile-overview__label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.cp-profile-overview__value {
+  font-size: 0.66rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.60);
+  margin-top: 1px;
+}
+
+/* ═══════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════ */
+@media (max-width: 1100px) {
+  .cp-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .cp-profile {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    position: static;
+  }
+}
+
+@media (max-width: 740px) {
+  .cp-top-row {
+    grid-template-columns: 1fr;
+  }
+
+  .cp-bottom-row {
+    grid-template-columns: 1fr;
+  }
+
+  .cp-donut-row {
+    gap: 32px;
+  }
+}

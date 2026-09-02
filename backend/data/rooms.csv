@@ -1,0 +1,21 @@
+room_id,room_code,building,floor_number,capacity,room_type,is_active
+301,CL-201,Computing Lab Building,2,40,Laboratory,1
+302,CL-202,Computing Lab Building,2,40,Laboratory,1
+303,LR-301,Lecture Room Building,3,50,Lecture,1
+304,LR-302,Lecture Room Building,3,50,Lecture,1
+305,LR-303,Lecture Room Building,3,45,Lecture,1
+306,SR-101,Seminar Room Building,1,30,Seminar,1
+307,CL-203,Computing Lab Building,2,40,Laboratory,1
+308,CL-204,Computing Lab Building,2,40,Laboratory,1
+309,LR-304,Lecture Room Building,3,50,Lecture,1
+310,LR-305,Lecture Room Building,3,45,Lecture,1
+311,SR-102,Seminar Room Building,1,30,Seminar,1
+312,CL-101,Computing Lab Building,1,40,Laboratory,1
+313,CL-102,Computing Lab Building,1,40,Laboratory,1
+314,LR-101,Lecture Room Building,1,50,Lecture,1
+315,LR-102,Lecture Room Building,1,50,Lecture,1
+316,LR-201,Lecture Room Building,2,50,Lecture,1
+317,LR-202,Lecture Room Building,2,45,Lecture,1
+318,SR-103,Seminar Room Building,1,30,Seminar,1
+319,LR-204,Lecture Room Building,2,45,Lecture,1
+320,SR-104,Seminar Room Building,1,30,Seminar,1

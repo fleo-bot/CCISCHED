@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Availability | Faculty</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/faculty-dashboard.css" />
+  <link rel="stylesheet" href="../styles/availability-form.css" />
+  <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg" />
+</head>
+<body>
+
+  <div class="layout">
+
+    <!-- ═══════════════════════════════════
+         LEFT SIDEBAR
+    ════════════════════════════════════ -->
+    <aside class="sidebar">
+
+      <div class="sidebar__logo">
+        <img src="../assets/images/logo.svg" alt="CCISched logo" width="38" height="38" />
+        <span class="sidebar__logo-text">CCISCHED</span>
+      </div>
+
+      <nav class="sidebar__nav">
+
+        <a href="dashboard.html" class="sidebar__link sidebar__link--active">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="2" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="schedule.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="15" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M2 8H18" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="6" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+            <rect x="12" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+          </svg>
+          <span>My Schedule</span>
+        </a>
+
+        <a href="notifications.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Notifications</span>
+        </a>
+
+        <a href="profile.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M3 19C3 15.686 6.134 13 10 13C13.866 13 17 15.686 17 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span>Profile</span>
+        </a>
+
+      </nav>
+
+      <div class="sidebar__illustration" aria-hidden="true">
+        <svg width="140" height="180" viewBox="0 0 140 180" fill="none">
+          <circle cx="70" cy="100" r="58" stroke="white" stroke-width="1.2" opacity="0.10"/>
+          <circle cx="70" cy="100" r="42" stroke="white" stroke-width="1" opacity="0.10"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" fill="white" opacity="0.08"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" stroke="white" stroke-width="1.2" opacity="0.18"/>
+          <rect x="30" y="62" width="80" height="18" rx="10" fill="white" opacity="0.10"/>
+          <rect x="30" y="72" width="80" height="8" fill="white" opacity="0.10"/>
+          <rect x="48" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+          <rect x="86" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+          <circle cx="47" cy="97" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="61" cy="97" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="75" cy="97" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="89" cy="97" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="47" cy="112" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="61" cy="112" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="75" cy="112" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="89" cy="112" r="3.5" fill="white" opacity="0.25"/>
+        </svg>
+      </div>
+
+      <button class="sidebar__logout" onclick="window.location.href='../login.html'">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3v9" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <path d="M6.343 5.343a9 9 0 1 0 11.314 0" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+        </svg>
+        <span>Logout</span>
+      </button>
+
+    </aside>
+
+    <!-- ═══════════════════════════════════
+         CONTENT AREA
+    ════════════════════════════════════ -->
+    <div class="content-area">
+
+      <!-- ── HEADER BAR ── -->
+      <header class="topbar topbar--slim">
+        <div class="topbar__left">
+          <!-- Breadcrumb -->
+          <div class="af-breadcrumb">
+            <a href="dashboard.html" class="af-breadcrumb__link">Dashboard</a>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M4 2L8 6L4 10" stroke="#AAAAAA" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="af-breadcrumb__current">Add Availability</span>
+          </div>
+        </div>
+        <div class="topbar__right">
+          <span class="topbar__date" id="topbarDate"></span>
+          <button class="topbar__icon-btn" id="notifBtn" title="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="notif-badge">3</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- ── PAGE BODY ── -->
+      <div class="page-body">
+
+        <div class="af-page-title">
+          <h1 class="af-page-title__text">Add Availability</h1>
+          <p class="af-page-title__sub">Set your preferred schedule for this semester</p>
+        </div>
+
+        <!-- Main form card -->
+        <div class="af-card">
+
+          <!-- Card header -->
+          <div class="af-card__header">
+            <p class="af-card__title">ADD AVAILABILITY</p>
+          </div>
+
+          <!-- Toolbar -->
+          <div class="af-card__toolbar">
+            <div class="af-hint">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M7 6V10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                <circle cx="7" cy="4.5" r="0.7" fill="currentColor"/>
+              </svg>
+              Select a time and day to set your preferences
+            </div>
+            <div class="af-toolbar-right">
+              <div class="af-select-wrap">
+                <select class="af-select" id="subjectSelect">
+                  <option>Web Development</option>
+                  <option>Capstone 1</option>
+                  <option>IT Elective</option>
+                  <option>Database Systems</option>
+                </select>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="af-select-wrap">
+                <select class="af-select" id="sectionSelect">
+                  <option>Capstone 1</option>
+                  <option>BSIT 3-1</option>
+                  <option>BSIT 3-2</option>
+                  <option>BSIT 4-1</option>
+                </select>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Info bar -->
+          <div class="af-card__info">
+            <div>
+              <p class="af-info__row">Faculty Type: <strong>Full-Time</strong></p>
+              <p class="af-info__row">Status: <strong>Current Submission</strong></p>
+            </div>
+            <button class="af-history-btn" id="viewHistoryBtn">
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M7 4V7L5 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                <path d="M4.5 2.5C5.4 2 6.2 1.8 7 1.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+              View History
+            </button>
+          </div>
+
+          <!-- Timetable grid -->
+          <div class="af-table-wrap">
+            <table class="af-table" id="availTable">
+              <thead>
+                <tr>
+                  <th class="af-table__th af-table__th--time">TIME</th>
+                  <th class="af-table__th">MONDAY</th>
+                  <th class="af-table__th">TUESDAY</th>
+                  <th class="af-table__th">WEDNESDAY</th>
+                  <th class="af-table__th">THURSDAY</th>
+                  <th class="af-table__th">FRIDAY</th>
+                  <th class="af-table__th af-table__th--sat">SATURDAY</th>
+                </tr>
+              </thead>
+              <tbody id="availTableBody">
+                <!-- rows injected by JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Footer actions -->
+          <div class="af-card__footer">
+            <button class="af-btn af-btn--add" id="addBtn">
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                <path d="M7 2V12M2 7H12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+              Add
+            </button>
+            <button class="af-btn af-btn--close" id="closeBtn" onclick="window.location.href='dashboard.html'">
+              Close
+            </button>
+          </div>
+
+        </div><!-- /af-card -->
+
+      </div><!-- /page-body -->
+    </div><!-- /content-area -->
+
+  </div><!-- /layout -->
+
+  <script src="../scripts/api.js"></script>
+  <script src="../scripts/auth-check.js"></script>
+  <script src="../scripts/availability-form.js"></script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications | Faculty</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/faculty-dashboard.css" />
+  <link rel="stylesheet" href="../styles/faculty-notifications.css" />
+  <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg" />
+</head>
+<body>
+
+  <div class="layout">
+
+    <!-- ═══════════════════════════════════
+         LEFT SIDEBAR
+    ════════════════════════════════════ -->
+    <aside class="sidebar">
+
+      <div class="sidebar__logo">
+        <img src="../assets/images/logo.svg" alt="CCISched logo" width="38" height="38" />
+        <span class="sidebar__logo-text">CCISCHED</span>
+      </div>
+
+      <nav class="sidebar__nav">
+
+        <a href="dashboard.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="2" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="schedule.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="15" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M2 8H18" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="6" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+            <rect x="12" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+            <rect x="5" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor" opacity="0.5"/>
+            <rect x="9" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor"/>
+            <rect x="13" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor" opacity="0.5"/>
+          </svg>
+          <span>My Schedule</span>
+        </a>
+
+        <a href="notifications.html" class="sidebar__link sidebar__link--active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Notifications</span>
+        </a>
+
+        <a href="profile.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M3 19C3 15.686 6.134 13 10 13C13.866 13 17 15.686 17 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span>Profile</span>
+        </a>
+
+      </nav>
+
+      <!-- Sidebar illustration -->
+      <div class="sidebar__illustration" aria-hidden="true">
+        <svg width="140" height="180" viewBox="0 0 140 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="70" cy="100" r="58" stroke="white" stroke-width="1.2" opacity="0.10"/>
+          <circle cx="70" cy="100" r="42" stroke="white" stroke-width="1" opacity="0.10"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" fill="white" opacity="0.08"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" stroke="white" stroke-width="1.2" opacity="0.18"/>
+          <rect x="30" y="62" width="80" height="18" rx="10" fill="white" opacity="0.10"/>
+          <rect x="30" y="72" width="80" height="8" fill="white" opacity="0.10"/>
+          <rect x="48" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+          <rect x="86" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+          <circle cx="47" cy="97" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="61" cy="97" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="75" cy="97" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="89" cy="97" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="47" cy="112" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="61" cy="112" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="75" cy="112" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="89" cy="112" r="3.5" fill="white" opacity="0.25"/>
+          <line x1="47" y1="97" x2="61" y2="97" stroke="white" stroke-width="1" opacity="0.20"/>
+          <line x1="61" y1="97" x2="61" y2="112" stroke="white" stroke-width="1" opacity="0.20"/>
+          <line x1="61" y1="112" x2="75" y2="112" stroke="white" stroke-width="1" opacity="0.20"/>
+          <rect x="88" y="38" width="36" height="22" rx="6" fill="white" opacity="0.08" stroke="white" stroke-width="1"/>
+          <circle cx="98" cy="49" r="4" fill="white" opacity="0.20"/>
+          <rect x="106" y="44" width="12" height="3" rx="1.5" fill="white" opacity="0.20"/>
+          <rect x="106" y="50" width="8" height="3" rx="1.5" fill="white" opacity="0.15"/>
+          <rect x="16" y="128" width="34" height="22" rx="6" fill="white" opacity="0.08" stroke="white" stroke-width="1"/>
+          <rect x="24" y="135" width="18" height="3" rx="1.5" fill="white" opacity="0.20"/>
+          <rect x="24" y="141" width="12" height="3" rx="1.5" fill="white" opacity="0.15"/>
+          <circle cx="18" cy="72" r="2.5" fill="white" opacity="0.15"/>
+          <circle cx="122" cy="130" r="2.5" fill="white" opacity="0.15"/>
+          <circle cx="112" cy="58" r="1.8" fill="white" opacity="0.20"/>
+          <circle cx="28" cy="148" r="1.8" fill="white" opacity="0.20"/>
+        </svg>
+      </div>
+
+      <button class="sidebar__logout" onclick="window.location.href='../login.html'">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3v9" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <path d="M6.343 5.343a9 9 0 1 0 11.314 0" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+        </svg>
+        <span>Logout</span>
+      </button>
+
+    </aside>
+
+    <!-- ═══════════════════════════════════
+         CONTENT AREA
+    ════════════════════════════════════ -->
+    <div class="content-area">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar__search">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <circle cx="7" cy="7" r="5" stroke="#AAAAAA" stroke-width="1.6"/>
+            <path d="M11 11L14 14" stroke="#AAAAAA" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <input type="text" placeholder="Search notifications…" class="topbar__input" id="notifSearch" />
+        </div>
+
+        <div class="topbar__right">
+          <span class="topbar__date" id="topbarDate"></span>
+
+          <button class="topbar__icon-btn" id="notifBtn" title="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+        </div>
+      </header>
+
+      <!-- PAGE BODY -->
+      <div class="page-body">
+
+        <!-- Page header -->
+        <div class="notif-page-header">
+          <div class="notif-page-header__left">
+            <div class="notif-page-header__icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <h1 class="notif-page-header__title">Notifications</h1>
+              <p class="notif-page-header__sub">1st Semester · AY 2025–2026</p>
+            </div>
+          </div>
+          <div class="notif-page-header__actions">
+            <button class="notif-action-btn" id="markAllBtn">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M2 8L6 12L14 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Mark all as read
+            </button>
+            <button class="notif-action-btn notif-action-btn--danger" id="clearAllBtn">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M3 4h10M6 4V3h4v1M5 4v8a1 1 0 001 1h4a1 1 0 001-1V4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Clear all
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter tabs -->
+        <div class="notif-tabs">
+          <button class="notif-tab notif-tab--active" data-filter="all">All</button>
+          <button class="notif-tab" data-filter="unread">Unread <span class="notif-tab__count" id="unreadCount">3</span></button>
+          <button class="notif-tab" data-filter="system">System</button>
+          <button class="notif-tab" data-filter="chairperson">Chairperson</button>
+        </div>
+
+        <!-- Notification list -->
+        <div class="notif-list" id="notifList">
+
+          <div class="notif-item notif-item--unread" data-type="chairperson">
+            <div class="notif-item__indicator"></div>
+            <div class="notif-item__icon notif-item__icon--chairperson">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M3 19C3 15.686 6.134 13 10 13C13.866 13 17 15.686 17 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="notif-item__body">
+              <div class="notif-item__row">
+                <p class="notif-item__title">Availability form received by Chairperson</p>
+                <span class="notif-item__time">9:14 AM</span>
+              </div>
+              <p class="notif-item__msg">Your submitted availability for 1st Semester A.Y. 2025–2026 was received by Chairperson Christian Roy on May 20, 2026 at 09:14 AM.</p>
+              <span class="notif-item__tag notif-item__tag--chairperson">Chairperson</span>
+            </div>
+            <button class="notif-item__dismiss" title="Dismiss">
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="notif-item notif-item--unread" data-type="system">
+            <div class="notif-item__indicator"></div>
+            <div class="notif-item__icon notif-item__icon--system">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M10 6v4M10 13v.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="notif-item__body">
+              <div class="notif-item__row">
+                <p class="notif-item__title">Availability submission deadline reminder</p>
+                <span class="notif-item__time">8:00 AM</span>
+              </div>
+              <p class="notif-item__msg">System reminder: Availability forms for 1st Semester are due in 3 days (May 23, 2026). Faculty who have not submitted will receive a follow-up from the Chairperson.</p>
+              <span class="notif-item__tag notif-item__tag--system">System</span>
+            </div>
+            <button class="notif-item__dismiss" title="Dismiss">
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="notif-item notif-item--unread" data-type="system">
+            <div class="notif-item__indicator"></div>
+            <div class="notif-item__icon notif-item__icon--system">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                <rect x="2" y="3" width="16" height="15" rx="3" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M2 8H18" stroke="currentColor" stroke-width="1.8"/>
+                <rect x="6" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+                <rect x="12" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="notif-item__body">
+              <div class="notif-item__row">
+                <p class="notif-item__title">Semester timetable generated — 1st Sem A.Y. 2025–2026</p>
+                <span class="notif-item__time">2:12 PM</span>
+              </div>
+              <p class="notif-item__msg">The Chairperson has generated the official timetable for 1st Semester A.Y. 2025–2026. 38 sections across 24 faculty members. Pending Dean approval.</p>
+              <span class="notif-item__tag notif-item__tag--system">System</span>
+            </div>
+            <button class="notif-item__dismiss" title="Dismiss">
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="notif-item" data-type="chairperson">
+            <div class="notif-item__indicator notif-item__indicator--read"></div>
+            <div class="notif-item__icon notif-item__icon--warning">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                <path d="M10 3L18 17H2L10 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="M10 8v4M10 14v.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="notif-item__body">
+              <div class="notif-item__row">
+                <p class="notif-item__title">Chairperson requests availability resubmission</p>
+                <span class="notif-item__time">9:50 AM</span>
+              </div>
+              <p class="notif-item__msg">Chairperson Christian Roy has returned your availability form for revision. Reason: Slot 3 overlaps with a blocked time window. Please update and resubmit.</p>
+              <span class="notif-item__tag notif-item__tag--warning">Action Required</span>
+            </div>
+            <button class="notif-item__dismiss" title="Dismiss">
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="notif-item" data-type="system">
+            <div class="notif-item__indicator notif-item__indicator--read"></div>
+            <div class="notif-item__icon notif-item__icon--system">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M10 6v4M10 13v.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="notif-item__body">
+              <div class="notif-item__row">
+                <p class="notif-item__title">New academic year schedule window opened</p>
+                <span class="notif-item__time">May 15</span>
+              </div>
+              <p class="notif-item__msg">The availability submission window for 2nd Semester A.Y. 2025–2026 is now open. Please submit your preferred schedule slots before June 10, 2026.</p>
+              <span class="notif-item__tag notif-item__tag--system">System</span>
+            </div>
+            <button class="notif-item__dismiss" title="Dismiss">
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+
+        </div><!-- /notif-list -->
+
+        <!-- Empty state (hidden by default) -->
+        <div class="notif-empty" id="notifEmpty" style="display:none;">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+            <circle cx="28" cy="28" r="26" stroke="#E4E4E4" stroke-width="2"/>
+            <path d="M36 20A8 8 0 0 0 20 20c0 10-4 12-4 12h24s-4-2-4-12" stroke="#CCCCCC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M30.3 36a2.67 2.67 0 0 1-4.6 0" stroke="#CCCCCC" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <p class="notif-empty__title">No notifications</p>
+          <p class="notif-empty__sub">You're all caught up.</p>
+        </div>
+
+      </div><!-- /page-body -->
+    </div><!-- /content-area -->
+
+  </div><!-- /layout -->
+
+  <script src="../scripts/faculty-notifications.js"></script>
+</body>
+</html>

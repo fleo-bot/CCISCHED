@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Profile | Faculty</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/faculty-dashboard.css" />
+  <link rel="stylesheet" href="../styles/faculty-profile.css" />
+  <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg" />
+</head>
+<body>
+
+  <div class="layout">
+
+    <!-- ═══════════════════════════════════
+         LEFT SIDEBAR
+    ════════════════════════════════════ -->
+    <aside class="sidebar">
+
+      <div class="sidebar__logo">
+        <img src="../assets/images/logo.svg" alt="CCISched logo" width="38" height="38" />
+        <span class="sidebar__logo-text">CCISCHED</span>
+      </div>
+
+      <nav class="sidebar__nav">
+
+        <a href="dashboard.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="2" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="schedule.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="15" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M2 8H18" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="6" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+            <rect x="12" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+            <rect x="5" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor" opacity="0.5"/>
+            <rect x="9" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor"/>
+            <rect x="13" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor" opacity="0.5"/>
+          </svg>
+          <span>My Schedule</span>
+        </a>
+
+        <a href="notifications.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Notifications</span>
+        </a>
+
+        <a href="profile.html" class="sidebar__link sidebar__link--active">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M3 19C3 15.686 6.134 13 10 13C13.866 13 17 15.686 17 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span>Profile</span>
+        </a>
+
+      </nav>
+
+      <!-- Sidebar illustration -->
+      <div class="sidebar__illustration" aria-hidden="true">
+        <svg width="140" height="180" viewBox="0 0 140 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="70" cy="100" r="58" stroke="white" stroke-width="1.2" opacity="0.10"/>
+          <circle cx="70" cy="100" r="42" stroke="white" stroke-width="1" opacity="0.10"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" fill="white" opacity="0.08"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" stroke="white" stroke-width="1.2" opacity="0.18"/>
+          <rect x="30" y="62" width="80" height="18" rx="10" fill="white" opacity="0.10"/>
+          <rect x="30" y="72" width="80" height="8" fill="white" opacity="0.10"/>
+          <rect x="48" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+          <rect x="86" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+          <circle cx="47" cy="97" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="61" cy="97" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="75" cy="97" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="89" cy="97" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="47" cy="112" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="61" cy="112" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="75" cy="112" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="89" cy="112" r="3.5" fill="white" opacity="0.25"/>
+          <line x1="47" y1="97" x2="61" y2="97" stroke="white" stroke-width="1" opacity="0.20"/>
+          <line x1="61" y1="97" x2="61" y2="112" stroke="white" stroke-width="1" opacity="0.20"/>
+          <line x1="61" y1="112" x2="75" y2="112" stroke="white" stroke-width="1" opacity="0.20"/>
+          <rect x="88" y="38" width="36" height="22" rx="6" fill="white" opacity="0.08" stroke="white" stroke-width="1"/>
+          <circle cx="98" cy="49" r="4" fill="white" opacity="0.20"/>
+          <rect x="106" y="44" width="12" height="3" rx="1.5" fill="white" opacity="0.20"/>
+          <rect x="106" y="50" width="8" height="3" rx="1.5" fill="white" opacity="0.15"/>
+          <rect x="16" y="128" width="34" height="22" rx="6" fill="white" opacity="0.08" stroke="white" stroke-width="1"/>
+          <rect x="24" y="135" width="18" height="3" rx="1.5" fill="white" opacity="0.20"/>
+          <rect x="24" y="141" width="12" height="3" rx="1.5" fill="white" opacity="0.15"/>
+          <circle cx="18" cy="72" r="2.5" fill="white" opacity="0.15"/>
+          <circle cx="122" cy="130" r="2.5" fill="white" opacity="0.15"/>
+        </svg>
+      </div>
+
+      <button class="sidebar__logout" onclick="window.location.href='../login.html'">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3v9" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <path d="M6.343 5.343a9 9 0 1 0 11.314 0" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+        </svg>
+        <span>Logout</span>
+      </button>
+
+    </aside>
+
+    <!-- ═══════════════════════════════════
+         CONTENT AREA
+    ════════════════════════════════════ -->
+    <div class="content-area">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar__search">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <circle cx="7" cy="7" r="5" stroke="#AAAAAA" stroke-width="1.6"/>
+            <path d="M11 11L14 14" stroke="#AAAAAA" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <input type="text" placeholder="Search…" class="topbar__input" />
+        </div>
+
+        <div class="topbar__right">
+          <span class="topbar__date" id="topbarDate"></span>
+
+          <button class="topbar__icon-btn" id="notifBtn" title="Notifications"
+                  onclick="window.location.href='notifications.html'">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+        </div>
+      </header>
+
+      <!-- PAGE BODY -->
+      <div class="page-body">
+
+        <!-- Page title -->
+        <div class="profile-page-title">
+          <h1 class="profile-page-title__text">Edit Profile <span>| Faculty</span></h1>
+        </div>
+
+        <!-- Two-column layout: left panel + right form -->
+        <div class="profile-layout">
+
+          <!-- LEFT: Avatar + tab nav -->
+          <div class="profile-left">
+
+            <div class="profile-left__avatar-wrap">
+              <img src="../assets/images/avatar-female.svg" alt="Avatar" class="profile-left__avatar" />
+              <button class="profile-left__avatar-btn" title="Change photo">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+                  <path d="M11 2.5L13.5 5L5 13.5H2.5V11L11 2.5Z" stroke="white" stroke-width="1.6" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+
+            <p class="profile-left__name">Maria Santos</p>
+            <p class="profile-left__role">Faculty</p>
+
+            <nav class="profile-tabs">
+              <button class="profile-tab profile-tab--active" data-tab="personal">
+                <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/>
+                  <path d="M3 19C3 15.686 6.134 13 10 13C13.866 13 17 15.686 17 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+                Personal Information
+              </button>
+              <button class="profile-tab" data-tab="academic">
+                <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+                  <path d="M10 2L18 6.5L10 11L2 6.5L10 2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                  <path d="M18 6.5V13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M5 8.5V14C5 14 7 16 10 16C13 16 15 14 15 14V8.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Academic Profile
+              </button>
+              <button class="profile-tab" data-tab="security">
+                <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+                  <path d="M10 2L17 5V10C17 14 10 18 10 18C10 18 3 14 3 10V5L10 2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                  <path d="M7 10L9 12L13 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Security
+              </button>
+            </nav>
+
+          </div>
+
+          <!-- RIGHT: Form panels -->
+          <div class="profile-right">
+
+            <!-- ── TAB: Personal Information ── -->
+            <div class="profile-panel" id="tab-personal">
+              <div class="profile-panel__header">
+                <p class="profile-panel__title">PERSONAL INFORMATION</p>
+                <p class="profile-panel__sub">Update your name, contact details, and basic profile information.</p>
+              </div>
+
+              <form class="profile-form" id="personalForm" autocomplete="off">
+
+                <div class="form-row form-row--3">
+                  <div class="form-field">
+                    <label class="form-label">First Name</label>
+                    <input type="text" class="form-input" value="Maria" />
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label">Middle Name</label>
+                    <input type="text" class="form-input" value="Doyen" />
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label">Last Name</label>
+                    <input type="text" class="form-input" value="Santos" />
+                  </div>
+                </div>
+
+                <div class="form-row form-row--2">
+                  <div class="form-field">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" value="m.santos@psu.edu.ph" />
+                  </div>
+                  <div class="form-field form-field--sm">
+                    <label class="form-label">Age</label>
+                    <input type="number" class="form-input" value="40" min="18" max="99" />
+                  </div>
+                </div>
+
+                <div class="form-row form-row--2">
+                  <div class="form-field">
+                    <label class="form-label">Role</label>
+                    <input type="text" class="form-input" value="Faculty" readonly />
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label">Department</label>
+                    <input type="text" class="form-input" value="Department of Information Technology" />
+                  </div>
+                </div>
+
+                <div class="form-row form-row--2">
+                  <div class="form-field">
+                    <label class="form-label">Gender</label>
+                    <select class="form-input form-select">
+                      <option value="female" selected>Female</option>
+                      <option value="male">Male</option>
+                    </select>
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label">Contact Number</label>
+                    <input type="text" class="form-input" value="+63 912 345 6789" />
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button type="button" class="btn-discard" id="personalDiscard">
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                      <path d="M2 2L14 14M14 2L2 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                    Discard
+                  </button>
+                  <button type="submit" class="btn-save">
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                      <path d="M2 8L6 12L14 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Save Changes
+                  </button>
+                </div>
+
+              </form>
+            </div>
+
+            <!-- ── TAB: Academic Profile ── -->
+            <div class="profile-panel" id="tab-academic" style="display:none;">
+              <div class="profile-panel__header">
+                <p class="profile-panel__title">ACADEMIC PROFILE</p>
+                <p class="profile-panel__sub">Your rank, specialization, and subjects you are assigned to teach.</p>
+              </div>
+
+              <form class="profile-form" id="academicForm" autocomplete="off">
+
+                <div class="form-row form-row--2">
+                  <div class="form-field">
+                    <label class="form-label">Academic Rank</label>
+                    <input type="text" class="form-input" value="Instructor I" />
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label">Years of Experience</label>
+                    <input type="number" class="form-input" value="5" min="0" />
+                  </div>
+                </div>
+
+                <div class="form-row form-row--2">
+                  <div class="form-field">
+                    <label class="form-label">Specialization</label>
+                    <input type="text" class="form-input" value="Web Development" />
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label">Subject Assigned</label>
+                    <input type="text" class="form-input" value="3 Subjects Assigned" readonly />
+                  </div>
+                </div>
+
+                <div class="form-row form-row--1">
+                  <div class="form-field">
+                    <label class="form-label">Preferred Courses</label>
+                    <input type="text" class="form-input" value="COMP 001, COMP 002, GEED 012" placeholder="eg. COMP 001, COMP 002" />
+                  </div>
+                </div>
+
+                <div class="form-row form-row--2">
+                  <div class="form-field">
+                    <label class="form-label">Employment Type</label>
+                    <select class="form-input form-select">
+                      <option selected>Full Time</option>
+                      <option>Part Time</option>
+                    </select>
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label">Highest Educational Attainment</label>
+                    <input type="text" class="form-input" value="MIS Information Technology, PUP Manila" />
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button type="button" class="btn-discard" id="academicDiscard">
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                      <path d="M2 2L14 14M14 2L2 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                    Discard
+                  </button>
+                  <button type="submit" class="btn-save">
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                      <path d="M2 8L6 12L14 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Save Changes
+                  </button>
+                </div>
+
+              </form>
+            </div>
+
+            <!-- ── TAB: Security ── -->
+            <div class="profile-panel" id="tab-security" style="display:none;">
+              <div class="profile-panel__header">
+                <p class="profile-panel__title">SECURITY</p>
+                <p class="profile-panel__sub">Change your password and manage account security settings.</p>
+              </div>
+
+              <form class="profile-form" id="securityForm" autocomplete="off">
+
+                <div class="form-row form-row--1">
+                  <div class="form-field">
+                    <label class="form-label">Current Password</label>
+                    <div class="form-input-wrap">
+                      <input type="password" class="form-input" placeholder="Enter Current Password" id="currentPw" />
+                      <button type="button" class="pw-toggle" data-target="currentPw">
+                        <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+                          <ellipse cx="10" cy="10" rx="8" ry="5" stroke="currentColor" stroke-width="1.7"/>
+                          <circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.7"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row form-row--2">
+                  <div class="form-field">
+                    <label class="form-label">New Password</label>
+                    <div class="form-input-wrap">
+                      <input type="password" class="form-input" placeholder="Enter New Password" id="newPw" />
+                      <button type="button" class="pw-toggle" data-target="newPw">
+                        <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+                          <ellipse cx="10" cy="10" rx="8" ry="5" stroke="currentColor" stroke-width="1.7"/>
+                          <circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.7"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label">Confirm Password</label>
+                    <div class="form-input-wrap">
+                      <input type="password" class="form-input" placeholder="Confirm Password" id="confirmPw" />
+                      <button type="button" class="pw-toggle" data-target="confirmPw">
+                        <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+                          <ellipse cx="10" cy="10" rx="8" ry="5" stroke="currentColor" stroke-width="1.7"/>
+                          <circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.7"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row form-row--1">
+                  <div class="form-field">
+                    <label class="form-label">Two-Factor Authentication</label>
+                    <div class="tfa-row">
+                      <label class="tfa-toggle" id="tfaToggle">
+                        <input type="checkbox" id="tfaCheckbox" />
+                        <span class="tfa-track">
+                          <span class="tfa-thumb"></span>
+                        </span>
+                        <span class="tfa-label" id="tfaLabel">Enable</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button type="submit" class="btn-save btn-save--full">
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                      <rect x="2" y="7" width="12" height="8" rx="2" stroke="currentColor" stroke-width="1.6"/>
+                      <path d="M5 7V5a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                    </svg>
+                    Update Password
+                  </button>
+                </div>
+
+              </form>
+            </div>
+
+          </div><!-- /profile-right -->
+        </div><!-- /profile-layout -->
+
+      </div><!-- /page-body -->
+    </div><!-- /content-area -->
+
+  </div><!-- /layout -->
+
+  <script src="../scripts/api.js"></script>
+  <script src="../scripts/auth-check.js"></script>
+  <script src="../scripts/faculty-profile.js"></script>
+</body>
+</html>

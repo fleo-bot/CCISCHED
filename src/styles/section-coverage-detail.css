@@ -1,0 +1,339 @@
+/* =============================================
+   Section Coverage Detail Page
+============================================= */
+
+.page-header {
+  margin-bottom: 28px;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: var(--maroon);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  margin-bottom: 16px;
+}
+
+.back-btn:hover {
+  background: rgba(128, 0, 0, 0.08);
+}
+
+.page-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.page-title {
+  font-size: 1.80rem;
+  font-weight: 900;
+  color: var(--maroon);
+  margin: 0 0 8px 0;
+}
+
+.page-subtitle {
+  font-size: 0.92rem;
+  color: rgba(128, 0, 0, 0.65);
+  margin: 0;
+}
+
+.overall-chip {
+  display: inline-block;
+  padding: 8px 20px;
+  background: rgba(128, 0, 0, 0.08);
+  border: 2px solid rgba(128, 0, 0, 0.22);
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 900;
+  color: var(--maroon);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  align-self: center;
+}
+
+/* ═══════════════════════════════════
+   SUMMARY STATS
+═══════════════════════════════════ */
+.scd-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.scd-stat {
+  background: var(--white);
+  border: 2px solid rgba(128, 0, 0, 0.16);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  padding: 20px 22px;
+  text-align: center;
+}
+
+.scd-stat__val {
+  font-size: 1.90rem;
+  font-weight: 900;
+  color: var(--maroon);
+  margin: 0 0 4px 0;
+  line-height: 1;
+}
+
+.scd-stat--covered   .scd-stat__val { color: #27AE60; }
+.scd-stat--uncovered .scd-stat__val { color: #C0392B; }
+
+.scd-stat__lbl {
+  font-size: 0.70rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: rgba(0, 0, 0, 0.40);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ═══════════════════════════════════
+   FILTER TABS
+═══════════════════════════════════ */
+.scd-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.scd-tab {
+  padding: 9px 22px;
+  background: var(--white);
+  border: 2px solid rgba(128, 0, 0, 0.20);
+  border-radius: 50px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--maroon);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.scd-tab:hover { background: rgba(128, 0, 0, 0.04); }
+
+.scd-tab--active {
+  background: var(--maroon);
+  color: var(--white);
+  border-color: var(--maroon);
+}
+
+/* ═══════════════════════════════════
+   COURSE CARD
+═══════════════════════════════════ */
+.scd-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.scd-course-card {
+  background: var(--white);
+  border: 2px solid rgba(128, 0, 0, 0.16);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s;
+}
+
+.scd-course-card:hover {
+  box-shadow: 0 6px 18px rgba(128, 0, 0, 0.10);
+}
+
+/* Card header — course name + coverage fraction */
+.scd-course-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid rgba(128, 0, 0, 0.08);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.scd-course-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.scd-course-name {
+  font-size: 1.02rem;
+  font-weight: 900;
+  color: var(--maroon);
+  margin: 0;
+}
+
+.scd-course-code {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: rgba(128, 0, 0, 0.50);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.scd-course-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Progress bar inside header */
+.scd-mini-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.scd-mini-track {
+  width: 120px;
+  height: 8px;
+  background: rgba(128, 0, 0, 0.10);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.scd-mini-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--maroon);
+  width: 0;
+  transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scd-mini-fill--complete { background: #27AE60; }
+
+.scd-mini-label {
+  font-size: 0.80rem;
+  font-weight: 900;
+  color: var(--maroon);
+  white-space: nowrap;
+}
+
+.scd-mini-label--complete { color: #1e8449; }
+
+/* ═══════════════════════════════════
+   SECTIONS GRID inside card
+═══════════════════════════════════ */
+.scd-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+  padding: 16px 20px;
+}
+
+.scd-section-tile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1.5px solid transparent;
+  transition: transform 0.18s;
+}
+
+.scd-section-tile:hover {
+  transform: translateY(-1px);
+}
+
+.scd-section-tile--assigned {
+  background: rgba(39, 174, 96, 0.06);
+  border-color: rgba(39, 174, 96, 0.28);
+}
+
+.scd-section-tile--unassigned {
+  background: rgba(192, 57, 43, 0.04);
+  border-color: rgba(192, 57, 43, 0.20);
+}
+
+.scd-section-name {
+  font-size: 0.83rem;
+  font-weight: 800;
+  color: var(--maroon);
+  margin: 0;
+}
+
+.scd-section-tile--unassigned .scd-section-name {
+  color: rgba(128, 0, 0, 0.50);
+}
+
+.scd-section-status {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.scd-section-tile--assigned   .scd-section-status { background: #27AE60; }
+.scd-section-tile--unassigned .scd-section-status { background: #C0392B; opacity: 0.65; }
+
+/* Faculty assigned to section */
+.scd-section-faculty {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: rgba(128, 0, 0, 0.50);
+  margin: 3px 0 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.scd-section-info {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ═══════════════════════════════════
+   EMPTY STATE
+═══════════════════════════════════ */
+.scd-empty {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: rgba(128, 0, 0, 0.40);
+}
+
+/* ═══════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════ */
+@media (max-width: 768px) {
+  .scd-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .scd-mini-track {
+    width: 80px;
+  }
+
+  .page-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .scd-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .scd-sections {
+    grid-template-columns: 1fr 1fr;
+  }
+}

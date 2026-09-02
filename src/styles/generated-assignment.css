@@ -1,0 +1,302 @@
+/* =============================================
+   CCISched — Generated Faculty Assignment Page
+   Extends faculty-dashboard.css variables/base
+============================================= */
+
+/* ═══════════════════════════════════
+   OVERVIEW CARD
+═══════════════════════════════════ */
+.ga-overview-card {
+  background: var(--maroon);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.ga-overview-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  flex-wrap: wrap;
+}
+
+.ga-overview-card__title {
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  color: var(--white);
+}
+
+.ga-overview-card__sub {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
+}
+
+/* Program tiles row */
+.ga-overview-card__body {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 28px;
+  flex-wrap: wrap;
+}
+
+.ga-program-tile {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1.5px solid rgba(255, 255, 255, 0.20);
+  border-radius: 14px;
+  padding: 20px 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 160px;
+  transition: background 0.15s;
+}
+
+.ga-program-tile:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.ga-program-tile__name {
+  font-size: 2.0rem;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.ga-program-tile__pct {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════════
+   REVIEW / ADJUST CARD
+═══════════════════════════════════ */
+.ga-review-card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid rgba(128, 0, 0, 0.18);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Sticky thead ── */
+.ga-review-card__thead {
+  background: var(--maroon);
+  position: sticky;
+  top: 0;
+  z-index: 4;
+}
+
+/* Title row */
+.ga-thead-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  flex-wrap: wrap;
+}
+
+.ga-thead-title__text {
+  font-size: 0.70rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  color: var(--white);
+}
+
+.ga-thead-title__sub {
+  font-size: 0.66rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
+}
+
+/* Column headers row */
+.ga-col-headers {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr 1fr 1fr;
+  padding: 10px 24px;
+  gap: 12px;
+}
+
+.ga-col {
+  font-size: 0.60rem;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  color: rgba(255, 255, 255, 0.80);
+  text-transform: uppercase;
+}
+
+.ga-col--center { text-align: center; }
+
+/* ── Body rows ── */
+.ga-body {
+  overflow-y: auto;
+}
+
+.ga-body::-webkit-scrollbar { width: 5px; }
+.ga-body::-webkit-scrollbar-track { background: transparent; }
+.ga-body::-webkit-scrollbar-thumb {
+  background: rgba(128, 0, 0, 0.18);
+  border-radius: 4px;
+}
+
+.ga-row {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr 1fr 1fr;
+  padding: 14px 24px;
+  gap: 12px;
+  border-bottom: 1px solid rgba(128, 0, 0, 0.07);
+  align-items: center;
+  transition: background 0.13s;
+}
+
+.ga-row:last-child { border-bottom: none; }
+.ga-row:hover      { background: #FFF8F8; }
+
+.ga-row__dept {
+  font-size: 0.80rem;
+  font-weight: 700;
+  color: var(--black);
+}
+
+.ga-row__faculty,
+.ga-row__status {
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--black);
+}
+
+.ga-row__status { color: var(--maroon); }
+
+.ga-row__actions {
+  display: flex;
+  justify-content: center;
+}
+
+/* View button */
+.ga-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--maroon);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 7px 18px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--white);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.18s, box-shadow 0.18s;
+}
+
+.ga-view-btn:hover {
+  background: var(--maroon-dk);
+  box-shadow: 0 3px 10px rgba(128, 0, 0, 0.28);
+}
+
+/* ═══════════════════════════════════
+   BOTTOM ACTIONS
+═══════════════════════════════════ */
+.ga-bottom-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.ga-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
+  border: 2px solid transparent;
+}
+
+.ga-action-btn--discard {
+  background: var(--white);
+  border-color: rgba(128, 0, 0, 0.35);
+  color: var(--maroon);
+}
+
+.ga-action-btn--discard:hover {
+  background: var(--maroon-lt);
+}
+
+.ga-action-btn--approve {
+  background: var(--white);
+  border-color: rgba(128, 0, 0, 0.35);
+  color: var(--maroon);
+}
+
+.ga-action-btn--approve:hover {
+  background: var(--maroon);
+  color: var(--white);
+  border-color: var(--maroon);
+  box-shadow: 0 4px 14px rgba(128, 0, 0, 0.28);
+}
+
+/* ── Toast ── */
+.ga-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: var(--maroon);
+  color: var(--white);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 11px 26px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s, transform 0.22s;
+  z-index: 9999;
+  white-space: nowrap;
+}
+
+.ga-toast--show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Responsive ── */
+@media (max-width: 740px) {
+  .ga-col-headers,
+  .ga-row {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+  }
+
+  .ga-overview-card__body {
+    justify-content: center;
+  }
+}

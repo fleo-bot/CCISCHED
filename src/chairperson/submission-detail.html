@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submission Detail | Chairperson</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/faculty-dashboard.css" />
+  <link rel="stylesheet" href="../styles/chairperson-submissions.css" />
+  <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg" />
+</head>
+<body>
+
+  <div class="layout">
+
+    <!-- ═══════════════════════════════════
+         LEFT SIDEBAR
+    ════════════════════════════════════ -->
+    <aside class="sidebar">
+
+      <div class="sidebar__logo">
+        <img src="../assets/images/logo.svg" alt="CCISched logo" width="38" height="38" />
+        <span class="sidebar__logo-text">CCISCHED</span>
+      </div>
+
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="2" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="courses.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="14" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M6 7H14M6 11H11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <span>Courses</span>
+        </a>
+        <a href="faculty.html" class="sidebar__link sidebar__link--active">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <circle cx="7" cy="7" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M2 18C2 14.686 4.686 12 8 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="14" cy="7" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M10 18C10 14.686 12.686 12 16 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span>Faculty</span>
+        </a>
+        <a href="schedule.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="15" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M2 8H18" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="6" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+            <rect x="12" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+          </svg>
+          <span>Schedule</span>
+        </a>
+
+        <a href="notifications.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Notifications</span>
+        </a>
+      </nav>
+
+      <div class="sidebar__illustration" aria-hidden="true">
+        <svg width="140" height="180" viewBox="0 0 140 180" fill="none">
+          <circle cx="70" cy="100" r="58" stroke="white" stroke-width="1.2" opacity="0.10"/>
+          <circle cx="70" cy="100" r="42" stroke="white" stroke-width="1" opacity="0.10"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" fill="white" opacity="0.08"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" stroke="white" stroke-width="1.2" opacity="0.18"/>
+          <rect x="30" y="62" width="80" height="18" rx="10" fill="white" opacity="0.10"/>
+          <rect x="30" y="72" width="80" height="8"  fill="white" opacity="0.10"/>
+          <rect x="48" y="56" width="6"  height="12" rx="3" fill="white" opacity="0.30"/>
+          <rect x="86" y="56" width="6"  height="12" rx="3" fill="white" opacity="0.30"/>
+          <circle cx="47" cy="97"  r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="61" cy="97"  r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="75" cy="97"  r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="89" cy="97"  r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="47" cy="112" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="61" cy="112" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="75" cy="112" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="89" cy="112" r="3.5" fill="white" opacity="0.25"/>
+        </svg>
+      </div>
+
+      <button class="sidebar__logout" onclick="window.location.href='../login.html'">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3v9" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <path d="M6.343 5.343a9 9 0 1 0 11.314 0" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+        </svg>
+        <span>Logout</span>
+      </button>
+
+    </aside>
+
+    <!-- ═══════════════════════════════════
+         CONTENT AREA
+    ════════════════════════════════════ -->
+    <div class="content-area">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar__search">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <circle cx="7" cy="7" r="5" stroke="#AAAAAA" stroke-width="1.6"/>
+            <path d="M11 11L14 14" stroke="#AAAAAA" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <input type="text" placeholder="Search…" class="topbar__input" />
+        </div>
+        <div class="topbar__right">
+          <span class="topbar__date" id="topbarDate"></span>
+          <button class="topbar__icon-btn" id="notifBtn" title="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="notif-badge">4</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- PAGE BODY -->
+      <div class="page-body">
+
+        <!-- Page header — filled by JS -->
+        <div class="sd-page-header">
+          <div class="sd-page-header__left">
+            <div class="cs-breadcrumb">
+              <a href="faculty.html" class="cs-breadcrumb__link">Faculty</a>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M4 2L8 6L4 10" stroke="#AAAAAA" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <a href="view-submissions.html" class="cs-breadcrumb__link">Submissions</a>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M4 2L8 6L4 10" stroke="#AAAAAA" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="cs-breadcrumb__current" id="sdBreadcrumb">Detail</span>
+            </div>
+            <h1 class="cs-page-title" id="sdFacultyName">—</h1>
+            <p class="cs-page-sub" id="sdFacultySub">—</p>
+          </div>
+          <div class="sd-page-header__right">
+            <span class="sd-status-badge" id="sdStatusBadge"></span>
+
+            <!-- Prev / Next faculty navigation -->
+            <div class="sd-nav-group">
+              <button class="sd-nav-btn" id="sdPrevBtn" title="Previous faculty">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                  <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <span class="sd-nav-label" id="sdNavLabel">— / —</span>
+              <button class="sd-nav-btn" id="sdNextBtn" title="Next faculty">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                  <path d="M5 2L10 7L5 12" stroke="currentColor" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Action Buttons (Approve/Reject/Return) -->
+            <div id="sdActionButtons" class="sd-action-group" style="display: none;">
+              <button class="sd-action-btn sd-action-btn--approve" id="sdApproveBtn">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                  <path d="M2 7L5.5 10.5L12 3" stroke="currentColor" stroke-width="2" 
+                        stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Approve
+              </button>
+              <button class="sd-action-btn sd-action-btn--return" id="sdReturnBtn">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                  <path d="M7 2V12M7 2L3 6M7 2L11 6" stroke="currentColor" stroke-width="1.8" 
+                        stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Return
+              </button>
+              <button class="sd-action-btn sd-action-btn--reject" id="sdRejectBtn">
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                  <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="2" 
+                        stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Reject
+              </button>
+            </div>
+
+            <button class="sd-action-btn sd-action-btn--outline" onclick="window.print()">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <rect x="3" y="1" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="3" y="10" width="10" height="5" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M1 6H15V12H1V6Z" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              Print
+            </button>
+            <a href="view-submissions.html" class="sd-action-btn sd-action-btn--outline">← Back</a>
+          </div>
+        </div>
+
+        <!-- Faculty info card -->
+        <div class="sd-info-card" id="sdInfoCard">
+          <!-- injected by JS -->
+        </div>
+
+        <!-- Timetable slots — injected by JS -->
+        <div class="sd-slots" id="sdSlots"></div>
+
+      </div><!-- /page-body -->
+    </div><!-- /content-area -->
+
+  </div><!-- /layout -->
+
+  <!-- Confirmation Modal -->
+  <div id="sdConfirmModal" class="sd-modal" style="display: none;">
+    <div class="sd-modal__backdrop"></div>
+    <div class="sd-modal__content">
+      <div class="sd-modal__header">
+        <div id="sdModalIcon" class="sd-modal__icon"></div>
+        <h2 id="sdModalTitle" class="sd-modal__title">—</h2>
+        <p id="sdModalMessage" class="sd-modal__message">—</p>
+      </div>
+      <div class="sd-modal__body">
+        <div class="sd-modal__info-row">
+          <span class="sd-modal__label">Faculty:</span>
+          <span class="sd-modal__value" id="sdModalFacultyName">—</span>
+        </div>
+        <div class="sd-modal__info-row">
+          <span class="sd-modal__label">Submission Date:</span>
+          <span class="sd-modal__value" id="sdModalSubmitDate">—</span>
+        </div>
+        
+        <!-- Reason textarea (only shown for Return action) -->
+        <div id="sdReasonGroup" class="sd-modal__reason-group" style="display: none;">
+          <label class="sd-modal__reason-label" for="sdReasonInput">
+            Reason for Return <span style="color: #C0392B;">*</span>
+          </label>
+          <textarea 
+            id="sdReasonInput" 
+            class="sd-modal__reason-input" 
+            rows="3" 
+            placeholder="Please provide a reason for returning this submission..."
+            maxlength="300"
+          ></textarea>
+          <div class="sd-modal__char-count">
+            <span id="sdCharCount">0</span> / 300
+          </div>
+        </div>
+      </div>
+      <div class="sd-modal__actions">
+        <button class="sd-modal__btn sd-modal__btn--cancel" id="sdModalCancelBtn">Cancel</button>
+        <button class="sd-modal__btn sd-modal__btn--confirm" id="sdModalConfirmBtn">—</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../scripts/submission-detail.js"></script>
+</body>
+</html>

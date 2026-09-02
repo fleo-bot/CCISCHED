@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assignment Detail | Chairperson</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/faculty-dashboard.css" />
+  <link rel="stylesheet" href="../styles/assignment-detail.css" />
+  <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg" />
+</head>
+<body>
+
+  <div class="layout">
+
+    <!-- ═══════════════════════════════════
+         LEFT SIDEBAR
+    ════════════════════════════════════ -->
+    <aside class="sidebar">
+
+      <div class="sidebar__logo">
+        <img src="../assets/images/logo.svg" alt="CCISched logo" width="38" height="38" />
+        <span class="sidebar__logo-text">CCISCHED</span>
+      </div>
+
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="2" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="courses.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="14" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M6 7H14M6 11H11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <span>Courses</span>
+        </a>
+        <a href="faculty.html" class="sidebar__link sidebar__link--active">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <circle cx="7" cy="7" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M2 18C2 14.686 4.686 12 8 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="14" cy="7" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M10 18C10 14.686 12.686 12 16 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span>Faculty</span>
+        </a>
+        <a href="schedule.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="15" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M2 8H18" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="6" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+            <rect x="12" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+            <rect x="5" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor" opacity="0.5"/>
+            <rect x="9" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor"/>
+            <rect x="13" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor" opacity="0.5"/>
+          </svg>
+          <span>Schedule</span>
+        </a>
+
+        <a href="notifications.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Notifications</span>
+        </a>
+      </nav>
+
+      <div class="sidebar__illustration" aria-hidden="true">
+        <svg width="140" height="180" viewBox="0 0 140 180" fill="none">
+          <circle cx="70" cy="100" r="58" stroke="white" stroke-width="1.2" opacity="0.10"/>
+          <circle cx="70" cy="100" r="42" stroke="white" stroke-width="1" opacity="0.10"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" fill="white" opacity="0.08"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" stroke="white" stroke-width="1.2" opacity="0.18"/>
+          <rect x="48" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+          <rect x="86" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+          <circle cx="47" cy="97" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="61" cy="97" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="75" cy="97" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="47" cy="112" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="61" cy="112" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="75" cy="112" r="3.5" fill="white" opacity="0.60"/>
+        </svg>
+      </div>
+
+      <button class="sidebar__logout" onclick="window.location.href='../login.html'">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3v9" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <path d="M6.343 5.343a9 9 0 1 0 11.314 0" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+        </svg>
+        <span>Logout</span>
+      </button>
+
+    </aside>
+
+    <!-- ═══════════════════════════════════
+         CONTENT AREA
+    ════════════════════════════════════ -->
+    <div class="content-area">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar__search">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <circle cx="7" cy="7" r="5" stroke="#AAAAAA" stroke-width="1.6"/>
+            <path d="M11 11L14 14" stroke="#AAAAAA" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <input type="text" placeholder="Search schedule, availability, notifications…" class="topbar__input" />
+        </div>
+        <div class="topbar__right">
+          <span class="topbar__date" id="topbarDate"></span>
+          <button class="topbar__icon-btn" id="notifBtn" title="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="notif-badge">4</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- PAGE BODY -->
+      <div class="page-body">
+
+        <!-- ══ DETAIL CARD ══ -->
+        <div class="ad-card">
+
+          <!-- Header: title + back link + search -->
+          <div class="ad-card__header">
+            <p class="ad-card__title" id="deptTitle">GENERATED PREVIEW: BSIT DEPARTMENT</p>
+            <div class="ad-header-row">
+              <button class="ad-back-btn" id="backBtn">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Back to Main Overview
+              </button>
+              <div class="ad-search-wrap">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+                  <circle cx="7" cy="7" r="5" stroke="#AAAAAA" stroke-width="1.6"/>
+                  <path d="M11 11L14 14" stroke="#AAAAAA" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+                <input type="text" class="ad-search" id="adSearch" placeholder="Search" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Faculty Load Summary table -->
+          <div class="ad-table-wrap">
+
+            <!-- Column headers (sticky inside scroll) -->
+            <div class="ad-col-headers">
+              <span class="ad-col ad-col--instructor">INSTRUCTOR</span>
+              <span class="ad-col">FACULTY TYPE</span>
+              <span class="ad-col ad-col--center">GENERATED LOAD</span>
+              <span class="ad-col ad-col--center">AVG MATCH SCORE</span>
+            </div>
+
+            <!-- Sub-title row inside the table area -->
+            <div class="ad-table-title">FACULTY LOAD SUMMARY LIST</div>
+
+            <!-- Rows injected by JS -->
+            <div class="ad-rows" id="adRows"></div>
+
+          </div>
+
+          <!-- Footer hint bar -->
+          <div class="ad-hint-bar">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M8 5v3.5L10 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+            Click on any instructor row above to view their specific assigned courses
+          </div>
+
+        </div><!-- /ad-card -->
+
+      </div><!-- /page-body -->
+    </div><!-- /content-area -->
+
+  </div><!-- /layout -->
+
+  <!-- Instructor Assignment Detail Modal -->
+  <div class="ia-modal-overlay" id="iaModalOverlay">
+    <div class="ia-modal" role="dialog" aria-modal="true" aria-labelledby="iaModalTitle">
+
+      <!-- Maroon header -->
+      <div class="ia-modal__header">
+        <p class="ia-modal__title" id="iaModalTitle">COURSE ASSIGNMENT: BEN TORRES</p>
+        <button class="ia-modal__close" id="iaModalClose" aria-label="Close modal">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+            <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- White scrollable body -->
+      <div class="ia-modal__body">
+
+        <!-- Department + Model Score row -->
+        <div class="ia-modal__info">
+          <div class="ia-modal__field">
+            <label class="ia-modal__label">Department</label>
+            <div class="ia-modal__value" id="iaModalDept">Information Technology</div>
+          </div>
+          <div class="ia-modal__field">
+            <label class="ia-modal__label">Model Score</label>
+            <div class="ia-modal__value" id="iaModalScore">89%</div>
+          </div>
+        </div>
+
+        <!-- Section title -->
+        <div class="ia-modal__section-title">PROPOSED COURSE ALLOCATIONS</div>
+
+        <!-- Table -->
+        <div class="ia-table-wrap">
+          <table class="ia-table">
+            <thead>
+              <tr>
+                <th>COURSE CODE</th>
+                <th>COURSE DESCRIPTION</th>
+                <th>TYPE</th>
+                <th>UNITS</th>
+              </tr>
+            </thead>
+            <tbody id="iaTableBody">
+              <!-- Rows injected by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Justification -->
+        <div class="ia-modal__just-field">
+          <label class="ia-modal__label">Justification</label>
+          <div class="ia-modal__just-text" id="iaJustification">High historical ranking for COMP101 and optimal alignment with preferred Monday/Wednesday availability.</div>
+        </div>
+
+      </div>
+
+      <!-- White footer -->
+      <div class="ia-modal__footer">
+        <button class="ia-modal-btn ia-modal-btn--reject" id="iaRejectBtn">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+            <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          Discard
+        </button>
+        <button class="ia-modal-btn ia-modal-btn--approve" id="iaApproveBtn">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+            <path d="M2 8L5.5 11.5L12 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Save Changes
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="../scripts/assignment-detail.js"></script>
+</body>
+</html>

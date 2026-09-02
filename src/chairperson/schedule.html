@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Schedule | Chairperson</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/faculty-dashboard.css" />
+  <link rel="stylesheet" href="../styles/chairperson-schedule.css" />
+  <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg" />
+</head>
+<body>
+
+  <div class="layout">
+
+    <!-- ═══════════════════════════════════
+         LEFT SIDEBAR
+    ════════════════════════════════════ -->
+    <aside class="sidebar">
+
+      <div class="sidebar__logo">
+        <img src="../assets/images/logo.svg" alt="CCISched logo" width="38" height="38" />
+        <span class="sidebar__logo-text">CCISCHED</span>
+      </div>
+
+      <nav class="sidebar__nav">
+
+        <a href="dashboard.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="2" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="courses.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="14" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M6 7H14M6 11H11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <span>Courses</span>
+        </a>
+
+        <a href="faculty.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <circle cx="7" cy="7" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M2 18C2 14.686 4.686 12 8 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="14" cy="7" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M10 18C10 14.686 12.686 12 16 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span>Faculty</span>
+        </a>
+
+        <a href="schedule.html" class="sidebar__link sidebar__link--active">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="15" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M2 8H18" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="6" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+            <rect x="12" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+            <rect x="5" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor" opacity="0.5"/>
+            <rect x="9" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor"/>
+            <rect x="13" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor" opacity="0.5"/>
+          </svg>
+          <span>Schedule</span>
+        </a>
+
+        <a href="notifications.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Notifications</span>
+        </a>
+
+      </nav>
+
+      <div class="sidebar__illustration" aria-hidden="true">
+        <svg width="140" height="180" viewBox="0 0 140 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="70" cy="100" r="58" stroke="white" stroke-width="1.2" opacity="0.10"/>
+          <circle cx="70" cy="100" r="42" stroke="white" stroke-width="1" opacity="0.10"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" fill="white" opacity="0.08"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" stroke="white" stroke-width="1.2" opacity="0.18"/>
+          <rect x="30" y="62" width="80" height="18" rx="10" fill="white" opacity="0.10"/>
+          <rect x="30" y="72" width="80" height="8" fill="white" opacity="0.10"/>
+          <rect x="48" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+          <rect x="86" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+          <circle cx="47" cy="97" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="61" cy="97" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="75" cy="97" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="89" cy="97" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="47" cy="112" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="61" cy="112" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="75" cy="112" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="89" cy="112" r="3.5" fill="white" opacity="0.25"/>
+          <line x1="47" y1="97" x2="61" y2="97" stroke="white" stroke-width="1" opacity="0.20"/>
+          <line x1="61" y1="97" x2="61" y2="112" stroke="white" stroke-width="1" opacity="0.20"/>
+          <line x1="61" y1="112" x2="75" y2="112" stroke="white" stroke-width="1" opacity="0.20"/>
+          <rect x="88" y="38" width="36" height="22" rx="6" fill="white" opacity="0.08"/>
+          <circle cx="98" cy="49" r="4" fill="white" opacity="0.20"/>
+          <rect x="106" y="44" width="12" height="3" rx="1.5" fill="white" opacity="0.20"/>
+          <rect x="106" y="50" width="8" height="3" rx="1.5" fill="white" opacity="0.15"/>
+          <rect x="16" y="128" width="34" height="22" rx="6" fill="white" opacity="0.08"/>
+          <rect x="24" y="135" width="18" height="3" rx="1.5" fill="white" opacity="0.20"/>
+          <rect x="24" y="141" width="12" height="3" rx="1.5" fill="white" opacity="0.15"/>
+          <circle cx="18" cy="72" r="2.5" fill="white" opacity="0.15"/>
+          <circle cx="122" cy="130" r="2.5" fill="white" opacity="0.15"/>
+        </svg>
+      </div>
+
+      <button class="sidebar__logout" onclick="window.location.href='../login.html'">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3v9" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <path d="M6.343 5.343a9 9 0 1 0 11.314 0" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+        </svg>
+        <span>Logout</span>
+      </button>
+
+    </aside>
+
+    <!-- ═══════════════════════════════════
+         CONTENT AREA
+    ════════════════════════════════════ -->
+    <div class="content-area">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar__search">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <circle cx="7" cy="7" r="5" stroke="#AAAAAA" stroke-width="1.6"/>
+            <path d="M11 11L14 14" stroke="#AAAAAA" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <input type="text" placeholder="Search schedule, availability, notifications…" class="topbar__input" />
+        </div>
+        <div class="topbar__right">
+          <span class="topbar__date" id="topbarDate"></span>
+          <button class="topbar__icon-btn" id="notifBtn" title="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="notif-badge">4</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- PAGE BODY -->
+      <div class="page-body">
+
+        <!-- ══ TIMETABLE GENERATION card ══ -->
+        <div class="cs-card">
+
+          <div class="cs-card__header">
+            <p class="cs-card__title">TIMETABLE GENERATION</p>
+          </div>
+
+          <div class="cs-card__body cs-gen-body">
+
+            <!-- AY dropdown -->
+            <div class="cs-select-wrap">
+              <select class="cs-select" id="aySelect">
+                <option value="">AY</option>
+                <option value="2024-2025">A.Y. 2024–2025</option>
+                <option value="2025-2026" selected>A.Y. 2025–2026</option>
+                <option value="2026-2027">A.Y. 2026–2027</option>
+              </select>
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+
+            <!-- Semester dropdown -->
+            <div class="cs-select-wrap">
+              <select class="cs-select" id="semSelect">
+                <option value="">SEM</option>
+                <option value="1" selected>1st Semester</option>
+                <option value="2">2nd Semester</option>
+                <option value="summer">Summer</option>
+              </select>
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ══ PRE-TIMETABLING REQUIREMENTS card ══ -->
+        <div class="cs-card">
+
+          <div class="cs-card__header cs-card__header--dark">
+            <p class="cs-card__title">PRE-TIMETABLING REQUIREMENTS</p>
+            <p class="cs-card__sub">The scheduling engine requires all prerequisite data to be fully populated</p>
+          </div>
+
+          <!-- Requirements table -->
+          <div class="cs-req-table">
+
+            <!-- Column headers -->
+            <div class="cs-req-cols">
+              <span class="cs-req-col">SYSTEM INPUT</span>
+              <span class="cs-req-col cs-req-col--center">STATUS</span>
+              <span class="cs-req-col cs-req-col--center">ACTION</span>
+            </div>
+
+            <!-- Rows injected by JS -->
+            <div id="reqRows"></div>
+
+          </div>
+
+        </div>
+
+        <!-- ══ STATUS BANNER ══ -->
+        <div class="cs-status-banner" id="statusBanner">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span id="statusBannerText">All parameters verified. The system is ready to compile their master timetable</span>
+        </div>
+
+        <!-- ══ GENERATE button row ══ -->
+        <div class="cs-generate-row">
+          <button class="cs-generate-btn" id="generateBtn">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+              <rect x="2" y="2" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Generate Timetable
+          </button>
+        </div>
+
+      </div><!-- /page-body -->
+    </div><!-- /content-area -->
+
+  </div><!-- /layout -->
+
+  <!-- Generate Timetable Confirmation Modal -->
+  <div class="gt-modal-overlay" id="gtModalOverlay">
+    <div class="gt-modal" role="dialog" aria-modal="true" aria-labelledby="gtModalTitle">
+
+      <h2 class="gt-modal__title" id="gtModalTitle">Confirm timetable generation</h2>
+
+      <p class="gt-modal__body-text">
+        Are you sure you want to generate the master schedule now?
+      </p>
+      <p class="gt-modal__body-text">
+        This will run the optimization engine using the current course offerings,
+        assignments, and availability data. The process may take a few moments
+        to complete.
+      </p>
+
+      <div class="gt-modal__actions">
+        <button class="gt-modal-btn gt-modal-btn--confirm" id="gtConfirmBtn">Yes</button>
+        <button class="gt-modal-btn gt-modal-btn--cancel"  id="gtCancelBtn">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Optimizing Timetable loading overlay -->
+  <div class="gen-overlay" id="genOverlay">
+    <div class="gen-card">
+
+      <!-- Calendar icon -->
+      <div class="gen-card__icon">
+        <svg class="gen-calendar-icon" width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Calendar body -->
+          <rect x="5" y="10" width="42" height="36" rx="5" stroke="white" stroke-width="2.5" fill="none" opacity="0.95"/>
+          <!-- Top bar / header fill -->
+          <rect x="5" y="10" width="42" height="13" rx="5" fill="white" fill-opacity="0.18"/>
+          <!-- Header line bottom -->
+          <line x1="5" y1="23" x2="47" y2="23" stroke="white" stroke-width="2" opacity="0.6"/>
+          <!-- Binding posts -->
+          <line x1="16" y1="5" x2="16" y2="17" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="36" y1="5" x2="36" y2="17" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Grid dots (day cells) — row 1 -->
+          <circle class="gen-cal-dot" cx="16" cy="31" r="2.2" fill="white" opacity="0.85"/>
+          <circle class="gen-cal-dot" cx="26" cy="31" r="2.2" fill="white" opacity="0.85"/>
+          <circle class="gen-cal-dot" cx="36" cy="31" r="2.2" fill="white" opacity="0.85"/>
+          <!-- Grid dots — row 2 -->
+          <circle class="gen-cal-dot" cx="16" cy="40" r="2.2" fill="white" opacity="0.85"/>
+          <circle class="gen-cal-dot" cx="26" cy="40" r="2.2" fill="white" opacity="0.85"/>
+          <!-- Highlighted "today" cell -->
+          <rect class="gen-cal-today" x="30" y="35" width="12" height="10" rx="3" fill="white" opacity="0.25"/>
+        </svg>
+      </div>
+
+      <p class="gen-card__title">OPTIMIZING TIMETABLE</p>
+
+      <div class="gen-progress">
+        <div class="gen-progress__bar">
+          <div class="gen-progress__fill" id="genProgressFill"></div>
+        </div>
+        <p class="gen-progress__label">
+          <span class="gen-progress__pct" id="genPct">0%</span>
+          <span class="gen-progress__status" id="genStatus">Initializing…</span>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Distribution Success Notification ── -->
+  <div class="dist-overlay" id="distOverlay" role="dialog" aria-modal="true" aria-labelledby="distTitle">
+    <div class="dist-modal">
+
+      <!-- Checkmark icon -->
+      <div class="dist-modal__icon">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <circle cx="24" cy="24" r="22" stroke="white" stroke-width="2.5" fill="none" opacity="0.30"/>
+          <circle cx="24" cy="24" r="22" stroke="white" stroke-width="2.5" fill="none" stroke-dasharray="138" stroke-dashoffset="138" class="dist-circle-anim"/>
+          <path class="dist-check-anim" d="M13 25l8 8 14-16" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+
+      <h2 class="dist-modal__title" id="distTitle">Timetables Distributed!</h2>
+      <p class="dist-modal__body">
+        All faculty schedules have been successfully distributed.<br/>
+        Faculty members will be notified of their assigned timetables.
+      </p>
+
+      <button class="dist-modal__btn" id="distCloseBtn">Got it</button>
+
+    </div>
+  </div>
+
+  <script src="../scripts/chairperson-schedule.js"></script>
+</body>
+</html>

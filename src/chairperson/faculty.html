@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Faculty | Chairperson</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/faculty-dashboard.css" />
+  <link rel="stylesheet" href="../styles/faculty-schedule.css" />
+  <link rel="stylesheet" href="../styles/chairperson-faculty.css" />
+  <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg" />
+</head>
+<body>
+
+  <div class="layout">
+
+    <!-- ═══════════════════════════════════
+         LEFT SIDEBAR
+    ════════════════════════════════════ -->
+    <aside class="sidebar">
+
+      <div class="sidebar__logo">
+        <img src="../assets/images/logo.svg" alt="CCISched logo" width="38" height="38" />
+        <span class="sidebar__logo-text">CCISCHED</span>
+      </div>
+
+      <nav class="sidebar__nav">
+
+        <a href="dashboard.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="2" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="11" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="courses.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="14" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M6 7H14M6 11H11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <span>Courses</span>
+        </a>
+
+        <a href="faculty.html" class="sidebar__link sidebar__link--active">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <circle cx="7" cy="7" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M2 18C2 14.686 4.686 12 8 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="14" cy="7" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M10 18C10 14.686 12.686 12 16 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span>Faculty</span>
+        </a>
+
+        <a href="schedule.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="15" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M2 8H18" stroke="currentColor" stroke-width="1.8"/>
+            <rect x="6" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+            <rect x="12" y="1" width="2" height="4" rx="1" fill="currentColor"/>
+            <rect x="5" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor" opacity="0.5"/>
+            <rect x="9" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor"/>
+            <rect x="13" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor" opacity="0.5"/>
+          </svg>
+          <span>Schedule</span>
+        </a>
+
+        <a href="notifications.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Notifications</span>
+        </a>
+
+      </nav>
+
+      <div class="sidebar__illustration" aria-hidden="true">
+        <svg width="140" height="180" viewBox="0 0 140 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="70" cy="100" r="58" stroke="white" stroke-width="1.2" opacity="0.10"/>
+          <circle cx="70" cy="100" r="42" stroke="white" stroke-width="1" opacity="0.10"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" fill="white" opacity="0.08"/>
+          <rect x="30" y="62" width="80" height="72" rx="10" stroke="white" stroke-width="1.2" opacity="0.18"/>
+          <rect x="30" y="62" width="80" height="18" rx="10" fill="white" opacity="0.10"/>
+          <rect x="30" y="72" width="80" height="8" fill="white" opacity="0.10"/>
+          <rect x="48" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+          <rect x="86" y="56" width="6" height="12" rx="3" fill="white" opacity="0.30"/>
+          <circle cx="47" cy="97" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="61" cy="97" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="75" cy="97" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="89" cy="97" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="47" cy="112" r="3.5" fill="white" opacity="0.25"/>
+          <circle cx="61" cy="112" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="75" cy="112" r="3.5" fill="white" opacity="0.60"/>
+          <circle cx="89" cy="112" r="3.5" fill="white" opacity="0.25"/>
+          <line x1="47" y1="97" x2="61" y2="97" stroke="white" stroke-width="1" opacity="0.20"/>
+          <line x1="61" y1="97" x2="61" y2="112" stroke="white" stroke-width="1" opacity="0.20"/>
+          <line x1="61" y1="112" x2="75" y2="112" stroke="white" stroke-width="1" opacity="0.20"/>
+          <rect x="88" y="38" width="36" height="22" rx="6" fill="white" opacity="0.08"/>
+          <circle cx="98" cy="49" r="4" fill="white" opacity="0.20"/>
+          <rect x="106" y="44" width="12" height="3" rx="1.5" fill="white" opacity="0.20"/>
+          <rect x="106" y="50" width="8" height="3" rx="1.5" fill="white" opacity="0.15"/>
+          <rect x="16" y="128" width="34" height="22" rx="6" fill="white" opacity="0.08"/>
+          <rect x="24" y="135" width="18" height="3" rx="1.5" fill="white" opacity="0.20"/>
+          <rect x="24" y="141" width="12" height="3" rx="1.5" fill="white" opacity="0.15"/>
+          <circle cx="18" cy="72" r="2.5" fill="white" opacity="0.15"/>
+          <circle cx="122" cy="130" r="2.5" fill="white" opacity="0.15"/>
+        </svg>
+      </div>
+
+      <button class="sidebar__logout" onclick="window.location.href='../login.html'">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3v9" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <path d="M6.343 5.343a9 9 0 1 0 11.314 0" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+        </svg>
+        <span>Logout</span>
+      </button>
+
+    </aside>
+
+    <!-- ═══════════════════════════════════
+         CONTENT AREA
+    ════════════════════════════════════ -->
+    <div class="content-area">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar__search">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <circle cx="7" cy="7" r="5" stroke="#AAAAAA" stroke-width="1.6"/>
+            <path d="M11 11L14 14" stroke="#AAAAAA" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <input type="text" placeholder="Search schedule, availability, notifications…" class="topbar__input" />
+        </div>
+        <div class="topbar__right">
+          <span class="topbar__date" id="topbarDate"></span>
+          <button class="topbar__icon-btn" id="notifBtn" title="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="notif-badge">4</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- PAGE BODY -->
+      <div class="page-body">
+
+        <!-- ══ FACULTY MANAGEMENT & ASSIGNMENT card ══ -->
+        <div class="fm-card">
+
+          <div class="fm-card__header">
+            <p class="fm-card__title">FACULTY MANAGEMENT &amp; ASSIGNMENT</p>
+          </div>
+
+          <div class="fm-card__body">
+
+            <!-- Stat -->
+            <div class="fm-stat">
+              <p class="fm-stat__val" id="totalFaculty">52</p>
+              <p class="fm-stat__lbl">TOTAL FACULTY</p>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="fm-actions">
+              <button class="fm-btn fm-btn--outline" id="viewSubmissionsBtn">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <rect x="2" y="3" width="12" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M5 7h6M5 9.5h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+                View Submissions
+              </button>
+
+              <div class="fm-filter-wrap">
+                <select class="fm-filter-select" id="typeFilter">
+                  <option value="all">All</option>
+                  <option value="Full-Time">Full-Time</option>
+                  <option value="Part-Time">Part-Time</option>
+                  <option value="Designee|Chairperson">Designee | Chairperson</option>
+                </select>
+                <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                  <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+
+              <button class="fm-btn fm-btn--outline" id="generateBtn" title="Generate faculty assignments">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <path d="M2 8h12M10 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Generate Faculty Assignment
+              </button>
+
+              <button class="fm-btn fm-btn--solid" id="addFacultyBtn">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <circle cx="6" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M1 14c0-2.76 2.24-5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M12 9v6M9 12h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                Add Faculty
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ══ FACULTY LOAD SUMMARY LIST card ══ -->
+        <div class="fl-card">
+
+          <div class="fl-card__thead">
+
+            <!-- Title row -->
+            <div class="fl-thead-title">
+              <p class="fl-thead-title__text">FACULTY LOAD SUMMARY LIST</p>
+              <!-- Inline search -->
+              <div class="fl-search-wrap">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+                  <circle cx="7" cy="7" r="5" stroke="#AAAAAA" stroke-width="1.6"/>
+                  <path d="M11 11L14 14" stroke="#AAAAAA" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+                <input type="text" class="fl-search" id="facultySearch" placeholder="Search faculty, loads…" />
+              </div>
+            </div>
+
+            <!-- Column headers -->
+            <div class="fl-col-headers">
+              <span class="fl-col fl-col--instructor">INSTRUCTOR</span>
+              <span class="fl-col fl-col--type">FACULTY TYPE</span>
+              <span class="fl-col fl-col--load">TEACHING LOAD</span>
+              <span class="fl-col fl-col--actions">ACTIONS</span>
+            </div>
+
+          </div>
+
+          <!-- Scrollable rows -->
+          <div class="fl-body" id="facultyList">
+            <!-- rows injected by JS -->
+          </div>
+
+        </div>
+
+      </div><!-- /page-body -->
+    </div><!-- /content-area -->
+
+  </div><!-- /layout -->
+
+  <!-- View Availability Modal -->
+  <div class="va-modal-overlay" id="vaModalOverlay">
+    <div class="va-modal" role="dialog" aria-modal="true" aria-labelledby="vaModalTitle">
+
+      <!-- Maroon header -->
+      <div class="va-modal__header">
+        <p class="va-modal__title" id="vaModalTitle">VIEW AVAILABILITY</p>
+        <button class="va-modal__close" id="vaModalClose" aria-label="Close modal">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+            <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Dark maroon content section — filled dynamically by JS -->
+      <div class="va-modal__content">
+      </div>
+
+      <!-- White footer — filled dynamically by JS -->
+      <div class="va-modal__footer">
+        <button class="va-modal-btn va-modal-btn--close" id="vaCloseBtn">Close</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Add Faculty modal — matching Add Course style -->
+  <div class="fl-modal-overlay" id="addFacultyOverlay">
+    <div class="fl-modal" role="dialog" aria-modal="true" aria-labelledby="addFacultyTitle">
+
+      <!-- Maroon header -->
+      <div class="fl-modal__header">
+        <p class="fl-modal__title" id="addFacultyTitle">ADD FACULTY</p>
+        <button class="fl-modal__close" id="addFacultyClose">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+            <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- White scrollable body -->
+      <div class="fl-modal__body">
+
+        <!-- Row 1: First · Middle · Last -->
+        <div class="fl-modal__row">
+          <div class="fl-modal__field">
+            <label class="fl-modal__label">First Name</label>
+            <input type="text" class="fl-modal__input" id="addFirstName" placeholder="eg. Deishauna" />
+          </div>
+          <div class="fl-modal__field">
+            <label class="fl-modal__label">Middle Name</label>
+            <input type="text" class="fl-modal__input" id="addMiddleName" placeholder="eg. Fermil" />
+          </div>
+          <div class="fl-modal__field">
+            <label class="fl-modal__label">Last Name</label>
+            <input type="text" class="fl-modal__input" id="addLastName" placeholder="eg. Gonzales" />
+          </div>
+        </div>
+
+        <!-- Row 2: Email (full width) -->
+        <div class="fl-modal__field">
+          <label class="fl-modal__label">Email Address</label>
+          <input type="email" class="fl-modal__input" id="addEmail" placeholder="eg. dfgonzales@pup.edu.ph" />
+        </div>
+
+        <!-- Row 3: Age · Role -->
+        <div class="fl-modal__row">
+          <div class="fl-modal__field">
+            <label class="fl-modal__label">Age</label>
+            <input type="number" class="fl-modal__input" id="addAge" placeholder="eg. 26" min="18" max="99" />
+          </div>
+          <div class="fl-modal__field">
+            <label class="fl-modal__label">Role</label>
+            <input type="text" class="fl-modal__input" id="addRole" placeholder="eg. Faculty" />
+          </div>
+        </div>
+
+        <!-- Row 4: Department (full width) -->
+        <div class="fl-modal__field">
+          <label class="fl-modal__label">Department</label>
+          <input type="text" class="fl-modal__input" id="addDepartment" placeholder="eg. Department of Information Technology" />
+        </div>
+
+        <!-- Row 5: Academic Rank · Years of Experience -->
+        <div class="fl-modal__row">
+          <div class="fl-modal__field">
+            <label class="fl-modal__label">Academic Rank</label>
+            <input type="text" class="fl-modal__input" id="addRank" placeholder="eg. Instructor I" />
+          </div>
+          <div class="fl-modal__field">
+            <label class="fl-modal__label">Years of Experience</label>
+            <input type="number" class="fl-modal__input" id="addYears" placeholder="eg. 5" min="0" />
+          </div>
+        </div>
+
+        <!-- Row 6: Specialization · Employment Type -->
+        <div class="fl-modal__row">
+          <div class="fl-modal__field">
+            <label class="fl-modal__label">Specialization</label>
+            <input type="text" class="fl-modal__input" id="addSpecialization" placeholder="eg. Web Development" />
+          </div>
+          <div class="fl-modal__field">
+            <label class="fl-modal__label">Employment Type</label>
+            <input type="text" class="fl-modal__input" id="addEmployment" placeholder="eg. Full Time" />
+          </div>
+        </div>
+
+        <!-- Row 7: Highest Educational Attainment (full width) -->
+        <div class="fl-modal__field">
+          <label class="fl-modal__label">Highest Educational Attainment</label>
+          <input type="text" class="fl-modal__input" id="addEducation" placeholder="eg. M.S. Information Technology, PUP Manila" />
+        </div>
+
+      </div><!-- /fl-modal__body -->
+
+      <!-- White footer -->
+      <div class="fl-modal__footer">
+        <button class="fl-modal-btn fl-modal-btn--discard" id="addFacultyCancel">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+            <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          Discard
+        </button>
+        <button class="fl-modal-btn fl-modal-btn--save" id="addFacultySave">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+            <path d="M2 8L5.5 11.5L12 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Save Changes
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- View History Modal -->
+  <div class="vh-modal-overlay" id="vhModalOverlay">
+    <div class="vh-modal" role="dialog" aria-modal="true" aria-labelledby="vhModalTitle">
+
+      <!-- Maroon header -->
+      <div class="vh-modal__header">
+        <p class="vh-modal__title" id="vhModalTitle">HISTORICAL DATA</p>
+        <div class="vh-modal__filters">
+          <div class="vh-filter-wrap">
+            <select class="vh-filter-select" id="vhAcadYear">
+              <option value="">ACADEMIC YR</option>
+              <option value="2025-2026">2025–2026</option>
+              <option value="2024-2025">2024–2025</option>
+              <option value="2023-2024">2023–2024</option>
+            </select>
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+              <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="vh-filter-wrap">
+            <select class="vh-filter-select" id="vhSemester">
+              <option value="">SEMESTER</option>
+              <option value="1">1st Semester</option>
+              <option value="2">2nd Semester</option>
+              <option value="summer">Summer</option>
+            </select>
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+              <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <button class="vh-modal__close" id="vhModalClose" aria-label="Close history modal">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+            <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- White scrollable body with schedule grid -->
+      <div class="vh-modal__body">
+        <div class="vh-table-wrap">
+          <table class="vh-sched-table" id="vhSchedTable">
+            <thead>
+              <tr id="vhSchedHead"></tr>
+            </thead>
+            <tbody id="vhSchedBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- White footer -->
+      <div class="vh-modal__footer">
+        <button class="vh-modal-btn vh-modal-btn--close" id="vhCloseBtn">Close</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Generate Faculty Assignment loading overlay -->
+  <div class="gen-overlay" id="genOverlay">
+    <div class="gen-card">
+      <!-- Wand + sparkle icon -->
+      <div class="gen-card__icon">
+        <svg class="gen-wand-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Wand stick — diagonal line from top-right to bottom-left -->
+          <line class="gen-wand-stick" x1="30" y1="18" x2="10" y2="38" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.90"/>
+          <!-- Star at the tip of the wand -->
+          <path class="gen-wand-star" d="M30 8 L31.8 13.2 L37.2 13.2 L32.9 16.5 L34.7 21.7 L30 18.4 L25.3 21.7 L27.1 16.5 L22.8 13.2 L28.2 13.2 Z"
+                fill="white" opacity="0.95"/>
+          <!-- Sparkle dots -->
+          <circle class="gen-sparkle" cx="38" cy="28" r="1.8" fill="white" opacity="0.70"/>
+          <circle class="gen-sparkle" cx="43" cy="20" r="1.2" fill="white" opacity="0.50"/>
+          <circle class="gen-sparkle" cx="40" cy="34" r="1.0" fill="white" opacity="0.40"/>
+          <!-- Small cross sparkle top-right -->
+          <path class="gen-sparkle-cross" d="M42 12 L42 16 M40 14 L44 14" stroke="white" stroke-width="1.4" stroke-linecap="round" opacity="0.55"/>
+        </svg>
+      </div>
+
+      <p class="gen-card__title">GENERATING FACULTY ASSIGNMENT</p>
+
+      <!-- Progress bar -->
+      <div class="gen-progress">
+        <div class="gen-progress__bar">
+          <div class="gen-progress__fill" id="genProgressFill"></div>
+        </div>
+        <p class="gen-progress__label">
+          <span class="gen-progress__pct" id="genPct">0%</span>
+          <span class="gen-progress__status" id="genStatus">Initializing…</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="../scripts/chairperson-faculty.js"></script>
+</body>
+</html>

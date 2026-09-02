@@ -1,0 +1,418 @@
+/* =============================================
+   CCISched — Manage Course Offerings Page
+   Extends faculty-dashboard.css variables/base
+============================================= */
+
+/* ── Breadcrumb ── */
+.mc-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mc-breadcrumb__link {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.mc-breadcrumb__link:hover { color: var(--maroon); }
+
+.mc-breadcrumb__current {
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: var(--maroon);
+}
+
+/* ═══════════════════════════════════
+   MAIN CARD
+═══════════════════════════════════ */
+.mc-card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-md);
+  border: 2px solid rgba(128, 0, 0, 0.20);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ═══════════════════════════════════
+   TABLE
+═══════════════════════════════════ */
+.mc-table-wrap {
+  overflow-y: auto;
+  max-height: 520px;
+  overflow-x: auto;
+}
+
+/* Scrollbar */
+.mc-table-wrap::-webkit-scrollbar { width: 5px; }
+.mc-table-wrap::-webkit-scrollbar-track { background: transparent; }
+.mc-table-wrap::-webkit-scrollbar-thumb {
+  background: rgba(128, 0, 0, 0.22);
+  border-radius: 4px;
+}
+
+.mc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Raleway', sans-serif;
+}
+
+/* ── Title row (sticky, top: 0) ── */
+.mc-thead-title th.mc-th-title {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--maroon);
+  padding: 18px 20px;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: var(--white);
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* ── Column header row (sticky, just below title row) ── */
+.mc-th {
+  position: sticky;
+  /* pushed down by the title row height: padding-top(18) + font + padding-bottom(18) ≈ 55px */
+  top: 55px;
+  z-index: 2;
+  background: var(--maroon);
+  padding: 11px 16px;
+  font-size: 0.60rem;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  color: var(--white);
+  text-align: left;
+  white-space: nowrap;
+  border-right: 1px solid rgba(255, 255, 255, 0.10);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.mc-th:last-child { border-right: none; }
+.mc-th--center    { text-align: center; }
+
+/* Body rows */
+.mc-table tbody tr {
+  border-bottom: 1px solid rgba(128, 0, 0, 0.08);
+  transition: background 0.13s;
+}
+
+.mc-table tbody tr:last-child { border-bottom: none; }
+.mc-table tbody tr:hover       { background: #FFF8F8; }
+
+/* New row highlight */
+.mc-table tbody tr.mc-row--new {
+  background: #F0FFF4;
+  animation: mc-fadeIn 0.3s ease;
+}
+
+@keyframes mc-fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Cells */
+.mc-table td {
+  padding: 11px 16px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--black);
+  vertical-align: middle;
+}
+
+.mc-table td:first-child {
+  font-weight: 800;
+  color: var(--maroon);
+  white-space: nowrap;
+}
+
+.mc-td--center { text-align: center; }
+
+/* Inline editable cell */
+.mc-table td[contenteditable="true"] {
+  outline: none;
+  border-bottom: 2px solid var(--maroon);
+  background: #FFF8F8;
+}
+
+/* Classification text — smaller, muted */
+.mc-table td.mc-td--class {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+/* ── Action buttons ── */
+.mc-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.mc-action-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(128, 0, 0, 0.30);
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--maroon);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.mc-action-btn:hover {
+  background: var(--maroon);
+  color: var(--white);
+  border-color: var(--maroon);
+}
+
+.mc-action-btn--delete:hover {
+  background: #C0392B;
+  border-color: #C0392B;
+  color: var(--white);
+}
+
+/* ═══════════════════════════════════
+   FOOTER BUTTONS
+═══════════════════════════════════ */
+.mc-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 18px 28px;
+  border-top: 1px solid var(--border);
+  background: var(--white);
+  flex-wrap: wrap;
+}
+
+/* Shared button base */
+.mc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: var(--radius-pill);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
+  border: 2px solid transparent;
+}
+
+.mc-btn--add {
+  background: transparent;
+  border-color: rgba(128, 0, 0, 0.40);
+  color: var(--maroon);
+}
+
+.mc-btn--add:hover {
+  background: var(--maroon);
+  color: var(--white);
+  border-color: var(--maroon);
+}
+
+.mc-btn--cancel {
+  background: transparent;
+  border-color: rgba(128, 0, 0, 0.30);
+  color: var(--maroon);
+}
+
+.mc-btn--cancel:hover {
+  background: rgba(128, 0, 0, 0.06);
+}
+
+.mc-btn--save {
+  background: var(--maroon);
+  color: var(--white);
+  border-color: var(--maroon);
+}
+
+.mc-btn--save:hover {
+  background: var(--maroon-dk);
+  box-shadow: 0 4px 14px rgba(128, 0, 0, 0.28);
+}
+
+/* ═══════════════════════════════════
+   ADD / EDIT MODAL
+═══════════════════════════════════ */
+.mc-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 600;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.20s;
+}
+
+.mc-modal-overlay--open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.mc-modal {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  width: 100%;
+  max-width: 520px;
+  box-shadow: var(--shadow-md);
+  border: 2px solid rgba(128, 0, 0, 0.18);
+  overflow: hidden;
+  transform: translateY(12px);
+  transition: transform 0.20s;
+}
+
+.mc-modal-overlay--open .mc-modal {
+  transform: translateY(0);
+}
+
+/* Header — maroon band matching all other card headers */
+.mc-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  background: var(--maroon);
+}
+
+.mc-modal__title {
+  font-size: 0.80rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: var(--white);
+}
+
+.mc-modal__close {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.80);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.mc-modal__close:hover { background: rgba(255, 255, 255, 0.15); }
+
+/* Body — white, matching profile/edit-availability form style */
+.mc-modal__body {
+  background: var(--white);
+  padding: 24px 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mc-modal__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.mc-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Label — same as profile form */
+.mc-modal__label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* Input — same as profile form */
+.mc-modal__input {
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: #FAFAFA;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.80rem;
+  font-weight: 600;
+  color: var(--black);
+  outline: none;
+  transition: border-color 0.16s, background 0.16s;
+  width: 100%;
+}
+
+.mc-modal__input::placeholder { color: #BBBBBB; }
+
+.mc-modal__input:focus {
+  border-color: var(--maroon);
+  background: var(--white);
+}
+
+/* Textarea */
+.mc-modal__textarea {
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.55;
+}
+
+.mc-modal__select { appearance: auto; cursor: pointer; }
+
+/* Footer — white, same right-aligned pattern as profile save/discard */
+.mc-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+}
+
+/* ── Toast ── */
+.mc-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: var(--maroon);
+  color: var(--white);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 11px 26px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s, transform 0.22s;
+  z-index: 9999;
+  white-space: nowrap;
+}
+
+.mc-toast--show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Responsive ── */
+@media (max-width: 760px) {
+  .mc-modal__row { grid-template-columns: 1fr; }
+}

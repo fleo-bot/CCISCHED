@@ -1,0 +1,866 @@
+/* =============================================
+   CCISched — Chairperson Schedule Page
+   Extends faculty-dashboard.css variables/base
+============================================= */
+
+/* ═══════════════════════════════════
+   SHARED CARD BASE
+═══════════════════════════════════ */
+.cs-card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid rgba(128, 0, 0, 0.20);
+  overflow: hidden;
+}
+
+/* Standard maroon header */
+.cs-card__header {
+  background: var(--maroon);
+  padding: 16px 24px;
+}
+
+/* Darker header variant (pre-timetabling) */
+.cs-card__header--dark {
+  background: var(--maroon-dk);
+  padding: 16px 24px 14px;
+}
+
+.cs-card__title {
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: var(--white);
+}
+
+.cs-card__sub {
+  font-size: 0.70rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+  margin-top: 5px;
+  line-height: 1.4;
+}
+
+.cs-card__body {
+  padding: 20px 24px;
+}
+
+/* ═══════════════════════════════════
+   TIMETABLE GENERATION — dropdowns
+═══════════════════════════════════ */
+.cs-gen-body {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.cs-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--white);
+  border: 2px solid rgba(128, 0, 0, 0.30);
+  border-radius: var(--radius-pill);
+  padding: 11px 18px;
+  min-width: 180px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.cs-select-wrap:focus-within {
+  border-color: var(--maroon);
+}
+
+.cs-select {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--maroon);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.cs-select option { color: var(--black); background: var(--white); }
+
+.cs-select-wrap svg path { stroke: var(--maroon); }
+
+/* ═══════════════════════════════════
+   PRE-TIMETABLING REQUIREMENTS TABLE
+═══════════════════════════════════ */
+.cs-req-table {
+  padding: 0;
+}
+
+/* Column headers row */
+.cs-req-cols {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  padding: 10px 24px;
+  background: rgba(128, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(128, 0, 0, 0.10);
+  gap: 12px;
+}
+
+.cs-req-col {
+  font-size: 0.60rem;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  color: var(--maroon);
+  text-transform: uppercase;
+}
+
+.cs-req-col--center { text-align: center; }
+
+/* Individual requirement row */
+.cs-req-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  padding: 13px 24px;
+  gap: 12px;
+  border-bottom: 1px solid rgba(128, 0, 0, 0.07);
+  align-items: center;
+  transition: background 0.13s;
+}
+
+.cs-req-row:last-child { border-bottom: none; }
+.cs-req-row:hover      { background: #FFF8F8; }
+
+.cs-req-row__name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--black);
+}
+
+/* Status badge */
+.cs-req-row__status {
+  text-align: center;
+}
+
+.cs-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.70rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.cs-status-badge--complete {
+  color: var(--maroon);
+}
+
+.cs-status-badge--pending {
+  color: #B45309;
+}
+
+.cs-status-badge--missing {
+  color: #C0392B;
+}
+
+/* Action column */
+.cs-req-row__action {
+  display: flex;
+  justify-content: center;
+}
+
+.cs-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--maroon);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 7px 18px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--white);
+  cursor: pointer;
+  transition: background 0.18s, box-shadow 0.18s;
+  white-space: nowrap;
+}
+
+.cs-view-btn:hover {
+  background: var(--maroon-dk);
+  box-shadow: 0 3px 10px rgba(128, 0, 0, 0.28);
+}
+
+/* ═══════════════════════════════════
+   STATUS BANNER
+═══════════════════════════════════ */
+.cs-status-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--maroon);
+  border-radius: var(--radius-card);
+  padding: 16px 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.cs-status-banner svg { flex-shrink: 0; color: rgba(255, 255, 255, 0.80); }
+
+.cs-status-banner span {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.90);
+  line-height: 1.4;
+}
+
+/* Warning state */
+.cs-status-banner--warn {
+  background: #92400E;
+}
+
+/* ═══════════════════════════════════
+   GENERATE TIMETABLE BUTTON ROW
+═══════════════════════════════════ */
+.cs-generate-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cs-generate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--white);
+  border: 2px solid rgba(128, 0, 0, 0.40);
+  border-radius: var(--radius-pill);
+  padding: 12px 28px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: var(--maroon);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
+}
+
+.cs-generate-btn:hover {
+  background: var(--maroon);
+  color: var(--white);
+  border-color: var(--maroon);
+  box-shadow: 0 4px 16px rgba(128, 0, 0, 0.30);
+}
+
+.cs-generate-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.cs-generate-btn:disabled:hover {
+  background: var(--white);
+  color: var(--maroon);
+  border-color: rgba(128, 0, 0, 0.40);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ═══════════════════════════════════
+   GENERATE TIMETABLE CONFIRMATION MODAL
+═══════════════════════════════════ */
+.gt-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  backdrop-filter: blur(4px) brightness(0.40);
+  -webkit-backdrop-filter: blur(4px) brightness(0.40);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s;
+}
+
+.gt-modal-overlay--open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* White card */
+.gt-modal {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  padding: 40px 44px 36px;
+  max-width: 460px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+  transform: translateY(10px) scale(0.97);
+  transition: transform 0.24s;
+  text-align: center;
+}
+
+.gt-modal-overlay--open .gt-modal {
+  transform: translateY(0) scale(1);
+}
+
+.gt-modal__title {
+  font-size: 1.10rem;
+  font-weight: 900;
+  color: var(--maroon);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.gt-modal__body-text {
+  font-size: 0.80rem;
+  font-weight: 500;
+  color: var(--black);
+  line-height: 1.55;
+  margin: 0;
+  max-width: 340px;
+}
+
+/* Action buttons row */
+.gt-modal__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.gt-modal-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 36px;
+  border-radius: var(--radius-pill);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.80rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
+  border: 2px solid transparent;
+}
+
+/* Yes — outlined maroon */
+.gt-modal-btn--confirm {
+  background: var(--white);
+  border-color: rgba(128, 0, 0, 0.40);
+  color: var(--maroon);
+}
+
+.gt-modal-btn--confirm:hover {
+  background: var(--maroon);
+  color: var(--white);
+  border-color: var(--maroon);
+  box-shadow: 0 4px 14px rgba(128, 0, 0, 0.28);
+}
+
+/* Cancel — outlined maroon */
+.gt-modal-btn--cancel {
+  background: var(--white);
+  border-color: rgba(128, 0, 0, 0.40);
+  color: var(--maroon);
+}
+
+.gt-modal-btn--cancel:hover {
+  background: var(--maroon-lt);
+}
+
+/* ── Toast ── */
+.cs-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: var(--maroon);
+  color: var(--white);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 11px 26px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s, transform 0.22s;
+  z-index: 9999;
+  white-space: nowrap;
+}
+
+.cs-toast--show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .cs-gen-body { flex-direction: column; align-items: stretch; }
+  .cs-select-wrap { min-width: unset; }
+  .cs-req-cols,
+  .cs-req-row { grid-template-columns: 2fr 1fr 1fr; }
+}
+
+/* ═══════════════════════════════════
+   OPTIMIZING TIMETABLE LOADING OVERLAY
+═══════════════════════════════════ */
+.gen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  backdrop-filter: blur(6px) brightness(0.38);
+  -webkit-backdrop-filter: blur(6px) brightness(0.38);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+
+.gen-overlay--open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Centre card */
+.gen-card {
+  background: var(--maroon);
+  border-radius: var(--radius-card);
+  padding: 40px 48px 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  min-width: 340px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+  transform: translateY(10px) scale(0.97);
+  transition: transform 0.25s;
+}
+
+.gen-overlay--open .gen-card {
+  transform: translateY(0) scale(1);
+}
+
+.gen-card__icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gen-card__title {
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  color: var(--white);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.gen-progress {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gen-progress__bar {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.20);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.gen-progress__fill {
+  height: 100%;
+  border-radius: 99px;
+  background: var(--white);
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+.gen-progress__label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gen-progress__pct {
+  font-size: 0.88rem;
+  font-weight: 900;
+  color: var(--white);
+  min-width: 38px;
+}
+
+.gen-progress__status {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.02em;
+}
+
+/* ── Calendar icon animations ── */
+
+/* Gentle float up & down */
+@keyframes calFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-5px); }
+}
+
+/* Soft pulse glow */
+@keyframes calGlow {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(255,255,255,0.25)); }
+  50%       { filter: drop-shadow(0 0 12px rgba(255,255,255,0.55)); }
+}
+
+/* Binding posts bounce */
+@keyframes calBounce {
+  0%, 100% { transform: scaleY(1); }
+  40%       { transform: scaleY(1.18); }
+  60%       { transform: scaleY(0.92); }
+}
+
+/* Day dots fade in one by one */
+@keyframes dotPop {
+  0%, 60% { opacity: 0; transform: scale(0.4); }
+  80%      { opacity: 1; transform: scale(1.25); }
+  100%     { opacity: 0.85; transform: scale(1); }
+}
+
+/* "Today" highlight pulse */
+@keyframes todayPulse {
+  0%, 100% { opacity: 0.20; }
+  50%       { opacity: 0.50; }
+}
+
+.gen-calendar-icon {
+  animation: calFloat 2.4s ease-in-out infinite,
+             calGlow  2.4s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+.gen-cal-dot {
+  animation: dotPop 1.8s ease-in-out infinite;
+  transform-origin: center;
+}
+.gen-cal-dot:nth-child(1) { animation-delay: 0.0s; }
+.gen-cal-dot:nth-child(2) { animation-delay: 0.2s; }
+.gen-cal-dot:nth-child(3) { animation-delay: 0.4s; }
+.gen-cal-dot:nth-child(4) { animation-delay: 0.6s; }
+.gen-cal-dot:nth-child(5) { animation-delay: 0.8s; }
+
+.gen-cal-today {
+  animation: todayPulse 1.8s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════
+   DISTRIBUTION SUCCESS NOTIFICATION
+═══════════════════════════════════ */
+.dist-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  backdrop-filter: blur(6px) brightness(0.38);
+  -webkit-backdrop-filter: blur(6px) brightness(0.38);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+
+.dist-overlay--open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.dist-modal {
+  background: var(--maroon);
+  border-radius: var(--radius-card);
+  padding: 44px 52px 40px;
+  max-width: 420px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  text-align: center;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+  transform: translateY(16px) scale(0.96);
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dist-overlay--open .dist-modal {
+  transform: translateY(0) scale(1);
+}
+
+/* Animated circle + checkmark */
+.dist-modal__icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Circle draws itself in */
+.dist-circle-anim {
+  animation: distCircleDraw 0.55s ease-out 0.15s forwards;
+}
+
+@keyframes distCircleDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Checkmark fades + scales in after circle */
+.dist-check-anim {
+  opacity: 0;
+  transform-origin: center;
+  animation: distCheckPop 0.30s ease-out 0.65s forwards;
+}
+
+@keyframes distCheckPop {
+  0%   { opacity: 0; transform: scale(0.6); }
+  70%  { opacity: 1; transform: scale(1.15); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.dist-modal__title {
+  font-size: 1.10rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: var(--white);
+  line-height: 1.3;
+  margin: 0;
+}
+
+.dist-modal__body {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.dist-modal__btn {
+  margin-top: 6px;
+  padding: 12px 40px;
+  background: var(--white);
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.80rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: var(--maroon);
+  cursor: pointer;
+  transition: background 0.18s, box-shadow 0.18s;
+}
+
+.dist-modal__btn:hover {
+  background: var(--maroon-lt);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.20);
+}
+
+/* ═══════════════════════════════════
+   PRE-TIMETABLING WARNING MODAL
+═══════════════════════════════════ */
+.prereq-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.prereq-modal-overlay--open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.prereq-modal {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  width: 90%;
+  max-width: 540px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.prereq-modal-overlay--open .prereq-modal {
+  transform: translateY(0);
+}
+
+.prereq-modal__header {
+  background: var(--maroon);
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.prereq-modal__header svg {
+  color: var(--white);
+}
+
+.prereq-modal__title {
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: var(--white);
+  text-align: center;
+  margin: 0;
+}
+
+.prereq-modal__body {
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.prereq-modal__message {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--maroon);
+  text-align: center;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.prereq-modal__sub {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: rgba(128, 0, 0, 0.70);
+  text-align: center;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.prereq-list-header {
+  font-size: 0.70rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--maroon);
+  margin-top: 8px;
+}
+
+.prereq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.prereq-req-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(128, 0, 0, 0.04);
+  border-radius: 10px;
+  border-left: 3px solid var(--maroon);
+  transition: background 0.15s ease;
+}
+
+.prereq-req-item:hover {
+  background: rgba(128, 0, 0, 0.08);
+}
+
+.prereq-req-info {
+  flex: 1;
+}
+
+.prereq-req-name {
+  font-size: 0.80rem;
+  font-weight: 700;
+  color: var(--maroon);
+}
+
+.prereq-view-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--maroon);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 7px 14px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.70rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.prereq-view-btn:hover {
+  background: var(--maroon-dk);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(128, 0, 0, 0.25);
+}
+
+.prereq-view-btn svg {
+  flex-shrink: 0;
+}
+
+.prereq-modal__footer {
+  padding: 20px 32px 28px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.prereq-modal-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 11px 24px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.prereq-modal-btn--primary {
+  background: var(--maroon);
+  color: var(--white);
+}
+
+.prereq-modal-btn--primary:hover {
+  background: var(--maroon-dk);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(128, 0, 0, 0.25);
+}
+
+.prereq-modal-btn svg {
+  flex-shrink: 0;
+}
