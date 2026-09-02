@@ -151,27 +151,45 @@ list.addEventListener('click', e => {
 });
 
 // ── Click item to mark as read ──
-list.addEventListener('click', e => {
+list.addEventListener('click', async (e) => {
   if (e.target.closest('.notif-item__dismiss')) return;
   const item = e.target.closest('.notif-item');
   if (!item) return;
-  item.classList.remove('notif-item--unread');
-  const dot = item.querySelector('.notif-item__indicator');
-  if (dot) dot.classList.add('notif-item__indicator--read');
-  syncUnreadBadge();
+  
+  const notifId = parseInt(item.dataset.id);
+  const notif = notifications.find(n => n.id === notifId);
+  
+  if (notif && !notif.is_read) {
+    try {
+      await API.markNotificationRead(notifId);
+      notif.is_read = true;
+      item.classList.remove('notif-item--unread');
+      const dot = item.querySelector('.notif-item__indicator');
+      if (dot) dot.classList.add('notif-item__indicator--read');
+      syncUnreadBadge();
+    } catch (err) {
+      console.error('Failed to mark as read:', err);
+    }
+  }
 });
 
 // ── Mark all as read ──
-document.getElementById('markAllBtn')?.addEventListener('click', () => {
-  getItems().forEach(item => {
-    item.classList.remove('notif-item--unread');
-    const dot = item.querySelector('.notif-item__indicator');
-    if (dot) dot.classList.add('notif-item__indicator--read');
-  });
-  syncUnreadBadge();
+document.getElementById('markAllBtn')?.addEventListener('click', async () => {
+  try {
+    await API.markAllNotificationsRead();
+    notifications.forEach(n => n.is_read = true);
+    getItems().forEach(item => {
+      item.classList.remove('notif-item--unread');
+      const dot = item.querySelector('.notif-item__indicator');
+      if (dot) dot.classList.add('notif-item__indicator--read');
+    });
+    syncUnreadBadge();
+  } catch (err) {
+    console.error('Failed to mark all as read:', err);
+  }
 });
 
-// ── Clear all ──
+// ── Clear all (just hides locally — could add API endpoint to delete) ──
 document.getElementById('clearAllBtn')?.addEventListener('click', () => {
   getItems().forEach(item => {
     item.style.transition = 'opacity 0.2s';
@@ -198,3 +216,7 @@ document.getElementById('notifSearch')?.addEventListener('input', function () {
 // ── Init ──
 syncUnreadBadge();
 checkEmpty();
+
+
+// ── Init ──
+loadNotifications();

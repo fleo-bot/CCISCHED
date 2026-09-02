@@ -341,73 +341,196 @@
 }
 
 /* ── Print ── */
+
+/* Print-only header - hidden on screen */
+.print-header {
+  display: none !important;
+  visibility: hidden;
+}
+
+.print-header * {
+  display: none;
+}
+
 @media print {
-  .sidebar, .topbar, .ft-breadcrumb { display: none !important; }
-  
-  .layout { display: block; }
-  
-  .page-body {
-    padding: 16px 20px;
+  @page {
+    margin: 0.75cm 1cm;
+    size: auto;
   }
-  
-  /* Show toolbar with pills */
+
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .sidebar,
+  .topbar,
+  .ft-breadcrumb,
   .ft-toolbar {
+    display: none !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .content-area {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .page-body {
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 0 !important;
+  }
+
+  /* Show print header */
+  .print-header {
+    display: flex !important;
+    visibility: visible !important;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #000;
+    page-break-inside: avoid;
+  }
+
+  .print-header * {
+    display: block !important;
+    visibility: visible !important;
+  }
+
+  /* Row 1 */
+  .print-header__row1 {
     display: flex !important;
     align-items: center;
     gap: 12px;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
+    width: 100%;
   }
-  
-  .ft-toolbar__actions {
-    display: none !important;
+
+  .print-header__logos {
+    display: flex !important;
+    flex-direction: row;
+    gap: 8px;
+    flex-shrink: 0;
+    align-items: center;
   }
-  
-  /* Pills - black and white for print */
-  .ft-toolbar__info,
-  .ft-toolbar__name {
-    border-color: #333 !important;
-    box-shadow: none !important;
-    background: #fff !important;
+
+  .print-header__logo {
+    width: 58px;
+    height: 58px;
+    display: block !important;
   }
-  
-  .ft-toolbar__label {
-    color: #111 !important;
+
+  .print-header__text {
+    flex: 1;
+    display: flex !important;
+    flex-direction: column;
+    gap: 1px;
   }
-  
-  .ft-toolbar__sub {
-    color: #555 !important;
+
+  .print-header__university {
+    font-size: 13px;
+    font-weight: 700;
+    color: #000;
+    margin: 0;
+    letter-spacing: 0.01em;
+    font-family: 'Raleway', sans-serif;
   }
-  
-  .ft-toolbar__name span {
-    color: #111 !important;
+
+  .print-header__office {
+    font-size: 10px;
+    font-weight: 400;
+    color: #000;
+    margin: 0;
+    font-family: 'Raleway', sans-serif;
   }
-  
-  /* Card */
-  .ft-card { 
-    box-shadow: none; 
-    border-color: #ccc !important;
+
+  .print-header__college {
+    font-size: 12px;
+    font-weight: 700;
+    color: #000;
+    margin: 4px 0 0 0;
+    font-family: 'Raleway', sans-serif;
   }
-  
+
+  .print-header__faculty-box {
+    flex-shrink: 0;
+    width: 180px;
+    min-height: 58px;
+    border: 2px solid #000;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+  }
+
+  .print-header__faculty-box span {
+    font-size: 16px;
+    font-weight: 700;
+    color: #000;
+    text-align: center;
+    font-family: 'Raleway', sans-serif;
+    display: inline !important;
+  }
+
+  /* Row 2 */
+  .print-header__row2 {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    width: 100%;
+  }
+
+  .print-header__title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #000;
+    margin: 0;
+    letter-spacing: 0.05em;
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+  }
+
+  .print-header__semester {
+    font-size: 12px;
+    font-weight: 700;
+    color: #000;
+    margin: 0;
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+  }
+
+  .layout { display: block; }
+
+  .ft-card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    page-break-inside: avoid;
+  }
+
   /* Table - black and white */
   .ft-table th {
     color: #111 !important;
     border-bottom-color: #aaa !important;
     border-right-color: #ccc !important;
   }
-  
+
   .ft-table td.td-day {
     color: #111 !important;
     border-right-color: #aaa !important;
   }
-  
+
   .ft-table tbody tr {
     border-bottom-color: #ccc !important;
   }
-  
+
   .ft-table td.td-slot {
     border-right-color: #ccc !important;
-    /* Black dashed guide lines */
     background-image:
       linear-gradient(rgba(0, 0, 0, 0.20) 50%, transparent 50%),
       linear-gradient(rgba(0, 0, 0, 0.20) 50%, transparent 50%) !important;
@@ -415,21 +538,21 @@
     background-repeat: repeat-y, repeat-y !important;
     background-position: calc(50% - 22px) 0, calc(50% + 22px) 0 !important;
   }
-  
+
   /* Blocks - black and white */
   .ft-block--laboratory,
   .ft-block--lecture {
     background: #f5f5f5 !important;
     border-color: #555 !important;
   }
-  
+
   .ft-block--laboratory .ft-block__code,
   .ft-block--laboratory .ft-block__name,
   .ft-block--lecture .ft-block__code,
   .ft-block--lecture .ft-block__name {
     color: #111 !important;
   }
-  
+
   .ft-block--laboratory .ft-block__section,
   .ft-block--laboratory .ft-block__type,
   .ft-block--lecture .ft-block__section,

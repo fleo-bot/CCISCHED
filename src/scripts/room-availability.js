@@ -94,7 +94,7 @@ function renderRooms() {
     const card = document.createElement('div');
     card.className = `room-card room-card--${room.status}`;
 
-    const typeSlug  = room.type.toLowerCase(); // 'lecture' or 'laboratory'
+    const typeSlug  = room.type.toLowerCase();
     const typeIcon  = room.type === 'Lecture'
       ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none">
            <rect x="3" y="5" width="18" height="13" rx="2" stroke="currentColor" stroke-width="2"/>
@@ -105,7 +105,9 @@ function renderRooms() {
            <path d="M9 3h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
          </svg>`;
 
-    const statusLabel = room.status === 'available' ? 'Available' : 'Occupied';
+    const statusLabel  = room.status === 'available' ? 'Available' : 'Occupied';
+    const toggleLabel  = room.status === 'available' ? 'Mark as Occupied' : 'Mark as Available';
+    const toggleMod    = room.status === 'available' ? 'room-toggle--occupy' : 'room-toggle--free';
 
     card.innerHTML = `
       <div class="room-card__header">
@@ -121,9 +123,26 @@ function renderRooms() {
         ? `<p class="room-card__assigned">${room.assignedTo}</p>`
         : ''}
       <div class="room-card__status">${statusLabel}</div>
+      <button class="room-toggle ${toggleMod}" data-id="${room.id}">${toggleLabel}</button>
     `;
 
     grid.appendChild(card);
+  });
+
+  // ── Toggle button handlers ──
+  grid.querySelectorAll('.room-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const room = ROOMS.find(r => r.id === btn.dataset.id);
+      if (!room) return;
+
+      // Flip status
+      room.status = room.status === 'available' ? 'occupied' : 'available';
+      // Clear assignedTo when freeing a room
+      if (room.status === 'available') room.assignedTo = null;
+
+      updateStats();
+      renderRooms();
+    });
   });
 }
 

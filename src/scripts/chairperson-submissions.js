@@ -14,90 +14,23 @@ document.getElementById('notifBtn')?.addEventListener('click', () => {
 });
 
 // ─────────────────────────────────────────────
-//  FACULTY SUBMISSION DATA
-//  Mirrors the faculty list in chairperson-faculty.js
-//  submitted = has availability data; pending = no submission
-//  Load from sessionStorage if available, otherwise use default
+//  FACULTY SUBMISSION DATA — from API
 // ─────────────────────────────────────────────
-const DEFAULT_FACULTY_SUBMISSIONS = [
-  {
-    id: 0,
-    name: 'Ana Cruz',
-    type: 'Full-Time',
-    submitted: true,
-    submittedDate: 'Aug 12, 2026',
-    slots: [
-      { dayIndices: [0,2,4], times: ['7:30 - 9:00','9:00 - 10:30'], timeLabel: '7:30 AM – 10:30 AM' },
-      { dayIndices: [1,3],   times: ['10:30 - 12:00','12:00 - 1:30'], timeLabel: '10:30 AM – 1:30 PM' },
-    ],
-    preference: '10:30 - 12:00',
-    status: 'Current Submission',
-    workflowStatus: 'pending',
-  },
-  {
-    id: 1,
-    name: 'Andrea Gonzales',
-    type: 'Part-Time',
-    submitted: true,
-    submittedDate: 'Aug 14, 2026',
-    slots: [
-      { dayIndices: [0,1,2,3], times: ['9:00 - 10:30','10:30 - 12:00'], timeLabel: '9:00 AM – 12:00 PM' },
-    ],
-    preference: '9:00 - 10:30',
-    status: 'Current Submission',
-    workflowStatus: 'pending',
-  },
-  {
-    id: 2,
-    name: 'Ben Torres',
-    type: 'Designee | Chairperson',
-    submitted: true,
-    submittedDate: 'Aug 10, 2026',
-    slots: [
-      { dayIndices: [0,2], times: ['10:30 - 12:00','12:00 - 1:30'], timeLabel: '10:30 AM – 1:30 PM' },
-    ],
-    preference: '10:30 - 12:00',
-    status: 'Current Submission',
-    workflowStatus: 'approved',
-  },
-  {
-    id: 3,
-    name: 'Juan Dela Cruz',
-    type: 'Part-Time',
-    submitted: true,
-    submittedDate: 'Aug 13, 2026',
-    slots: [
-      { dayIndices: [0,1,2,3,4], times: ['7:30 - 9:00','9:00 - 10:30'], timeLabel: '7:30 AM – 10:30 AM' },
-      { dayIndices: [0,2,4],     times: ['10:30 - 12:00'], timeLabel: '10:30 AM – 12:00 PM' },
-    ],
-    preference: '9:00 - 10:30',
-    status: 'Current Submission',
-    workflowStatus: 'pending',
-  },
-  {
-    id: 4,
-    name: 'Maria Santos',
-    type: 'Full-Time',
-    submitted: true,
-    submittedDate: 'Aug 15, 2026',
-    slots: [
-      { dayIndices: [0,1,2,3,4], times: ['9:00 - 10:30','12:00 - 1:30'], timeLabel: '9:00 AM – 1:30 PM' },
-    ],
-    preference: '9:00 - 10:30',
-    status: 'Current Submission',
-    workflowStatus: 'pending',
-  },
-  {
-    id: 5,
-    name: 'Leo Reyes',
-    type: 'Full-Time',
-    submitted: true,
-    submittedDate: 'Aug 11, 2026',
-    slots: [
-      { dayIndices: [0,1,2,3,4], times: ['10:30 - 12:00','12:00 - 1:30'], timeLabel: '10:30 AM – 1:30 PM' },
-    ],
-    preference: '10:30 - 12:00',
-    status: 'Current Submission',
+let facultySubmissions = [];
+let semester = null;
+
+async function loadSubmissions() {
+  try {
+    const response = await API.getAllSubmissions();
+    facultySubmissions = response.submissions || [];
+    semester = response.semester;
+    
+    renderStats();
+    renderTable();
+  } catch (err) {
+    console.error('Failed to load submissions:', err);
+  }
+}
     workflowStatus: 'pending',
   },
   {
@@ -172,12 +105,14 @@ sessionStorage.setItem('cp_submissions', JSON.stringify(FACULTY_SUBMISSIONS));
 // ─────────────────────────────────────────────
 //  SUMMARY CHIPS
 // ─────────────────────────────────────────────
-function renderSummary() {
+function renderStats() {
   const el = document.getElementById('csSummaryChips');
   if (!el) return;
-  const total     = FACULTY_SUBMISSIONS.length;
-  const submitted = FACULTY_SUBMISSIONS.filter(f => f.submitted).length;
-  const pending   = total - submitted;
+  
+  const total = facultySubmissions.length;
+  const submitted = facultySubmissions.filter(f => f.status === 'submitted').length;
+  const approved = facultySubmissions.filter(f => f.status === 'approved').length;
+  const pending = facultySubmissions.filter(f => f.status === 'pending').length;
 
   el.innerHTML = `
     <span class="cs-chip cs-chip--total">${total} Total</span>
@@ -187,6 +122,7 @@ function renderSummary() {
       </svg>
       ${submitted} Submitted
     </span>
+    <span class="cs-chip cs-chip--approved">${approved} Approved</span>
     <span class="cs-chip cs-chip--pending">${pending} Pending</span>
   `;
 }
@@ -201,18 +137,19 @@ function initials(name) {
 // ─────────────────────────────────────────────
 //  RENDER ROWS
 // ─────────────────────────────────────────────
-function renderRows(filter = 'all', query = '') {
+function renderTable(filter = 'all', query = '') {
   const body    = document.getElementById('csBody');
   const countEl = document.getElementById('csCount');
   if (!body) return;
 
   const q = query.trim().toLowerCase();
 
-  const filtered = FACULTY_SUBMISSIONS.filter(f => {
+  const filtered = facultySubmissions.filter(f => {
     const matchStatus = filter === 'all'
-      || (filter === 'submitted' && f.submitted)
-      || (filter === 'pending'   && !f.submitted);
-    const matchQuery = !q || f.name.toLowerCase().includes(q) || f.type.toLowerCase().includes(q);
+      || (filter === 'submitted' && f.status === 'submitted')
+      || (filter === 'approved' && f.status === 'approved')
+      || (filter === 'pending'   && f.status === 'pending');
+    const matchQuery = !q || f.faculty_name.toLowerCase().includes(q);
     return matchStatus && matchQuery;
   });
 
@@ -226,32 +163,53 @@ function renderRows(filter = 'all', query = '') {
     return;
   }
 
-  body.innerHTML = filtered.map(f => `
-    <div class="cs-row">
-
-      <!-- Name + avatar -->
-      <div class="cs-row__name">
-        <div class="cs-row__avatar">${initials(f.name)}</div>
-        <div>
-          <p class="cs-row__name-text">${f.name}</p>
+  body.innerHTML = filtered.map(f => {
+    const statusBadge = 
+      f.status === 'approved' ? `<span class="cs-status cs-status--approved">
+        <svg width="9" height="9" viewBox="0 0 12 12" fill="none">
+          <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Approved
+      </span>` :
+      f.status === 'submitted' ? `<span class="cs-status cs-status--submitted">
+        <svg width="9" height="9" viewBox="0 0 12 12" fill="none">
+          <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Submitted
+      </span>` :
+      f.status === 'returned' ? `<span class="cs-status cs-status--returned">
+        <svg width="9" height="9" viewBox="0 0 12 12" fill="none">
+          <path d="M6 2V10M6 2L3 5M6 2L9 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        Returned
+      </span>` :
+      `<span class="cs-status cs-status--pending">Pending</span>`;
+    
+    return `
+      <div class="cs-row">
+        <div class="cs-row__name">
+          <div class="cs-row__avatar">${initials(f.faculty_name)}</div>
+          <div>
+            <p class="cs-row__name-text">${f.faculty_name}</p>
+          </div>
+        </div>
+        <span class="cs-row__type">Faculty</span>
+        <div class="cs-row__slots">
+          <span class="cs-slot-count ${(f.slots?.length || 0) === 0 ? 'cs-slot-count--zero' : ''}">${f.slots?.length || 0}</span>
+        </div>
+        <div class="cs-row__status">${statusBadge}</div>
+        <div class="cs-row__actions">
+          <button class="cs-action-btn" onclick="viewSubmission(${f.id})" title="View details">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M1 8C1 8 3.5 3 8 3C12.5 3 15 8 15 8C15 8 12.5 13 8 13C3.5 13 1 8 1 8Z" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </button>
         </div>
       </div>
-
-      <!-- Type -->
-      <span class="cs-row__type">${f.type}</span>
-
-      <!-- Slot count -->
-      <div class="cs-row__slots">
-        <span class="cs-slot-count ${f.slots.length === 0 ? 'cs-slot-count--zero' : ''}">${f.slots.length}</span>
-      </div>
-
-      <!-- Status -->
-      <div class="cs-row__status">
-        ${f.submitted
-          ? (f.workflowStatus === 'approved'
-              ? `<span class="cs-status cs-status--approved">
-                   <svg width="9" height="9" viewBox="0 0 12 12" fill="none">
-                     <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    `;
+  }).join('');
+}
                    </svg>
                    Approved
                  </span>`
@@ -306,6 +264,13 @@ function renderRows(filter = 'all', query = '') {
 }
 
 // ─────────────────────────────────────────────
+//  VIEW SUBMISSION DETAIL
+// ─────────────────────────────────────────────
+function viewSubmission(submissionId) {
+  window.location.href = `submission-detail.html?id=${submissionId}`;
+}
+
+// ─────────────────────────────────────────────
 //  FILTER + SEARCH
 // ─────────────────────────────────────────────
 let activeFilter = 'all';
@@ -313,12 +278,12 @@ let searchQuery  = '';
 
 document.getElementById('statusFilter')?.addEventListener('change', function () {
   activeFilter = this.value;
-  renderRows(activeFilter, searchQuery);
+  renderTable(activeFilter, searchQuery);
 });
 
 document.getElementById('searchInput')?.addEventListener('input', function () {
   searchQuery = this.value;
-  renderRows(activeFilter, searchQuery);
+  renderTable(activeFilter, searchQuery);
 });
 
 // ─────────────────────────────────────────────
@@ -341,5 +306,5 @@ function showToast(msg) {
 // ─────────────────────────────────────────────
 //  INIT
 // ─────────────────────────────────────────────
-renderSummary();
-renderRows();
+loadSubmissions();
+

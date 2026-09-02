@@ -135,21 +135,33 @@
 
         <!-- Print-only header -->
         <div class="print-header">
-          <div class="print-header__logos">
-            <img src="../assets/images/logo.svg" alt="PUP Logo" class="print-header__logo">
-          </div>
-          <div class="print-header__text">
-            <h1 class="print-header__university">POLYTECHNIC UNIVERSITY OF THE PHILIPPINES</h1>
-            <p class="print-header__office">Office of the Vice President for Academic Affairs</p>
-            <h2 class="print-header__college">COLLEGE OF COMPUTER AND INFORMATION SCIENCES</h2>
-            <div class="print-header__assignment">
-              <p class="print-header__title">TEACHING ASSIGNMENT</p>
-              <p class="print-header__semester" id="printSemester">1st Semester, A.Y. 2025–2026</p>
+
+          <!-- Row 1: logos | university text | faculty box -->
+          <div class="print-header__row1">
+
+            <div class="print-header__logos">
+              <img src="../assets/images/pup-seal.png" alt="PUP Seal" class="print-header__logo">
+              <img src="../assets/images/cci-seal.png" alt="CCI Seal" class="print-header__logo">
             </div>
+
+            <div class="print-header__text">
+              <p class="print-header__university">POLYTECHNIC UNIVERSITY OF THE PHILIPPINES</p>
+              <p class="print-header__office">Office of the Vice President for Academic Affairs</p>
+              <p class="print-header__college">COLLEGE OF COMPUTER AND INFORMATION SCIENCES</p>
+            </div>
+
+            <div class="print-header__faculty-box">
+              <span id="printFacultyName">Ana Cruz</span>
+            </div>
+
           </div>
-          <div class="print-header__faculty-box">
-            <span id="printFacultyName">Ana Cruz</span>
+
+          <!-- Row 2: centered teaching assignment + semester -->
+          <div class="print-header__row2">
+            <p class="print-header__title">TEACHING ASSIGNMENT</p>
+            <p class="print-header__semester" id="printSemester">1st Semester, A.Y. 2025–2026</p>
           </div>
+
         </div>
 
         <!-- Breadcrumb -->
@@ -175,10 +187,11 @@
             <button class="ft-btn ft-btn--outline" id="exportIndividualBtn">
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                 <rect x="2" y="2" width="9" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M5 9h5M5 11.5h3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-                <path d="M11 6l2 2-2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M5 2V1M11 2V1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M5 9H11M5 11.5H9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                <path d="M11 7L13 9L11 11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-              Export Individual PDF
+              Export PDF
             </button>
             <button class="ft-btn ft-btn--filled" id="backToListBtn">
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
