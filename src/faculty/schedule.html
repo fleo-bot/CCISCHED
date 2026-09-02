@@ -145,21 +145,33 @@
 
         <!-- Print-only header -->
         <div class="print-header">
-          <div class="print-header__logos">
-            <img src="../assets/images/logo.svg" alt="PUP Logo" class="print-header__logo">
-          </div>
-          <div class="print-header__text">
-            <h1 class="print-header__university">POLYTECHNIC UNIVERSITY OF THE PHILIPPINES</h1>
-            <p class="print-header__office">Office of the Vice President for Academic Affairs</p>
-            <h2 class="print-header__college">COLLEGE OF COMPUTER AND INFORMATION SCIENCES</h2>
-            <div class="print-header__assignment">
-              <p class="print-header__title">TEACHING ASSIGNMENT</p>
-              <p class="print-header__semester" id="printSemester">1st Semester, A.Y. 2025–2026</p>
+
+          <!-- Row 1: logos | university text | faculty box -->
+          <div class="print-header__row1">
+
+            <div class="print-header__logos">
+              <img src="../assets/images/pup-seal.png" alt="PUP Seal" class="print-header__logo">
+              <img src="../assets/images/cci-seal.png" alt="CCI Seal" class="print-header__logo">
             </div>
+
+            <div class="print-header__text">
+              <p class="print-header__university">POLYTECHNIC UNIVERSITY OF THE PHILIPPINES</p>
+              <p class="print-header__office">Office of the Vice President for Academic Affairs</p>
+              <p class="print-header__college">COLLEGE OF COMPUTER AND INFORMATION SCIENCES</p>
+            </div>
+
+            <div class="print-header__faculty-box">
+              <span id="printFacultyName">Maria Santos</span>
+            </div>
+
           </div>
-          <div class="print-header__faculty-box">
-            <span id="printFacultyName">Maria Santos</span>
+
+          <!-- Row 2: centered teaching assignment + semester -->
+          <div class="print-header__row2">
+            <p class="print-header__title">TEACHING ASSIGNMENT</p>
+            <p class="print-header__semester" id="printSemester">1st Semester, A.Y. 2025–2026</p>
           </div>
+
         </div>
 
         <!-- Sub-header bar: assignment info + name + export -->
@@ -205,6 +217,8 @@
 
   </div><!-- /layout -->
 
+  <script src="../scripts/api.js"></script>
+  <script src="../scripts/auth-check.js"></script>
   <script src="../scripts/faculty-schedule.js"></script>
 </body>
 </html>

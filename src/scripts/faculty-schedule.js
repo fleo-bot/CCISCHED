@@ -12,7 +12,6 @@ if (topbarDate) {
 // ── Populate print header (hidden on screen, visible in print) ──
 const printFacultyName = document.getElementById('printFacultyName');
 if (printFacultyName) {
-  // You can get this from session storage or API
   printFacultyName.textContent = 'Maria Santos';
 }
 
@@ -27,7 +26,7 @@ document.getElementById('notifBtn')?.addEventListener('click', () => {
 });
 
 // ─────────────────────────────────────────────
-//  SCHEDULE DATA
+//  SCHEDULE DATA — fetched from API
 // ─────────────────────────────────────────────
 
 // Time columns shown across the top (label only — display string)
@@ -46,192 +45,349 @@ const TIME_COLS = [
 // Days shown as row labels
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-/**
- * Teaching assignments.
- * Each entry targets a specific day + time column index (0-based).
- * highlight: true  → blue border (e.g. "current" block)
- *
- * Indices correspond to TIME_COLS above:
- *   0 = 7:30-9:00  | 1 = 9:00-10:30  | 2 = 10:30-12:00
- *   3 = 12:00-1:30 | 4 = 1:30-3:30   | 5 = 3:00-4:30
- *   6 = 4:30-6:00  | 7 = 6:00-7:30   | 8 = 7:30-9:00 PM
- */
-const SCHEDULE = [
-  // Monday
-  { day: 'Monday',    col: 0, code: 'COMP 016', name: 'Web Development', section: 'BSIT 3-3', type: 'Laboratory' },
-  { day: 'Monday',    col: 5, code: 'COMP 016', name: 'Web Development', section: 'BSIT 3-2', type: 'Laboratory' },
+let SCHEDULE = []; // Will be populated from API
 
-  // Tuesday
-  { day: 'Tuesday',   col: 2, code: 'INTE 303', name: 'Capstone 1',      section: 'BSIT 3-1', type: 'Lecture' },
+// Helper: convert "07:30" to column index
+function timeToColIndex(timeStart) {
+  const timeMap = {
+    '07:30': 0, '09:00': 1, '10:30': 2, '12:00': 3,
+    '13:30': 4, '15:00': 5, '16:30': 6, '18:00': 7, '19:30': 8,
+  };
+  return timeMap[timeStart] ?? 0;
+}
 
-  // Wednesday
-  { day: 'Wednesday', col: 0, code: 'COMP 016', name: 'Web Development', section: 'BSIT 3-3', type: 'Laboratory' },
-  { day: 'Wednesday', col: 5, code: 'COMP 016', name: 'Web Development', section: 'BSIT 3-2', type: 'Laboratory' },
-
-  // Thursday  — highlighted
-  { day: 'Thursday',  col: 2, code: 'INTE 303', name: 'Capstone 1',      section: 'BSIT 3-1', type: 'Lecture', highlight: true },
-
-  // Friday
-  { day: 'Friday',    col: 0, code: 'COMP 017', name: 'Multimedia',      section: 'BSIT 3-3', type: 'Lecture' },
-  { day: 'Friday',    col: 5, code: 'COMP 017', name: 'Multimedia',      section: 'BSIT 3-2', type: 'Lecture' },
-];
+// Fetch schedule from API
+async function loadSchedule() {
+  try {
+    const response = await API.getMySchedule();
+    const scheduleEntries = response.schedule || [];
+    
+    // Convert API format to UI format
+    SCHEDULE = scheduleEntries.map(entry => ({
+      day: entry.day,
+      col: timeToColIndex(entry.time_start),
+      code: entry.course_code,
+      name: entry.course_title,
+      section: entry.section_name,
+      type: entry.class_type,
+      highlight: false, // Can add logic to highlight today's classes
+    }));
+    
+    buildTable();
+  } catch (err) {
+    console.error('Failed to load schedule:', err);
+    // Show empty table
+    buildTable();
+  }
+}
 
 // ─────────────────────────────────────────────
 //  BUILD TABLE
 // ─────────────────────────────────────────────
-
-// Build a lookup map:  "Day-colIndex" → entry
-const schedMap = {};
-SCHEDULE.forEach(entry => {
-  schedMap[`${entry.day}-${entry.col}`] = entry;
-});
-
-// ── Header row ──
-const thead = document.getElementById('schedHead');
-if (thead) {
-  // Empty corner cell
-  const thDay = document.createElement('th');
-  thDay.className = 'th-day';
-  thead.appendChild(thDay);
-
-  TIME_COLS.forEach(label => {
-    const th = document.createElement('th');
-    th.textContent = label;
-    thead.appendChild(th);
+function buildTable() {
+  // Build a lookup map:  "Day-colIndex" → entry
+  const schedMap = {};
+  SCHEDULE.forEach(entry => {
+    schedMap[`${entry.day}-${entry.col}`] = entry;
   });
-}
 
-// ── Body rows ──
-const tbody = document.getElementById('schedBody');
-if (tbody) {
-  DAYS.forEach(day => {
-    const tr = document.createElement('tr');
+  // ── Header row ──
+  const thead = document.getElementById('schedHead');
+  if (thead) {
+    thead.innerHTML = ''; // Clear existing
+    // Empty corner cell
+    const thDay = document.createElement('th');
+    thDay.className = 'th-day';
+    thead.appendChild(thDay);
 
-    // Day label cell
-    const tdDay = document.createElement('td');
-    tdDay.className = 'td-day';
-    tdDay.textContent = day;
-    tr.appendChild(tdDay);
-
-    // Time slot cells
-    TIME_COLS.forEach((_, colIdx) => {
-      const td = document.createElement('td');
-      td.className = 'td-slot';
-
-      const entry = schedMap[`${day}-${colIdx}`];
-      if (entry) {
-        const block = document.createElement('div');
-        const typeClass = entry.type === 'Lecture' ? ' sched-block--lecture' : ' sched-block--laboratory';
-        block.className = 'sched-block' + typeClass + (entry.highlight ? ' sched-block--highlight' : '');
-        block.setAttribute('title', `${entry.code}: ${entry.name} — ${entry.section} (${entry.type})`);
-        block.innerHTML = `
-          <span class="sched-block__code">${entry.code}:</span>
-          <span class="sched-block__name">${entry.name}</span>
-          <span class="sched-block__section">${entry.section}</span>
-          <span class="sched-block__type">${entry.type}</span>
-        `;
-        td.appendChild(block);
-      }
-
-      tr.appendChild(td);
+    TIME_COLS.forEach(label => {
+      const th = document.createElement('th');
+      th.textContent = label;
+      thead.appendChild(th);
     });
+  }
 
-    tbody.appendChild(tr);
-  });
+  // ── Body rows ──
+  const tbody = document.getElementById('schedBody');
+  if (tbody) {
+    tbody.innerHTML = ''; // Clear existing
+    DAYS.forEach(day => {
+      const tr = document.createElement('tr');
+
+      // Day label cell
+      const tdDay = document.createElement('td');
+      tdDay.className = 'td-day';
+      tdDay.textContent = day;
+      tr.appendChild(tdDay);
+
+      // Time slot cells
+      TIME_COLS.forEach((_, colIdx) => {
+        const td = document.createElement('td');
+        td.className = 'td-slot';
+
+        const entry = schedMap[`${day}-${colIdx}`];
+        if (entry) {
+          const block = document.createElement('div');
+          const typeClass = entry.type === 'Lecture' ? ' sched-block--lecture' : ' sched-block--laboratory';
+          block.className = 'sched-block' + typeClass + (entry.highlight ? ' sched-block--highlight' : '');
+          block.setAttribute('title', `${entry.code}: ${entry.name} — ${entry.section} (${entry.type})`);
+          block.innerHTML = `
+            <span class="sched-block__code">${entry.code}:</span>
+            <span class="sched-block__name">${entry.name}</span>
+            <span class="sched-block__section">${entry.section}</span>
+            <span class="sched-block__type">${entry.type}</span>
+          `;
+          td.appendChild(block);
+        }
+
+        tr.appendChild(td);
+      });
+
+      tbody.appendChild(tr);
+    });
+  }
 }
+
+// Init: load schedule from API
+loadSchedule();
 
 // ─────────────────────────────────────────────
 //  EXPORT PDF  — clean print window (no browser headers/footers)
 // ─────────────────────────────────────────────
 document.getElementById('exportPdfBtn')?.addEventListener('click', () => {
   const schedCardHTML = document.querySelector('.sched-card').outerHTML;
-  const toolbarHTML   = document.querySelector('.sched-toolbar').outerHTML;
 
-  // Inline both stylesheets so the popup is self-contained
-  const styleHref1 = '../styles/faculty-dashboard.css';
-  const styleHref2 = '../styles/faculty-schedule.css';
+  // Grab live values for faculty name and semester
+  const facultyName = document.getElementById('printFacultyName')?.textContent || '';
+  const semester    = document.getElementById('printSemester')?.textContent    || '';
 
-  const win = window.open('', '_blank', 'width=1100,height=800');
+  // Resolve logo paths relative to the popup's about:blank origin
+  const pupLogoURL = new URL('../assets/images/pup-seal.png', window.location.href).href;
+  const cciLogoURL = new URL('../assets/images/cci-seal.png', window.location.href).href;
+
+  const win = window.open('', '_blank', 'width=1200,height=900');
   win.document.write(`<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <title></title>
+  <title>Teaching Assignment</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="${styleHref1}"/>
-  <link rel="stylesheet" href="${styleHref2}"/>
   <style>
-    @page { margin: 1cm; }
-    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-    body { font-family: 'Raleway', sans-serif; background: #fff; padding: 16px; }
+    @page { size: landscape; margin: 1cm; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; box-sizing: border-box; }
+    body { font-family: 'Raleway', sans-serif; background: #fff; margin: 0; padding: 16px; }
 
-    /* Toolbar — clean black & white */
-    .sched-toolbar {
+    /* ── Print header ── */
+    .print-header {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #000;
+    }
+
+    /* Row 1: logos | text | faculty box */
+    .print-header__row1 {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding-bottom: 14px;
-      border-bottom: 1.5px solid #333;
-      margin-bottom: 14px;
+      gap: 10px;
+      width: 100%;
     }
-    .sched-toolbar__info,
-    .sched-toolbar__name {
-      border: 1.5px solid #333 !important;
-      box-shadow: none !important;
-      background: #fff !important;
+    .print-header__logos {
+      display: flex;
+      flex-direction: row;
+      gap: 6px;
+      flex-shrink: 0;
+      align-items: center;
     }
-    .sched-toolbar__label { color: #111 !important; }
-    .sched-toolbar__sub   { color: #555 !important; }
-    .sched-toolbar__name span { color: #111 !important; }
-    .sched-export-btn { display: none !important; }
-
-    /* Card */
-    .sched-card { box-shadow: none; border: 1px solid #ccc; }
-
-    /* Blocks — black & white */
-    .sched-block--laboratory,
-    .sched-block--lecture {
-      background: #f5f5f5 !important;
-      border: 1.5px solid #555 !important;
+    .print-header__logo {
+      width: 56px;
+      height: 56px;
     }
-    .sched-block--laboratory .sched-block__code,
-    .sched-block--laboratory .sched-block__name,
-    .sched-block--lecture .sched-block__code,
-    .sched-block--lecture .sched-block__name { color: #111 !important; }
-    .sched-block--laboratory .sched-block__section,
-    .sched-block--laboratory .sched-block__type,
-    .sched-block--lecture .sched-block__section,
-    .sched-block--lecture .sched-block__type { color: #444 !important; }
+    .print-header__text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .print-header__university {
+      font-size: 13px;
+      font-weight: 700;
+      color: #000;
+      margin: 0;
+      letter-spacing: 0.01em;
+      font-family: 'Raleway', sans-serif;
+    }
+    .print-header__office {
+      font-size: 10px;
+      font-weight: 400;
+      color: #000;
+      margin: 0;
+      font-family: 'Raleway', sans-serif;
+    }
+    .print-header__college {
+      font-size: 12px;
+      font-weight: 700;
+      color: #000;
+      margin: 3px 0 0 0;
+      font-family: 'Raleway', sans-serif;
+    }
+    .print-header__faculty-box {
+      flex-shrink: 0;
+      width: 190px;
+      min-height: 56px;
+      border: 2px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+    }
+    .print-header__faculty-box span {
+      font-size: 16px;
+      font-weight: 700;
+      color: #000;
+      text-align: center;
+      font-family: 'Raleway', sans-serif;
+    }
 
-    /* Table */
+    /* Row 2: centered title + semester */
+    .print-header__row2 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+      width: 100%;
+    }
+    .print-header__title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #000;
+      margin: 0;
+      letter-spacing: 0.05em;
+      text-align: center;
+      font-family: 'Raleway', sans-serif;
+    }
+    .print-header__semester {
+      font-size: 12px;
+      font-weight: 700;
+      color: #000;
+      margin: 0;
+      text-align: center;
+      font-family: 'Raleway', sans-serif;
+    }
+
+    /* ── Schedule card & table ── */
+    .sched-card { box-shadow: none; border: 1px solid #ccc; overflow: hidden; border-radius: 8px; }
+    .sched-table-wrap { overflow-x: auto; width: 100%; }
+    .sched-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Raleway', Arial, sans-serif;
+      min-width: 700px;
+    }
     .sched-table th {
-      color: #111 !important;
-      border-bottom: 2px solid #aaa !important;
-      border-right: 1px solid #ccc !important;
+      padding: 10px 6px;
+      font-size: 0.65rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      color: #111;
+      text-align: center;
+      border-bottom: 2px solid #aaa;
+      border-right: 1px solid #ccc;
+      white-space: nowrap;
+      background: #fff;
     }
+    .sched-table th:last-child { border-right: none; }
+    .sched-table th.th-day {
+      width: 110px;
+      text-align: left;
+      padding-left: 16px;
+      color: #111;
+      font-size: 0.68rem;
+    }
+    .sched-table tbody tr { border-bottom: 1px solid #ccc; }
+    .sched-table tbody tr:last-child { border-bottom: none; }
     .sched-table td.td-day {
-      color: #111 !important;
-      border-right: 2px solid #aaa !important;
+      padding: 0 8px 0 16px;
+      font-size: 0.80rem;
+      font-weight: 800;
+      color: #111;
+      text-align: left;
+      white-space: nowrap;
+      background: #fff;
+      border-right: 2px solid #aaa;
+      height: 80px;
+      vertical-align: middle;
     }
-    .sched-table tbody tr { border-bottom: 1px solid #ccc !important; }
     .sched-table td.td-slot {
-      border-right: 1px solid #ccc !important;
+      padding: 6px 4px;
+      text-align: center;
+      vertical-align: middle;
+      height: 80px;
+      border-right: 1px solid #ccc;
       background-image:
-        linear-gradient(rgba(0,0,0,0.20) 50%, transparent 50%),
-        linear-gradient(rgba(0,0,0,0.20) 50%, transparent 50%) !important;
-      background-size: 1px 6px, 1px 6px !important;
-      background-repeat: repeat-y, repeat-y !important;
-      background-position: calc(50% - 22px) 0, calc(50% + 22px) 0 !important;
+        linear-gradient(rgba(0,0,0,0.18) 50%, transparent 50%),
+        linear-gradient(rgba(0,0,0,0.18) 50%, transparent 50%);
+      background-size: 1px 6px, 1px 6px;
+      background-repeat: repeat-y, repeat-y;
+      background-position: calc(50% - 22px) 0, calc(50% + 22px) 0;
     }
+    .sched-table td.td-slot:last-child { border-right: none; }
+
+    /* Class blocks */
+    .sched-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1px;
+      padding: 6px 4px;
+      border-radius: 6px;
+      background: #f5f5f5;
+      border: 1.5px solid #555;
+      height: 100%;
+      min-height: 66px;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 1;
+    }
+    .sched-block__code  { font-size: 0.65rem; font-weight: 900; letter-spacing: 0.04em; text-align: center; line-height: 1.2; color: #111; }
+    .sched-block__name  { font-size: 0.63rem; font-weight: 700; text-align: center; line-height: 1.3; color: #111; }
+    .sched-block__section { font-size: 0.60rem; font-weight: 600; text-align: center; color: #444; }
+    .sched-block__type  { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; text-align: center; color: #444; }
   </style>
 </head>
 <body>
-  ${toolbarHTML}
+
+  <!-- ── Header ── -->
+  <div class="print-header">
+    <div class="print-header__row1">
+      <div class="print-header__logos">
+        <img src="${pupLogoURL}" alt="PUP Seal" class="print-header__logo">
+        <img src="${cciLogoURL}" alt="CCI Seal" class="print-header__logo">
+      </div>
+      <div class="print-header__text">
+        <p class="print-header__university">POLYTECHNIC UNIVERSITY OF THE PHILIPPINES</p>
+        <p class="print-header__office">Office of the Vice President for Academic Affairs</p>
+        <p class="print-header__college">COLLEGE OF COMPUTER AND INFORMATION SCIENCES</p>
+      </div>
+      <div class="print-header__faculty-box">
+        <span>${facultyName}</span>
+      </div>
+    </div>
+    <div class="print-header__row2">
+      <p class="print-header__title">TEACHING ASSIGNMENT</p>
+      <p class="print-header__semester">${semester}</p>
+    </div>
+  </div>
+
+  <!-- ── Schedule table ── -->
   ${schedCardHTML}
+
   <script>
-    // Wait for fonts then print
     document.fonts.ready.then(() => {
       window.print();
       window.onafterprint = () => window.close();
