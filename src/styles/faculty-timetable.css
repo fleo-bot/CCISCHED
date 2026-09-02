@@ -342,7 +342,98 @@
 
 /* ── Print ── */
 @media print {
-  .sidebar, .topbar, .ft-breadcrumb, .ft-toolbar__actions { display: none !important; }
+  .sidebar, .topbar, .ft-breadcrumb { display: none !important; }
+  
   .layout { display: block; }
-  .ft-card { box-shadow: none; border: none; }
+  
+  .page-body {
+    padding: 16px 20px;
+  }
+  
+  /* Show toolbar with pills */
+  .ft-toolbar {
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+  }
+  
+  .ft-toolbar__actions {
+    display: none !important;
+  }
+  
+  /* Pills - black and white for print */
+  .ft-toolbar__info,
+  .ft-toolbar__name {
+    border-color: #333 !important;
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+  
+  .ft-toolbar__label {
+    color: #111 !important;
+  }
+  
+  .ft-toolbar__sub {
+    color: #555 !important;
+  }
+  
+  .ft-toolbar__name span {
+    color: #111 !important;
+  }
+  
+  /* Card */
+  .ft-card { 
+    box-shadow: none; 
+    border-color: #ccc !important;
+  }
+  
+  /* Table - black and white */
+  .ft-table th {
+    color: #111 !important;
+    border-bottom-color: #aaa !important;
+    border-right-color: #ccc !important;
+  }
+  
+  .ft-table td.td-day {
+    color: #111 !important;
+    border-right-color: #aaa !important;
+  }
+  
+  .ft-table tbody tr {
+    border-bottom-color: #ccc !important;
+  }
+  
+  .ft-table td.td-slot {
+    border-right-color: #ccc !important;
+    /* Black dashed guide lines */
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.20) 50%, transparent 50%),
+      linear-gradient(rgba(0, 0, 0, 0.20) 50%, transparent 50%) !important;
+    background-size: 1px 6px, 1px 6px !important;
+    background-repeat: repeat-y, repeat-y !important;
+    background-position: calc(50% - 22px) 0, calc(50% + 22px) 0 !important;
+  }
+  
+  /* Blocks - black and white */
+  .ft-block--laboratory,
+  .ft-block--lecture {
+    background: #f5f5f5 !important;
+    border-color: #555 !important;
+  }
+  
+  .ft-block--laboratory .ft-block__code,
+  .ft-block--laboratory .ft-block__name,
+  .ft-block--lecture .ft-block__code,
+  .ft-block--lecture .ft-block__name {
+    color: #111 !important;
+  }
+  
+  .ft-block--laboratory .ft-block__section,
+  .ft-block--laboratory .ft-block__type,
+  .ft-block--lecture .ft-block__section,
+  .ft-block--lecture .ft-block__type {
+    color: #444 !important;
+  }
 }

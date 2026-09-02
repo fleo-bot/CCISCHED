@@ -9,6 +9,18 @@ if (topbarDate) {
   topbarDate.textContent = `${dayName}, ${datePart}`;
 }
 
+// ── Populate print header (hidden on screen, visible in print) ──
+const printFacultyName = document.getElementById('printFacultyName');
+if (printFacultyName) {
+  // You can get this from session storage or API
+  printFacultyName.textContent = 'Maria Santos';
+}
+
+const printSemester = document.getElementById('printSemester');
+if (printSemester) {
+  printSemester.textContent = '1st Semester, A.Y. 2025–2026';
+}
+
 // ── Notification bell ──
 document.getElementById('notifBtn')?.addEventListener('click', () => {
   window.location.href = 'notifications.html';

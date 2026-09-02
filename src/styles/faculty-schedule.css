@@ -314,9 +314,15 @@
   }
 }
 
+/* Print-only header - hidden on screen */
+.print-header {
+  display: none;
+}
+
 @media print {
   @page {
-    margin: 1cm;
+    margin: 0.75cm 1cm;
+    size: auto;
   }
 
   .sidebar,
@@ -329,41 +335,110 @@
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
+  
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .page-body {
+    padding: 0 !important;
+  }
 
-  /* Show the toolbar but strip its interactive styling */
+  /* Hide the screen toolbar with pills */
   .sched-toolbar {
-    display: flex !important;
-    align-items: center;
+    display: none !important;
+  }
+  
+  /* Show print header */
+  .print-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #000;
+  }
+  
+  .print-header__logos {
+    display: flex;
     gap: 12px;
-    padding: 0 0 14px 0;
-    border-bottom: 1.5px solid #333;
-    margin-bottom: 14px;
+    flex-shrink: 0;
   }
-
-  .sched-toolbar__info {
-    border: 1.5px solid #333 !important;
-    box-shadow: none !important;
-    background: #fff !important;
+  
+  .print-header__logo {
+    width: 60px;
+    height: 60px;
   }
-
-  .sched-toolbar__label {
-    color: #111 !important;
-    font-size: 0.80rem;
+  
+  .print-header__text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
   }
-
-  .sched-toolbar__sub {
-    color: #555 !important;
+  
+  .print-header__university {
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+    margin: 0;
+    letter-spacing: 0.02em;
   }
-
-  .sched-toolbar__name {
-    border: 1.5px solid #333 !important;
-    box-shadow: none !important;
-    background: #fff !important;
+  
+  .print-header__office {
+    font-size: 10px;
+    font-weight: 400;
+    color: #000;
+    margin: 0;
   }
-
-  .sched-toolbar__name span {
-    color: #111 !important;
-    font-size: 1.00rem;
+  
+  .print-header__college {
+    font-size: 12px;
+    font-weight: 700;
+    color: #000;
+    margin: 8px 0 12px 0;
+    letter-spacing: 0.02em;
+  }
+  
+  .print-header__assignment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  
+  .print-header__title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #000;
+    margin: 0;
+    letter-spacing: 0.05em;
+  }
+  
+  .print-header__semester {
+    font-size: 11px;
+    font-weight: 400;
+    color: #000;
+    margin: 0;
+  }
+  
+  .print-header__faculty-box {
+    flex-shrink: 0;
+    width: 180px;
+    height: 60px;
+    border: 2px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+  }
+  
+  .print-header__faculty-box span {
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+    text-align: center;
   }
 
   .layout {
