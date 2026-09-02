@@ -1,6 +1,5 @@
 # CCISched - Team Setup Guide
 
-This guide will help your teammates get the project running in VS Code from scratch.
 
 ---
 
