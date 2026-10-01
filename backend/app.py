@@ -810,10 +810,15 @@ def register_scheduler_routes(app: Flask):
 
 
 # ──────────────────────────────────────────────
+#  Module-level app instance (for gunicorn: `gunicorn app:app`)
+# ──────────────────────────────────────────────
+app = create_app()
+
+
+# ──────────────────────────────────────────────
 #  Entry point
 # ──────────────────────────────────────────────
 if __name__ == "__main__":
-    app = create_app()
     port = int(os.environ.get("PORT", 5000))
     print(f"\n  CCISched backend  →  http://localhost:{port}")
     print(f"  Solver: {'CP-SAT (OR-Tools)' if ORTOOLS_AVAILABLE else 'Greedy fallback (install ortools)'}\n")
