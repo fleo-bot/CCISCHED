@@ -1,11 +1,21 @@
+# Core Flask dependencies
 flask==3.0.3
 flask-cors==4.0.1
 flask-sqlalchemy==3.1.1
-PyMySQL==1.1.1
 werkzeug==3.0.1
 python-dotenv==1.0.0
+
+# Database
+PyMySQL==1.1.1
+cryptography==42.0.5  # Required for PyMySQL with certain MySQL configs
+
+# Data processing & ML
 pandas>=2.0.0
 numpy>=2.0.0
 scikit-learn>=1.5.0
+
+# Constraint programming solver
 ortools==9.15.6755
+
+# Production WSGI server
 gunicorn==21.2.0
