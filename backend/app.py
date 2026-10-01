@@ -443,7 +443,26 @@ def register_scheduler_routes(app: Flask):
         """Debug endpoint to list chairperson accounts"""
         chairs = User.query.filter_by(role="chairperson").all()
         return jsonify({
-            "chairpersons": [{"email": u.email, "name": f"{u.first_name} {u.last_name}"} for u in chairs]
+            "chairpersons": [{"email": u.email, "name": f"{u.first_name} {u.last_name}", "id": u.id} for u in chairs]
+        })
+    
+    @app.get("/api/debug/reset-chair-password")
+    def reset_chair_password():
+        """Reset chairperson password to cp000"""
+        from werkzeug.security import generate_password_hash
+        
+        chair = User.query.filter_by(email="johndustin@pup.edu.ph").first()
+        if not chair:
+            return jsonify({"error": "Chairperson not found"}), 404
+        
+        chair.password_hash = generate_password_hash("cp000")
+        db.session.commit()
+        
+        return jsonify({
+            "message": "Password reset successfully!",
+            "email": "johndustin@pup.edu.ph",
+            "password": "cp000",
+            "id": chair.id
         })
 
     @app.get("/api/debug/seed-chairperson")
