@@ -14,177 +14,75 @@ document.getElementById('notifBtn')?.addEventListener('click', () => {
 });
 
 // ─────────────────────────────────────────────
-//  FACULTY DATA
-//  load = current units assigned
-//  max  = maximum allowed units
+//  FACULTY DATA — loaded from the real backend
+//  load = units from approved faculty assignments (falls back to
+//         published schedule rows); 0 only if nothing is assigned
+//  max  = maximum allowed units (real, from each faculty's profile)
 // ─────────────────────────────────────────────
-let facultyData = [
-  { 
-    name: 'Ana Cruz',       
-    type: 'Full-Time',          
-    load: 15, 
-    max: 15,
-    availability: {
-      'Monday': ['7:30 - 9:00', '9:00 - 10:30'],
-      'Tuesday': [],
-      'Wednesday': ['7:30 - 9:00', '9:00 - 10:30', '10:30 - 12:00', '12:00 - 1:30'],
-      'Thursday': [],
-      'Friday': ['7:30 - 9:00', '9:00 - 10:30', '10:30 - 12:00', '12:00 - 1:30'],
-      'Saturday': []
-    },
-    preference: '10:30 - 12:00',
-    status: 'Current Submission'
-  },
-  { 
-    name: 'Andrea Gonzales', 
-    type: 'Part-Time',         
-    load:  8, 
-    max: 12,
-    availability: {
-      'Monday': ['9:00 - 10:30', '10:30 - 12:00'],
-      'Tuesday': ['9:00 - 10:30'],
-      'Wednesday': ['9:00 - 10:30', '10:30 - 12:00'],
-      'Thursday': ['9:00 - 10:30'],
-      'Friday': [],
-      'Saturday': []
-    },
-    preference: '9:00 - 10:30',
-    status: 'Current Submission'
-  },
-  { 
-    name: 'Ben Torres',     
-    type: 'Designee|Chairperson', 
-    load: 6, 
-    max:  6,
-    availability: {
-      'Monday': ['10:30 - 12:00', '12:00 - 1:30'],
-      'Tuesday': ['10:30 - 12:00'],
-      'Wednesday': ['10:30 - 12:00', '12:00 - 1:30'],
-      'Thursday': [],
-      'Friday': [],
-      'Saturday': []
-    },
-    preference: '10:30 - 12:00',
-    status: 'Current Submission'
-  },
-  { 
-    name: 'Juan Dela Cruz', 
-    type: 'Part-Time',           
-    load: 11, 
-    max: 12,
-    availability: {
-      'Monday': ['7:30 - 9:00', '9:00 - 10:30', '10:30 - 12:00'],
-      'Tuesday': ['7:30 - 9:00', '9:00 - 10:30'],
-      'Wednesday': ['7:30 - 9:00', '9:00 - 10:30', '10:30 - 12:00'],
-      'Thursday': ['7:30 - 9:00'],
-      'Friday': ['7:30 - 9:00', '9:00 - 10:30'],
-      'Saturday': []
-    },
-    preference: '9:00 - 10:30',
-    status: 'Current Submission'
-  },
-  { 
-    name: 'Maria Santos',   
-    type: 'Full-Time',           
-    load:  9, 
-    max: 15,
-    availability: {
-      'Monday': ['9:00 - 10:30', '12:00 - 1:30'],
-      'Tuesday': ['9:00 - 10:30', '10:30 - 12:00', '12:00 - 1:30'],
-      'Wednesday': ['9:00 - 10:30'],
-      'Thursday': ['9:00 - 10:30', '10:30 - 12:00'],
-      'Friday': ['9:00 - 10:30', '12:00 - 1:30'],
-      'Saturday': []
-    },
-    preference: '9:00 - 10:30',
-    status: 'Current Submission'
-  },
-  { 
-    name: 'Leo Reyes',      
-    type: 'Full-Time',           
-    load: 12, 
-    max: 15,
-    availability: {
-      'Monday': ['10:30 - 12:00', '12:00 - 1:30'],
-      'Tuesday': ['10:30 - 12:00', '12:00 - 1:30'],
-      'Wednesday': ['10:30 - 12:00'],
-      'Thursday': ['10:30 - 12:00', '12:00 - 1:30'],
-      'Friday': ['10:30 - 12:00'],
-      'Saturday': []
-    },
-    preference: '10:30 - 12:00',
-    status: 'Current Submission'
-  },
-  { 
-    name: 'Carla Mendoza',  
-    type: 'Part-Time',           
-    load:  6, 
-    max: 12,
-    availability: {
-      'Monday': ['9:00 - 10:30'],
-      'Tuesday': ['9:00 - 10:30', '10:30 - 12:00'],
-      'Wednesday': ['9:00 - 10:30'],
-      'Thursday': ['9:00 - 10:30', '10:30 - 12:00'],
-      'Friday': [],
-      'Saturday': []
-    },
-    preference: '9:00 - 10:30',
-    status: 'Current Submission'
-  },
-  { 
-    name: 'Mark Villanueva', 
-    type: 'Full-Time',          
-    load: 14, 
-    max: 15,
-    availability: {
-      'Monday': ['7:30 - 9:00', '9:00 - 10:30', '10:30 - 12:00'],
-      'Tuesday': ['7:30 - 9:00', '9:00 - 10:30', '10:30 - 12:00'],
-      'Wednesday': ['7:30 - 9:00', '9:00 - 10:30'],
-      'Thursday': ['7:30 - 9:00', '9:00 - 10:30'],
-      'Friday': ['7:30 - 9:00', '9:00 - 10:30', '10:30 - 12:00'],
-      'Saturday': []
-    },
-    preference: '9:00 - 10:30',
-    status: 'Current Submission'
-  },
-  { 
-    name: 'Sofia Dela Peña', 
-    type: 'Full-Time',           
-    load: 10, 
-    max: 15,
-    availability: {
-      'Monday': ['7:30 - 9:00', '9:00 - 10:30'],
-      'Tuesday': ['7:30 - 9:00', '9:00 - 10:30', '10:30 - 12:00'],
-      'Wednesday': ['7:30 - 9:00'],
-      'Thursday': ['7:30 - 9:00', '9:00 - 10:30'],
-      'Friday': ['7:30 - 9:00'],
-      'Saturday': []
-    },
-    preference: '7:30 - 9:00',
-    status: 'Current Submission'
-  },
-  { 
-    name: 'Rico Aguilar',   
-    type: 'Part-Time',           
-    load:  4, 
-    max: 12,
-    availability: {
-      'Monday': ['12:00 - 1:30'],
-      'Tuesday': [],
-      'Wednesday': ['12:00 - 1:30'],
-      'Thursday': [],
-      'Friday': ['12:00 - 1:30'],
-      'Saturday': []
-    },
-    preference: '12:00 - 1:30',
-    status: 'Current Submission'
-  },
-];
+let facultyData = [];
+
+async function loadFacultyList() {
+  try {
+    const [faculty, subsResult, loads] = await Promise.all([
+      API.getFacultyList(),
+      API.getAllSubmissions().catch(() => ({ submissions: [] })),
+      API.getFacultyLoads().catch(() => ({})),
+    ]);
+
+    // Anyone who has ever finalized a submission (regardless of review
+    // outcome) counts as "submitted" for the purposes of the Generate
+    // Faculty Assignment pre-check below.
+    const submittedIds = new Set(
+      (subsResult.submissions || [])
+        .filter(s => ['submitted', 'approved', 'rejected', 'returned'].includes(s.status))
+        .map(s => s.faculty_id)
+    );
+    const submissionIdByFaculty = {};
+    (subsResult.submissions || []).forEach(s => { submissionIdByFaculty[s.faculty_id] = s.id; });
+
+    facultyData = faculty.map(f => ({
+      id:                     f.id,
+      employee_number:        f.employee_number,
+      name:                   `${f.first_name} ${f.last_name}`,
+      type:                   (f.employment_type || 'Full Time').replace(/ /g, '-'),
+      load:                   loads[f.id] || 0,   // real assigned units from published schedule
+      max:                    f.max_units || 21,
+      availability:           null,   // detailed day/time view — not wired yet
+      preference:             null,
+      status:                 null,
+      // Account-level flags from faculty_status.py — kept under different
+      // names since `status` above is repurposed below for submission
+      // review status (pending/approved/rejected), not account activity.
+      accountStatus:          f.status || 'active',   // 'active' | 'inactive'
+      isUnassigned:           !!f.is_unassigned,
+      hasSubmittedAvailability: submittedIds.has(f.id),
+      submissionId:           submissionIdByFaculty[f.id] || null,
+    }));
+    renderRows(activeFilter, searchQuery);
+    const totalEl = document.getElementById('totalFaculty');
+    if (totalEl) animateCount('totalFaculty', facultyData.length);
+  } catch (err) {
+    console.error('[Faculty] Failed to load:', err);
+  }
+}
 
 // ─────────────────────────────────────────────
 //  RENDER ROWS
 // ─────────────────────────────────────────────
 const facultyList = document.getElementById('facultyList');
+
+function statusBadgesHtml(f) {
+  const badges = [];
+  badges.push(
+    f.accountStatus === 'inactive'
+      ? `<span class="fl-status-badge fl-status-badge--inactive">Inactive</span>`
+      : `<span class="fl-status-badge fl-status-badge--active">Active</span>`
+  );
+  if (f.isUnassigned) {
+    badges.push(`<span class="fl-status-badge fl-status-badge--unassigned">Unassigned</span>`);
+  }
+  return badges.join('');
+}
 
 function renderRows(filter = 'all', query = '') {
   if (!facultyList) return;
@@ -206,7 +104,10 @@ function renderRows(filter = 'all', query = '') {
 
     row.innerHTML = `
       <span class="fl-row__name">${f.name}</span>
-      <span class="fl-row__type">${f.type.replace('|', ' | ')}</span>
+      <div class="fl-row__type">
+        <span class="fl-row__type-label">${f.type.replace('|', ' | ')}</span>
+        <div class="fl-status-badges">${statusBadgesHtml(f)}</div>
+      </div>
       <div class="fl-load">
         <div class="fl-load__track">
           <div class="fl-load__fill ${over ? 'fl-load__fill--over' : ''}"
@@ -247,6 +148,8 @@ renderRows();
 let activeFilter = 'all';
 let searchQuery  = '';
 
+loadFacultyList();
+
 document.getElementById('typeFilter')?.addEventListener('change', function () {
   activeFilter = this.value;
   renderRows(activeFilter, searchQuery);
@@ -264,12 +167,38 @@ const vaOverlay   = document.getElementById('vaModalOverlay');
 const vaTitle     = document.getElementById('vaModalTitle');
 const vaContent   = vaOverlay?.querySelector('.va-modal__content');
 
-const TIME_SLOTS = ['7:30 - 9:00', '9:00 - 10:30', '10:30 - 12:00', '12:00 - 1:30'];
+const TIME_SLOTS = ['Morning (8:00 AM - 12:00 PM)', 'Afternoon (1:00 PM - 5:00 PM)'];
 const DAYS       = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 function hasAvailability(f) {
   if (!f.availability) return false;
   return DAYS.some(d => (f.availability[d] || []).length > 0);
+}
+
+// Demo/test accounts (seeded for login testing, e.g. faculty@pup.edu.ph,
+// msantos@pup.edu.ph) have no real availability data by design — they
+// shouldn't block real generation the way an actual faculty member with
+// a genuinely missing submission should.
+function isDemoAccount(f) {
+  return (f.employee_number || '').startsWith('DEMO-');
+}
+
+// Build a compact "Morning: Mon, Wed  •  Afternoon: Fri" summary from the
+// real availability grid, replacing the always-blank preference field.
+function summarizePreference(availability) {
+  if (!availability) return '—';
+  const dayAbbrev = { Monday: 'Mon', Tuesday: 'Tue', Wednesday: 'Wed', Thursday: 'Thu', Friday: 'Fri', Saturday: 'Sat' };
+  const byBlock = {};
+  DAYS.forEach(day => {
+    (availability[day] || []).forEach(block => {
+      byBlock[block] = byBlock[block] || [];
+      byBlock[block].push(dayAbbrev[day] || day);
+    });
+  });
+  const parts = TIME_SLOTS
+    .filter(slot => byBlock[slot] && byBlock[slot].length)
+    .map(slot => `${slot.split(' (')[0]}: ${byBlock[slot].join(', ')}`);
+  return parts.length ? parts.join('  \u2022  ') : '—';
 }
 
 function openAvailabilityModal(f) {
@@ -328,7 +257,7 @@ function openAvailabilityModal(f) {
 
       <div class="va-preference">
         <span class="va-pref-label">Available Time Preference</span>
-        <div class="va-pref-value">${f.preference || '—'}</div>
+        <div class="va-pref-value">${summarizePreference(f.availability)}</div>
       </div>
     `;
 
@@ -382,12 +311,54 @@ function closeAvailabilityModal() {
   vaOverlay?.classList.remove('va-modal-overlay--open');
 }
 
+// Convert real AvailabilitySlot data into the {Monday: [...], ...} shape
+// the modal grid expects, using the same Morning/Afternoon block labels
+// faculty actually submit (not the solver's internal 90-min sub-slots).
+function buildAvailabilityFromSlots(slots) {
+  const DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  // Morning 8:00–12:00, Afternoon 1:00–5:00 (minutes since midnight). A slot
+  // counts toward a block when its time range overlaps it, so a slot saved
+  // as e.g. 9:00 AM – 1:30 PM shows under both, whatever its exact times.
+  const BLOCKS = [
+    { label: TIME_SLOTS[0], start: 8 * 60,  end: 12 * 60 },
+    { label: TIME_SLOTS[1], start: 13 * 60, end: 17 * 60 },
+  ];
+  const availability = {};
+  (slots || []).forEach(slot => {
+    const range = AvailabilityUtils.slotRange(slot);
+    if (!range) return;
+    BLOCKS.filter(b => range.start < b.end && range.end > b.start).forEach(block => {
+      (slot.day_indices || []).forEach(dayIdx => {
+        const dayName = DAY_NAMES[dayIdx];
+        if (!dayName) return;
+        availability[dayName] = availability[dayName] || [];
+        if (!availability[dayName].includes(block.label)) availability[dayName].push(block.label);
+      });
+    });
+  });
+  return availability;
+}
+
 // Delegation on the list
-facultyList?.addEventListener('click', e => {
+facultyList?.addEventListener('click', async e => {
   const btn = e.target.closest('.fl-avail-btn');
   if (!btn) return;
   const idx = parseInt(btn.dataset.idx, 10);
-  openAvailabilityModal(facultyData[idx]);
+  const f = facultyData[idx];
+
+  if (f.submissionId && !f.availability) {
+    try {
+      const res = await API.getSubmission(f.submissionId);
+      f.availability = buildAvailabilityFromSlots(res.submission?.slots);
+      f.status = res.submission?.status
+        ? res.submission.status.charAt(0).toUpperCase() + res.submission.status.slice(1)
+        : f.status;
+    } catch (err) {
+      console.error('[Faculty] Failed to load availability detail:', err);
+    }
+  }
+
+  openAvailabilityModal(f);
 });
 
 // Header X close button (static in HTML)
@@ -580,7 +551,7 @@ document.addEventListener('keydown', e => {
 //  PENDING AVAILABILITY MODAL
 // ─────────────────────────────────────────────
 function showPendingModal(pendingCount) {
-  const pendingFaculty = facultyData.filter(f => !f.availability || !hasAvailability(f));
+  const pendingFaculty = facultyData.filter(f => !isDemoAccount(f) && !f.hasSubmittedAvailability);
   
   // Create modal overlay
   const overlay = document.createElement('div');
@@ -676,7 +647,7 @@ function updateGenerateButtonState() {
   const genBtn = document.getElementById('generateBtn');
   if (!genBtn) return;
   
-  const pendingCount = facultyData.filter(f => !f.availability || !hasAvailability(f)).length;
+  const pendingCount = facultyData.filter(f => !isDemoAccount(f) && !f.hasSubmittedAvailability).length;
   
   if (pendingCount > 0) {
     genBtn.disabled = true;
@@ -715,13 +686,33 @@ function runGenSequence() {
   let stepIdx = 0;
   let currentPct = 0;
 
+  // Fire the real API call immediately — runs in parallel with the
+  // cosmetic progress animation below. No academic_year/semester passed;
+  // the backend falls back to whichever semester is currently active.
+  // Stage 1 ONLY (RF + faculty-assignment CP-SAT) — does not touch time
+  // at all, and does not run the timetable stage.
+  const apiPromise = API.generateFacultyAssignment();
+
   function runStep() {
     if (stepIdx >= GEN_STEPS.length) {
-      // Done — brief pause then navigate to results page
-      setTimeout(() => {
+      // Animation done — now wait for the real result before navigating
+      if (genStatus) genStatus.textContent = 'Waiting for solver…';
+      apiPromise.then(apiData => {
+        try {
+          // Separate key from the timetable flow's 'ccisched_result' — this
+          // is Stage 1's own draft output (no day/time), not a final schedule.
+          sessionStorage.setItem('ccisched_assignment_result', JSON.stringify(apiData));
+        } catch (e) {
+          // sessionStorage full — results page will show a graceful empty state
+        }
+        setTimeout(() => {
+          closeGenOverlay();
+          window.location.href = 'generated-assignment.html';
+        }, 400);
+      }).catch(err => {
         closeGenOverlay();
-        window.location.href = 'generated-assignment.html';
-      }, 600);
+        alert('Failed to generate assignments: ' + err.message);
+      });
       return;
     }
 
@@ -765,15 +756,16 @@ function runGenSequence() {
 }
 
 document.getElementById('generateBtn')?.addEventListener('click', () => {
-  // Check if there are any pending availability submissions
-  const pendingCount = facultyData.filter(f => !f.availability || !hasAvailability(f)).length;
-  
+  // Check if there are any pending availability submissions (demo/test
+  // accounts exempted — they have no real availability data by design)
+  const pendingCount = facultyData.filter(f => !isDemoAccount(f) && !f.hasSubmittedAvailability).length;
+
   if (pendingCount > 0) {
     // Show modal instead of generating
     showPendingModal(pendingCount);
     return;
   }
-  
+
   runGenSequence();
 });
 
@@ -796,15 +788,36 @@ const addOverlay  = document.getElementById('addFacultyOverlay');
 const addClose    = document.getElementById('addFacultyClose');
 const addCancel   = document.getElementById('addFacultyCancel');
 const addSaveBtn  = document.getElementById('addFacultySave');
+const addEmpNumEl = document.getElementById('addEmployeeNumber');
+const addPwHintEl = document.getElementById('addPasswordHint');
+
+// Matches the backend's normalize_password() exactly: EMP-2024-051 -> emp2024051
+function previewPassword(employeeNumber) {
+  return employeeNumber.trim().toLowerCase().replace(/-/g, '');
+}
+
+function updatePasswordHint() {
+  const empNum = addEmpNumEl?.value || '';
+  if (!empNum.trim()) {
+    addPwHintEl.textContent = 'Enter an employee number to preview the login password.';
+    addPwHintEl.classList.remove('fl-modal__hint--ready');
+    return;
+  }
+  const pwd = previewPassword(empNum);
+  addPwHintEl.textContent = `Heads up: this faculty member's login password will be "${pwd}" — write it down, it won't be shown again after saving.`;
+  addPwHintEl.classList.add('fl-modal__hint--ready');
+}
+
+addEmpNumEl?.addEventListener('input', updatePasswordHint);
 
 document.getElementById('addFacultyBtn')?.addEventListener('click', () => {
   // Clear all fields
-  ['addFirstName','addMiddleName','addLastName','addEmail','addAge',
-   'addRole','addDepartment','addRank','addYears','addSpecialization',
-   'addEmployment','addEducation'].forEach(id => {
+  ['addEmployeeNumber','addFirstName','addLastName','addEmail',
+   'addRank','addYears','addSpecialization','addEmployment','addEducation'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
+  updatePasswordHint();
   openModal();
 });
 
@@ -816,42 +829,58 @@ addCancel?.addEventListener('click', closeModal);
 addOverlay?.addEventListener('click', e => { if (e.target === addOverlay) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-addSaveBtn?.addEventListener('click', () => {
+addSaveBtn?.addEventListener('click', async () => {
+  const employeeNumber = addEmpNumEl?.value.trim();
   const first = document.getElementById('addFirstName')?.value.trim();
   const last  = document.getElementById('addLastName')?.value.trim();
-  const type  = document.getElementById('addEmployment')?.value.trim() || 'Full-Time';
+  const email = document.getElementById('addEmail')?.value.trim();
+  const type  = document.getElementById('addEmployment')?.value.trim() || 'Full Time';
 
-  if (!first || !last) {
-    showToast('First and last name are required.', 'error');
+  if (!employeeNumber || !first || !last || !email) {
+    showToast('Employee number, first name, last name, and email are required.', 'error');
     return;
   }
 
-  // Determine max load based on employment type
-  let maxLoad = 15; // Full-Time default
-  if (type.toLowerCase().includes('part-time')) {
-    maxLoad = 12;
-  } else if (type.toLowerCase().includes('designee') || type.toLowerCase().includes('chairperson')) {
-    maxLoad = 6;
+  const payload = {
+    employee_number:  employeeNumber,
+    first_name:       first,
+    last_name:        last,
+    email:            email,
+    academic_rank:    document.getElementById('addRank')?.value.trim() || '',
+    exp_years:        parseInt(document.getElementById('addYears')?.value, 10) || 0,
+    specialization:   document.getElementById('addSpecialization')?.value.trim() || '',
+    employment_type:  type,
+    highest_educ_attainment: document.getElementById('addEducation')?.value.trim() || '',
+    max_units:        type.toLowerCase().includes('part') ? 12 : 21,
+  };
+
+  try {
+    const res = await API.addFaculty(payload);
+
+    // Determine max load based on employment type (for the roster view only)
+    let maxLoad = 15;
+    if (type.toLowerCase().includes('part-time')) {
+      maxLoad = 12;
+    } else if (type.toLowerCase().includes('designee') || type.toLowerCase().includes('chairperson')) {
+      maxLoad = 6;
+    }
+
+    facultyData.push({
+      name: `${first} ${last}`,
+      type, load: 0, max: maxLoad,
+      availability: null, preference: null, status: null,
+    });
+
+    renderRows(activeFilter, searchQuery);
+
+    const totalEl = document.getElementById('totalFaculty');
+    if (totalEl) totalEl.textContent = facultyData.length;
+
+    closeModal();
+    showToast(`${first} ${last} added. Their login password is "${res.password}" — save it now, it won't be shown again.`, 'success', 6000);
+  } catch (err) {
+    showToast('Failed to add faculty: ' + err.message, 'error');
   }
-
-  // Add new faculty member with no availability initially
-  facultyData.push({ 
-    name: `${first} ${last}`, 
-    type, 
-    load: 0, 
-    max: maxLoad,
-    availability: null,
-    preference: null,
-    status: null
-  });
-  
-  renderRows(activeFilter, searchQuery);
-
-  const totalEl = document.getElementById('totalFaculty');
-  if (totalEl) totalEl.textContent = facultyData.length;
-
-  closeModal();
-  showToast(`${first} ${last} added to faculty.`);Toast(`${first} ${last} added to faculty.`);
 });
 
 // ─────────────────────────────────────────────
@@ -860,7 +889,7 @@ addSaveBtn?.addEventListener('click', () => {
 let toastEl    = null;
 let toastTimer = null;
 
-function showToast(msg, type = 'success') {
+function showToast(msg, type = 'success', duration = 2800) {
   if (!toastEl) {
     toastEl = document.createElement('div');
     toastEl.className = 'fl-toast';
@@ -870,7 +899,7 @@ function showToast(msg, type = 'success') {
   toastEl.style.background = type === 'error' ? '#C0392B' : 'var(--maroon)';
   toastEl.classList.add('fl-toast--show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toastEl.classList.remove('fl-toast--show'), 2800);
+  toastTimer = setTimeout(() => toastEl.classList.remove('fl-toast--show'), duration);
 }
 
 // ─────────────────────────────────────────────
@@ -888,4 +917,83 @@ function animateCount(id, target, duration = 700) {
   requestAnimationFrame(step);
 }
 
-setTimeout(() => animateCount('totalFaculty', facultyData.length), 100);
+
+// ─────────────────────────────────────────────
+//  ADD CHAIRPERSON MODAL — creates a real chairperson-role account
+// ─────────────────────────────────────────────
+const cpOverlay = document.getElementById('addChairpersonOverlay');
+const cpIdInput = document.getElementById('cpEmployeeNumber');
+const cpPasswordHint = document.getElementById('cpPasswordHint');
+const cpSaveButton = document.getElementById('addChairpersonSave');
+
+function cpDefaultPassword(id) {
+  return (id || '').trim().toLowerCase().replace(/-/g, '');
+}
+
+function updateChairpersonPasswordHint() {
+  const id = cpIdInput?.value || '';
+  if (!id.trim()) {
+    cpPasswordHint.textContent = 'Enter a chairperson ID to preview the initial login password.';
+    cpPasswordHint.classList.remove('fl-modal__hint--ready');
+    return;
+  }
+  cpPasswordHint.textContent = `Initial login password: "${cpDefaultPassword(id)}". Share it securely and ask the chairperson to change it after signing in.`;
+  cpPasswordHint.classList.add('fl-modal__hint--ready');
+}
+
+function closeChairpersonModal() { cpOverlay?.classList.remove('fl-modal-overlay--open'); }
+
+document.getElementById('addChairpersonBtn')?.addEventListener('click', () => {
+  ['cpEmployeeNumber','cpFirstName','cpMiddleName','cpLastName','cpEmail','cpAge','cpContact'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  const gender = document.getElementById('cpGender'); if (gender) gender.value = '';
+  const department = document.getElementById('cpDepartment');
+  if (department) department.value = 'Department of Information Technology';
+  updateChairpersonPasswordHint();
+  cpOverlay?.classList.add('fl-modal-overlay--open');
+});
+cpIdInput?.addEventListener('input', updateChairpersonPasswordHint);
+document.getElementById('addChairpersonClose')?.addEventListener('click', closeChairpersonModal);
+document.getElementById('addChairpersonCancel')?.addEventListener('click', closeChairpersonModal);
+cpOverlay?.addEventListener('click', e => { if (e.target === cpOverlay) closeChairpersonModal(); });
+
+cpSaveButton?.addEventListener('click', async () => {
+  const id = cpIdInput?.value.trim() || '';
+  const first = document.getElementById('cpFirstName')?.value.trim() || '';
+  const middle = document.getElementById('cpMiddleName')?.value.trim() || '';
+  const last = document.getElementById('cpLastName')?.value.trim() || '';
+  const email = document.getElementById('cpEmail')?.value.trim() || '';
+  const ageValue = document.getElementById('cpAge')?.value;
+  const age = ageValue ? Number.parseInt(ageValue, 10) : null;
+  const gender = document.getElementById('cpGender')?.value || '';
+  const department = document.getElementById('cpDepartment')?.value.trim() || '';
+  const contact = document.getElementById('cpContact')?.value.trim() || '';
+
+  if (!id || !first || !last || !email) {
+    showToast('Chairperson ID, first name, last name, and email are required.', 'error');
+    return;
+  }
+  if (!/^CP-[A-Z0-9-]+$/i.test(id)) {
+    showToast('Use a chairperson ID in the format CP-001.', 'error');
+    return;
+  }
+  if (age !== null && (!Number.isInteger(age) || age < 18 || age > 100)) {
+    showToast('Enter a valid age between 18 and 100.', 'error');
+    return;
+  }
+
+  cpSaveButton.disabled = true;
+  try {
+    const result = await API.addChairperson({
+      chairperson_id: id, first_name: first, middle_name: middle, last_name: last,
+      email, gender, age, department, contact_number: contact,
+    });
+    closeChairpersonModal();
+    showToast(`${first} ${last} added as a Chairperson. Initial password: "${result.password}". Save it securely.`, 'success', 7000);
+  } catch (err) {
+    showToast('Failed to add chairperson: ' + err.message, 'error');
+  } finally {
+    cpSaveButton.disabled = false;
+  }
+});

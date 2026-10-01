@@ -102,6 +102,31 @@
   border-color: rgba(176,122,0,0.20);
 }
 
+.cs-chip--approved {
+  background: #E8F3FF;
+  color: #1D5FA8;
+  border-color: rgba(29,95,168,0.20);
+}
+
+.cs-delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: #FFF3F3;
+  border: 1px solid rgba(192,57,43,0.20);
+  border-radius: var(--radius-pill);
+  color: #C0392B;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.cs-delete-btn:hover {
+  background: #C0392B;
+  color: var(--white);
+}
+
 /* Status filter */
 .cs-filter-wrap {
   display: flex;
@@ -682,7 +707,9 @@
 }
 
 .sd-cell--checked {
-  background: var(--maroon);
+  background: var(--maroon-lt, #FFF0F0);
+  border: 1.5px solid var(--maroon, #800000);
+  border-radius: 4px;
   position: relative;
 }
 
@@ -690,7 +717,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 6L5 9L10 3' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 6L5 9L10 3' stroke='%23800000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -699,7 +726,7 @@
 
 .sd-table tbody tr:has(.sd-cell--checked):hover td { background-color: rgba(128,0,0,0.04); }
 .sd-table tbody tr:has(.sd-cell--checked):hover td:first-child { background: rgba(128,0,0,0.06); }
-.sd-table tbody tr:has(.sd-cell--checked):hover .sd-cell--checked { background: var(--maroon-dk); }
+.sd-table tbody tr:has(.sd-cell--checked):hover .sd-cell--checked { background: var(--maroon-lt, #FFF0F0); border-color: var(--maroon-dk, #600000); }
 
 /* No-submission placeholder for detail page */
 .sd-no-submission {
@@ -786,7 +813,7 @@
   .page-body { padding: 16px; }
   .sd-slot { break-inside: avoid; box-shadow: none; margin-bottom: 20px; }
   .sd-slot__header { background: #800000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .sd-cell--checked { background: #800000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .sd-cell--checked { background: #FFF0F0 !important; border: 1.5px solid #800000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
 
 /* ═══════════════════════════════════════

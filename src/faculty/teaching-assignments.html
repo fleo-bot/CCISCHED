@@ -121,7 +121,7 @@
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <span class="notif-badge">3</span>
+            <span class="notif-badge" style="display:none;">0</span>
           </button>
         </div>
       </header>
@@ -140,7 +140,7 @@
               <span class="ta-breadcrumb__current">Teaching Assignments</span>
             </div>
             <h1 class="ta-page-title">Teaching Assignments</h1>
-            <p class="ta-page-sub">1st Semester · AY 2025–2026 · Maria Santos</p>
+            <p class="ta-page-sub" id="taPageSub">Loading current semester…</p>
           </div>
           <div class="ta-page-header__right">
             <span class="ta-status-badge">
@@ -157,22 +157,22 @@
         <!-- Summary strip -->
         <div class="ta-summary">
           <div class="ta-summary__item">
-            <p class="ta-summary__val">3</p>
+            <p class="ta-summary__val" id="taSectionsCount">0</p>
             <p class="ta-summary__lbl">Sections</p>
           </div>
           <div class="ta-summary__divider"></div>
           <div class="ta-summary__item">
-            <p class="ta-summary__val">3</p>
+            <p class="ta-summary__val" id="taSubjectsCount">0</p>
             <p class="ta-summary__lbl">Subjects</p>
           </div>
           <div class="ta-summary__divider"></div>
           <div class="ta-summary__item">
-            <p class="ta-summary__val">1st Sem</p>
+            <p class="ta-summary__val" id="taSemester">—</p>
             <p class="ta-summary__lbl">Semester</p>
           </div>
           <div class="ta-summary__divider"></div>
           <div class="ta-summary__item">
-            <p class="ta-summary__val">AY 25–26</p>
+            <p class="ta-summary__val" id="taAcademicYear">—</p>
             <p class="ta-summary__lbl">Academic Year</p>
           </div>
         </div>
@@ -189,6 +189,7 @@
 
   <script src="../scripts/api.js"></script>
   <script src="../scripts/auth-check.js"></script>
+  <script src="../scripts/notif-badge.js"></script>
   <script src="../scripts/teaching-assignments.js"></script>
 </body>
 </html>

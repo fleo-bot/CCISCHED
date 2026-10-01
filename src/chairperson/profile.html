@@ -68,6 +68,14 @@
           <span>Schedule</span>
         </a>
 
+        <a href="audit-log.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3L4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M8.5 12l2.5 2.5L15.5 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Audit Log</span>
+        </a>
+
       </nav>
 
       <!-- Sidebar illustration -->
@@ -157,14 +165,9 @@
 
             <div class="profile-left__avatar-wrap">
               <img src="../assets/images/avatar-male.svg" alt="Avatar" class="profile-left__avatar" />
-              <button class="profile-left__avatar-btn" title="Change photo">
-                <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
-                  <path d="M11 2.5L13.5 5L5 13.5H2.5V11L11 2.5Z" stroke="white" stroke-width="1.6" stroke-linejoin="round"/>
-                </svg>
-              </button>
             </div>
 
-            <p class="profile-left__name">Christian Rey</p>
+            <p class="profile-left__name">Loading…</p>
             <p class="profile-left__role">Chairperson</p>
 
             <nav class="profile-tabs">
@@ -209,51 +212,51 @@
                 <div class="form-row form-row--3">
                   <div class="form-field">
                     <label class="form-label">First Name</label>
-                    <input type="text" class="form-input" value="Christian" />
+                    <input id="firstName" type="text" class="form-input" autocomplete="given-name" />
                   </div>
                   <div class="form-field">
                     <label class="form-label">Middle Name</label>
-                    <input type="text" class="form-input" value="Jose" />
+                    <input id="middleName" type="text" class="form-input" autocomplete="additional-name" />
                   </div>
                   <div class="form-field">
                     <label class="form-label">Last Name</label>
-                    <input type="text" class="form-input" value="Rey" />
+                    <input id="lastName" type="text" class="form-input" autocomplete="family-name" />
                   </div>
                 </div>
 
                 <div class="form-row form-row--2">
                   <div class="form-field">
                     <label class="form-label">Email Address</label>
-                    <input type="email" class="form-input" value="c.rey@psu.edu.ph" />
+                    <input id="email" type="email" class="form-input" autocomplete="email" />
                   </div>
                   <div class="form-field form-field--sm">
                     <label class="form-label">Age</label>
-                    <input type="number" class="form-input" value="45" min="18" max="99" />
+                    <input id="age" type="number" class="form-input" min="18" max="99" />
                   </div>
                 </div>
 
                 <div class="form-row form-row--2">
                   <div class="form-field">
                     <label class="form-label">Role</label>
-                    <input type="text" class="form-input" value="Chairperson" readonly />
+                    <input id="role" type="text" class="form-input" value="" readonly />
                   </div>
                   <div class="form-field">
                     <label class="form-label">Department</label>
-                    <input type="text" class="form-input" value="Department of Information Technology" />
+                    <input id="department" type="text" class="form-input" />
                   </div>
                 </div>
 
                 <div class="form-row form-row--2">
                   <div class="form-field">
                     <label class="form-label">Gender</label>
-                    <select class="form-input form-select">
-                      <option value="male" selected>Male</option>
+                    <select id="gender" class="form-input form-select">
+                      <option value="male">Male</option>
                       <option value="female">Female</option>
                     </select>
                   </div>
                   <div class="form-field">
                     <label class="form-label">Contact Number</label>
-                    <input type="text" class="form-input" value="+63 917 654 3210" />
+                    <input id="contactNumber" type="text" class="form-input" autocomplete="tel" />
                   </div>
                 </div>
 
@@ -287,43 +290,43 @@
                 <div class="form-row form-row--2">
                   <div class="form-field">
                     <label class="form-label">Academic Rank</label>
-                    <input type="text" class="form-input" value="Associate Professor II" />
+                    <input id="rank" type="text" class="form-input" />
                   </div>
                   <div class="form-field">
                     <label class="form-label">Years of Experience</label>
-                    <input type="number" class="form-input" value="15" min="0" />
+                    <input id="experience" type="number" class="form-input" min="0" />
                   </div>
                 </div>
 
                 <div class="form-row form-row--2">
                   <div class="form-field">
                     <label class="form-label">Specialization</label>
-                    <input type="text" class="form-input" value="Database Systems" />
+                    <input id="specialization" type="text" class="form-input" />
                   </div>
                   <div class="form-field">
                     <label class="form-label">Supervised Faculty</label>
-                    <input type="text" class="form-input" value="12 Faculty Members" readonly />
+                    <input id="subjectsAssigned" type="text" class="form-input" readonly />
                   </div>
                 </div>
 
                 <div class="form-row form-row--1">
                   <div class="form-field">
                     <label class="form-label">Preferred Courses</label>
-                    <input type="text" class="form-input" value="IT 301, IT 302, COMP 301" placeholder="eg. IT 301, IT 302" />
+                    <input id="preferredCourses" type="text" class="form-input" placeholder="eg. IT 301, IT 302" />
                   </div>
                 </div>
 
                 <div class="form-row form-row--2">
                   <div class="form-field">
                     <label class="form-label">Employment Type</label>
-                    <select class="form-input form-select">
-                      <option selected>Full Time</option>
+                    <select id="employmentType" class="form-input form-select">
+                      <option>Full Time</option>
                       <option>Part Time</option>
                     </select>
                   </div>
                   <div class="form-field">
                     <label class="form-label">Highest Educational Attainment</label>
-                    <input type="text" class="form-input" value="PhD Information Technology, UP Diliman" />
+                    <input id="education" type="text" class="form-input" />
                   </div>
                 </div>
 
@@ -392,21 +395,6 @@
                           <circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.7"/>
                         </svg>
                       </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-row form-row--1">
-                  <div class="form-field">
-                    <label class="form-label">Two-Factor Authentication</label>
-                    <div class="tfa-row">
-                      <label class="tfa-toggle" id="tfaToggle">
-                        <input type="checkbox" id="tfaCheckbox" />
-                        <span class="tfa-track">
-                          <span class="tfa-thumb"></span>
-                        </span>
-                        <span class="tfa-label" id="tfaLabel">Enable</span>
-                      </label>
                     </div>
                   </div>
                 </div>

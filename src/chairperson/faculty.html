@@ -77,6 +77,14 @@
           <span>Notifications</span>
         </a>
 
+        <a href="audit-log.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3L4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M8.5 12l2.5 2.5L15.5 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Audit Log</span>
+        </a>
+
       </nav>
 
       <div class="sidebar__illustration" aria-hidden="true">
@@ -143,7 +151,7 @@
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <span class="notif-badge">4</span>
+            <span class="notif-badge" style="display:none;">0</span>
           </button>
         </div>
       </header>
@@ -179,6 +187,8 @@
               <div class="fm-filter-wrap">
                 <select class="fm-filter-select" id="typeFilter">
                   <option value="all">All</option>
+                  <option value="Permanent">Permanent</option>
+                  <option value="Temporary">Temporary</option>
                   <option value="Full-Time">Full-Time</option>
                   <option value="Part-Time">Part-Time</option>
                   <option value="Designee|Chairperson">Designee | Chairperson</option>
@@ -202,6 +212,15 @@
                   <path d="M12 9v6M9 12h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                 </svg>
                 Add Faculty
+              </button>
+
+              <button class="fm-btn fm-btn--outline" id="addChairpersonBtn" type="button">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <circle cx="8" cy="4.5" r="2.5" stroke="currentColor" stroke-width="1.4"/>
+                  <path d="M2.5 14c0-3 2.4-5 5.5-5s5.5 2 5.5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M12 2v4M10 4h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+                Add Chairperson
               </button>
             </div>
 
@@ -291,15 +310,20 @@
       <!-- White scrollable body -->
       <div class="fl-modal__body">
 
-        <!-- Row 1: First · Middle · Last -->
+        <!-- Employee Number (drives the auto-generated password) -->
+        <div class="fl-modal__field">
+          <label class="fl-modal__label">Employee Number</label>
+          <input type="text" class="fl-modal__input" id="addEmployeeNumber" placeholder="eg. EMP-2024-051" />
+          <p class="fl-modal__hint" id="addPasswordHint">
+            Enter an employee number to preview the login password.
+          </p>
+        </div>
+
+        <!-- Row 1: First · Last -->
         <div class="fl-modal__row">
           <div class="fl-modal__field">
             <label class="fl-modal__label">First Name</label>
             <input type="text" class="fl-modal__input" id="addFirstName" placeholder="eg. Deishauna" />
-          </div>
-          <div class="fl-modal__field">
-            <label class="fl-modal__label">Middle Name</label>
-            <input type="text" class="fl-modal__input" id="addMiddleName" placeholder="eg. Fermil" />
           </div>
           <div class="fl-modal__field">
             <label class="fl-modal__label">Last Name</label>
@@ -311,24 +335,6 @@
         <div class="fl-modal__field">
           <label class="fl-modal__label">Email Address</label>
           <input type="email" class="fl-modal__input" id="addEmail" placeholder="eg. dfgonzales@pup.edu.ph" />
-        </div>
-
-        <!-- Row 3: Age · Role -->
-        <div class="fl-modal__row">
-          <div class="fl-modal__field">
-            <label class="fl-modal__label">Age</label>
-            <input type="number" class="fl-modal__input" id="addAge" placeholder="eg. 26" min="18" max="99" />
-          </div>
-          <div class="fl-modal__field">
-            <label class="fl-modal__label">Role</label>
-            <input type="text" class="fl-modal__input" id="addRole" placeholder="eg. Faculty" />
-          </div>
-        </div>
-
-        <!-- Row 4: Department (full width) -->
-        <div class="fl-modal__field">
-          <label class="fl-modal__label">Department</label>
-          <input type="text" class="fl-modal__input" id="addDepartment" placeholder="eg. Department of Information Technology" />
         </div>
 
         <!-- Row 5: Academic Rank · Years of Experience -->
@@ -351,7 +357,7 @@
           </div>
           <div class="fl-modal__field">
             <label class="fl-modal__label">Employment Type</label>
-            <input type="text" class="fl-modal__input" id="addEmployment" placeholder="eg. Full Time" />
+            <input type="text" class="fl-modal__input" id="addEmployment" placeholder="eg. Permanent" />
           </div>
         </div>
 
@@ -379,6 +385,41 @@
         </button>
       </div>
 
+    </div>
+  </div>
+
+  <!-- Add Chairperson modal -->
+  <div class="fl-modal-overlay" id="addChairpersonOverlay">
+    <div class="fl-modal" role="dialog" aria-modal="true" aria-labelledby="addChairpersonTitle">
+      <div class="fl-modal__header">
+        <p class="fl-modal__title" id="addChairpersonTitle">ADD CHAIRPERSON</p>
+        <button class="fl-modal__close" id="addChairpersonClose" type="button" aria-label="Close">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="fl-modal__body">
+        <div class="fl-modal__field">
+          <label class="fl-modal__label" for="cpEmployeeNumber">Chairperson ID</label>
+          <input type="text" class="fl-modal__input" id="cpEmployeeNumber" placeholder="eg. CP-001" autocomplete="off" />
+          <p class="fl-modal__hint" id="cpPasswordHint">Enter a chairperson ID to preview the initial login password.</p>
+        </div>
+        <div class="fl-modal__row">
+          <div class="fl-modal__field"><label class="fl-modal__label" for="cpFirstName">First Name</label><input type="text" class="fl-modal__input" id="cpFirstName" required /></div>
+          <div class="fl-modal__field"><label class="fl-modal__label" for="cpMiddleName">Middle Name (optional)</label><input type="text" class="fl-modal__input" id="cpMiddleName" /></div>
+        </div>
+        <div class="fl-modal__field"><label class="fl-modal__label" for="cpLastName">Last Name</label><input type="text" class="fl-modal__input" id="cpLastName" required /></div>
+        <div class="fl-modal__field"><label class="fl-modal__label" for="cpEmail">Email Address</label><input type="email" class="fl-modal__input" id="cpEmail" placeholder="name@pup.edu.ph" required /></div>
+        <div class="fl-modal__row">
+          <div class="fl-modal__field"><label class="fl-modal__label" for="cpGender">Gender (optional)</label><select class="fl-modal__input" id="cpGender"><option value="">Not specified</option><option value="male">Male</option><option value="female">Female</option></select></div>
+          <div class="fl-modal__field"><label class="fl-modal__label" for="cpAge">Age (optional)</label><input type="number" class="fl-modal__input" id="cpAge" min="18" max="100" /></div>
+        </div>
+        <div class="fl-modal__field"><label class="fl-modal__label" for="cpDepartment">Department</label><input type="text" class="fl-modal__input" id="cpDepartment" value="Department of Information Technology" /></div>
+        <div class="fl-modal__field"><label class="fl-modal__label" for="cpContact">Contact Number (optional)</label><input type="tel" class="fl-modal__input" id="cpContact" placeholder="09XXXXXXXXX" /></div>
+      </div>
+      <div class="fl-modal__footer">
+        <button class="fl-modal-btn fl-modal-btn--discard" id="addChairpersonCancel" type="button">Discard</button>
+        <button class="fl-modal-btn fl-modal-btn--save" id="addChairpersonSave" type="button">Save Chairperson</button>
+      </div>
     </div>
   </div>
 
@@ -475,6 +516,10 @@
     </div>
   </div>
 
+  <script src="../scripts/api.js"></script>
+  <script src="../scripts/auth-check.js"></script>
+  <script src="../scripts/availability-utils.js"></script>
+  <script src="../scripts/notif-badge.js"></script>
   <script src="../scripts/chairperson-faculty.js"></script>
 </body>
 </html>

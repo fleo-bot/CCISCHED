@@ -283,6 +283,55 @@
   transform: translateY(0);
 }
 
+/* Wider variant for the Sections modal, which needs a table + form */
+.mc-modal--wide {
+  max-width: 760px;
+}
+
+.mc-sections-table-wrap {
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid rgba(128, 0, 0, 0.12);
+  border-radius: 8px;
+}
+
+.mc-sections-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.mc-sections-table th {
+  position: sticky;
+  top: 0;
+  background: rgba(128, 0, 0, 0.06);
+  text-align: left;
+  padding: 8px 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--maroon);
+}
+
+.mc-sections-table td {
+  padding: 8px 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.mc-sections-table__empty {
+  padding: 16px;
+  text-align: center;
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.mc-sections-addrow {
+  border-top: 1px dashed rgba(128, 0, 0, 0.2);
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
 /* Header — maroon band matching all other card headers */
 .mc-modal__header {
   display: flex;

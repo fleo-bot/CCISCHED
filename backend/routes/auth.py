@@ -11,6 +11,7 @@ from werkzeug.security import check_password_hash
 
 from database import db
 from models import User
+from audit import log_action
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/api/auth")
 
@@ -67,11 +68,18 @@ def login():
     user = User.query.filter_by(email=email).first()
 
     if not user or not check_password_hash(user.password_hash, password):
+        # Log failed attempts too — attributed to the account if the email exists.
+        log_action(user, "Failed login", category="auth", success=False, status_code=401,
+                   user_name=email,
+                   description=f"Failed login attempt for {email}")
         return jsonify({"error": "Invalid email or password."}), 401
 
     # Store minimal info in server-side session
     session["user_id"] = user.id
     session.permanent  = True
+
+    log_action(user, "Logged in", category="auth", status_code=200,
+               description=f"{user.first_name} {user.last_name} ({user.role}) logged in")
 
     return jsonify({
         "message": "Login successful.",
@@ -81,6 +89,10 @@ def login():
 
 @auth_bp.post("/logout")
 def logout():
+    user = current_user()
+    if user:
+        log_action(user, "Logged out", category="auth", status_code=200,
+                   description=f"{user.first_name} {user.last_name} ({user.role}) logged out")
     session.clear()
     return jsonify({"message": "Logged out."}), 200
 

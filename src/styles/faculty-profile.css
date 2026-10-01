@@ -60,26 +60,6 @@
   object-fit: contain;
 }
 
-.profile-left__avatar-btn {
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: var(--maroon-dk);
-  border: 2px solid var(--white);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.18s;
-}
-
-.profile-left__avatar-btn:hover {
-  background: #400000;
-}
-
 .profile-left__name {
   font-size: 0.95rem;
   font-weight: 800;

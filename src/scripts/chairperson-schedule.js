@@ -20,11 +20,10 @@ document.getElementById('notifBtn')?.addEventListener('click', () => {
 // ─────────────────────────────────────────────
 
 // Dynamic status check functions
+let courseOfferingStatus = 'pending';
+
 function checkCourseOfferingStatus() {
-  // Check if courses are defined/offered for the semester
-  // For now, assume complete if courses exist (>0)
-  const courseCount = 50; // This would come from your backend
-  return courseCount > 0 ? 'complete' : 'pending';
+  return courseOfferingStatus;
 }
 
 function checkFacultyAvailabilityStatus() {
@@ -34,6 +33,11 @@ function checkFacultyAvailabilityStatus() {
   return pendingCount === 0 ? 'complete' : 'pending';
 }
 
+// Whether a faculty assignment has actually been generated AND approved for
+// the selected semester (real check, via /api/generate/assignment/status) —
+// this used to be a hardcoded 'complete' regardless of whether one existed.
+let facultyAssignmentStatus = 'pending';
+
 const REQUIREMENTS = [
   {
     name: 'Course Offering',
@@ -42,7 +46,7 @@ const REQUIREMENTS = [
   },
   {
     name: 'Faculty Course Assignments',
-    status: 'complete',
+    get status() { return facultyAssignmentStatus; },
     viewHref: 'faculty.html',
   },
   {
@@ -223,8 +227,6 @@ const genProgressFill = document.getElementById('genProgressFill');
 const genPct          = document.getElementById('genPct');
 const genStatus       = document.getElementById('genStatus');
 
-const API_BASE = 'http://localhost:5000';
-
 // Steps shown while the API call runs in the background
 const GEN_STEPS = [
   { label: 'Loading course offerings…',        pct: 14 },
@@ -258,10 +260,10 @@ function animateStep(targetPct, currentPct, duration) {
 }
 
 async function runGenSequence() {
-  const ay  = document.getElementById('aySelect')?.value || '';
-  const sem = document.getElementById('semSelect')?.options[
-    document.getElementById('semSelect').selectedIndex
-  ]?.text || '';
+  const ay = document.getElementById('aySelect')?.value || '';
+  const semValue = document.getElementById('semSelect')?.value || '';
+  const SEM_MAP = { '1': '1st', '2': '2nd', 'summer': 'Summer' };
+  const sem = SEM_MAP[semValue] || semValue;
 
   openGenOverlay();
   if (genProgressFill) genProgressFill.style.width = '0%';
@@ -269,20 +271,10 @@ async function runGenSequence() {
   if (genStatus)       genStatus.textContent = 'Initializing…';
 
   // ── Fire the real API call immediately (runs in parallel with animation) ──
-  const apiPromise = fetch(`${API_BASE}/api/generate`, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify({ academic_year: ay, semester: sem }),
-  })
-  .then(r => {
-    if (!r.ok) throw new Error(`Server returned ${r.status}`);
-    return r.json();
-  })
-  .catch(err => {
-    // If backend isn't running, use mock data for testing
-    console.warn('Backend unavailable, using mock data:', err.message);
-    return generateMockData(ay, sem);
-  });
+  // Stage 2 ONLY: reads the semester's currently APPROVED faculty assignment
+  // from the database and places it into a real day/time — it does not run
+  // Stage 1 or the RF again.
+  const apiPromise = API.generateTimetable(ay, sem);
 
   // ── Animate through steps 0-5 (leave step 6 / 100% for when API returns) ──
   let currentPct = 0;
@@ -320,71 +312,6 @@ async function runGenSequence() {
 
   const query = new URLSearchParams({ ay, sem }).toString();
   window.location.href = `generated-timetables.html?${query}`;
-}
-
-// Mock data generator for testing without backend
-function generateMockData(ay, sem) {
-  return {
-    academic_year: ay,
-    semester: sem,
-    solver_mode: 'Mock (Backend offline)',
-    faculty_data: [
-      {
-        id: 1, name: 'Ana Cruz', employment_type: 'Full-Time',
-        load: 15, max_units: 15, rf_score: 0.92,
-        courses: ['COMP 016 – Web Development  [MWF 7:30–9:00]'],
-        course_details: [{
-          code: 'COMP 016', title: 'Web Development', section: 'BSIT 3-3',
-          days: 'MWF', time: '7:30–9:00', room: 'CL3 (Main)', units: 3,
-          type: 'Laboratory', justification: 'High RF score, matching specialization'
-        }]
-      },
-      {
-        id: 2, name: 'Maria Santos', employment_type: 'Full-Time',
-        load: 12, max_units: 15, rf_score: 0.88,
-        courses: ['COMP 019 – Applications Development  [TTh 9:00–10:30]'],
-        course_details: [{
-          code: 'COMP 019', title: 'Applications Development', section: 'BSIT 2-1',
-          days: 'TTh', time: '9:00–10:30', room: 'CL2 (Main)', units: 3,
-          type: 'Lecture', justification: 'High RF score, preferred schedule'
-        }]
-      }
-    ],
-    dept_summary: [
-      { department: 'Bachelor of Science in Computer Science', totalFaculty: 5, status: 'Completed' },
-      { department: 'Bachelor of Science in Information Technology', totalFaculty: 10, status: 'Completed' }
-    ],
-    dept_detail: {
-      '0': {
-        label: 'BSCS', title: 'GENERATED PREVIEW: BSCS DEPARTMENT',
-        faculty: [{
-          name: 'Ana Cruz', type: 'Full-Time', load: 15, max: 15, score: 0.92,
-          department: 'Computer Science', justification: 'High RF score',
-          courses: [{ code: 'CS101', desc: 'PROGRAMMING 1', type: 'LECTURE', units: 3 }]
-        }]
-      },
-      '1': {
-        label: 'BSIT', title: 'GENERATED PREVIEW: BSIT DEPARTMENT',
-        faculty: [{
-          name: 'Maria Santos', type: 'Full-Time', load: 12, max: 15, score: 0.88,
-          department: 'Information Technology', justification: 'Matching specialization',
-          courses: [{ code: 'COMP 019', desc: 'APPLICATIONS DEVELOPMENT', type: 'LECTURE', units: 3 }]
-        }]
-      }
-    },
-    timetable: {
-      '1': [
-        { day: 'Monday', col: 0, code: 'COMP 016', name: 'Web Development', section: 'BSIT 3-3' },
-        { day: 'Wednesday', col: 0, code: 'COMP 016', name: 'Web Development', section: 'BSIT 3-3' },
-        { day: 'Friday', col: 0, code: 'COMP 016', name: 'Web Development', section: 'BSIT 3-3' }
-      ],
-      '2': [
-        { day: 'Tuesday', col: 1, code: 'COMP 019', name: 'Applications Development', section: 'BSIT 2-1' },
-        { day: 'Thursday', col: 1, code: 'COMP 019', name: 'Applications Development', section: 'BSIT 2-1' }
-      ]
-    },
-    assignments: []
-  };
 }
 
 // Yes — close confirm, start loading sequence
@@ -433,8 +360,62 @@ gtConfirmBtn?.addEventListener('click', () => {
   });
 })();
 ['aySelect', 'semSelect'].forEach(id => {
-  document.getElementById(id)?.addEventListener('change', updateStatusBanner);
+  document.getElementById(id)?.addEventListener('change', () => {
+    updateStatusBanner();
+    refreshCourseOfferingRequirement();
+    refreshFacultyAssignmentRequirement();
+  });
 });
+
+// ─────────────────────────────────────────────
+//  COURSE OFFERING REQUIREMENT — complete once the semester has sections
+//  defined. Must NOT depend on published schedules: those are the OUTPUT of
+//  timetable generation, so requiring them made the Generate button
+//  impossible to unlock.
+// ─────────────────────────────────────────────
+async function refreshCourseOfferingRequirement() {
+  const ay = document.getElementById('aySelect')?.value;
+  const semValue = document.getElementById('semSelect')?.value;
+  if (!ay || !semValue) return;
+
+  const SEM_MAP = { '1': '1st', '2': '2nd', 'summer': 'Summer' };
+  const sem = SEM_MAP[semValue] || semValue;
+
+  try {
+    const status = await API.getCourseOfferingStatus(ay, sem);
+    courseOfferingStatus = status.status || 'pending';
+  } catch (err) {
+    courseOfferingStatus = 'pending';
+    console.error('Failed to check course offering schedule status:', err);
+  }
+  renderRequirements();
+}
+
+// ─────────────────────────────────────────────
+//  FACULTY ASSIGNMENT REQUIREMENT — real check against the DB, replacing
+//  the hardcoded 'complete' this used to be.
+// ─────────────────────────────────────────────
+async function refreshFacultyAssignmentRequirement() {
+  const ay = document.getElementById('aySelect')?.value;
+  const semValue = document.getElementById('semSelect')?.value;
+  if (!ay || !semValue) return;
+
+  const SEM_MAP = { '1': '1st', '2': '2nd', 'summer': 'Summer' };
+  const sem = SEM_MAP[semValue] || semValue;
+
+  try {
+    const status = await API.getAssignmentStatus(ay, sem);
+    facultyAssignmentStatus = status.approved_count > 0 ? 'complete' :
+                               status.draft_count > 0    ? 'pending'  : 'missing';
+  } catch (err) {
+    // Leave it as-is (starts 'pending') rather than falsely claim 'complete'
+    console.error('Failed to check faculty assignment status:', err);
+  }
+  renderRequirements();
+}
+
+refreshCourseOfferingRequirement();
+refreshFacultyAssignmentRequirement();
 
 // ─────────────────────────────────────────────
 //  TOAST

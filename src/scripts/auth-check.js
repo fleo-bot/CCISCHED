@@ -13,15 +13,23 @@ let currentUser = null;
     const response = await API.getCurrentUser();
     currentUser = response.user;
 
-    // Optional: validate role on chairperson-only pages
+    // Validate role on chairperson-only pages
     if (window.location.pathname.includes('/chairperson/') && currentUser.role !== 'chairperson') {
-      window.location.href = '../login.html';
+      window.location.href = '../login.html?error=access_denied&role=chairperson';
+      return;
     }
 
-    // Optional: validate role on faculty-only pages
+    // Validate role on faculty-only pages
     if (window.location.pathname.includes('/faculty/') && currentUser.role !== 'faculty') {
-      window.location.href = '../login.html';
+      window.location.href = '../login.html?error=access_denied&role=faculty';
+      return;
     }
+
+    // Let other scripts on the page know currentUser is ready. Scripts that
+    // load right after this one run immediately (synchronously) — before
+    // this async function's API call has resolved — so anything reading
+    // `currentUser` at top-level would otherwise always see null.
+    document.dispatchEvent(new CustomEvent('authReady', { detail: currentUser }));
 
   } catch (err) {
     // API.getCurrentUser already redirects to login on 401, but handle other errors

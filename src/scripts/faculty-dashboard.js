@@ -74,59 +74,41 @@ if (topbarDate) {
   topbarDate.textContent = `${dayName}, ${datePart}`;
 }
 
-// Display user name in greeting
-if (currentUser) {
-  const greeting = document.getElementById('userGreeting');
-  if (greeting) {
-    greeting.textContent = `Hello, ${currentUser.first_name} ${currentUser.last_name}`;
+// Display the logged-in user's name/role wherever the page shows a static
+// placeholder. Runs on the authReady event (fired by auth-check.js once the
+// current-user fetch resolves) rather than immediately — this script loads
+// right after auth-check.js and would otherwise run before that fetch
+// finishes, seeing currentUser as still null.
+function applyCurrentUserToPage(user) {
+  if (!user) return;
+  const fullName = `${user.first_name} ${user.last_name}`;
+
+  const greetingStrong = document.querySelector('.welcome-banner__greeting strong');
+  if (greetingStrong) greetingStrong.textContent = fullName;
+
+  const panelName = document.querySelector('.profile-panel__name');
+  if (panelName) panelName.textContent = fullName;
+
+  const panelRole = document.querySelector('.profile-panel__role');
+  if (panelRole) panelRole.textContent = user.role === 'chairperson' ? 'Chairperson' : 'Faculty';
+
+  // Avatar follows the gender saved on the profile (was hardcoded to female).
+  const avatarImg = document.querySelector('.profile-panel__avatar-img');
+  if (avatarImg && (user.gender === 'male' || user.gender === 'female')) {
+    avatarImg.src = `../assets/images/avatar-${user.gender}.svg`;
   }
 }
 
-// ─────────────────────────────────────────────
-//  NOTIFICATION BELL — fetch unread count from API
-// ─────────────────────────────────────────────
-async function updateNotificationCount() {
-  try {
-    const response = await API.getUnreadCount();
-    const badge = document.querySelector('.notif-badge');
-    if (badge) {
-      badge.textContent = response.unread_count || 0;
-      badge.style.display = response.unread_count > 0 ? '' : 'none';
-    }
-  } catch (err) {
-    console.error('Failed to fetch notification count:', err);
-  }
-}
+document.addEventListener('authReady', (e) => applyCurrentUserToPage(e.detail));
+// In case this script ever loads after auth-check.js has already fired
+// (e.g. script reordering later), currentUser may already be populated.
+if (typeof currentUser !== 'undefined' && currentUser) applyCurrentUserToPage(currentUser);
 
-updateNotificationCount();
+// Bell badge: handled by notif-badge.js (shared across every page)
 
 document.getElementById('notifBtn')?.addEventListener('click', () => {
   window.location.href = 'notifications.html';
 });
-
-// ─────────────────────────────────────────────
-//  STATUS BADGE  (header of avail card)
-// ─────────────────────────────────────────────
-function renderStatusBadge() {
-  const badge = document.getElementById('dashStatusBadge');
-  if (!badge) return;
-  if (isFinalized()) {
-    badge.className = 'badge badge--submitted';
-    badge.innerHTML = `
-      <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
-        <path d="M2 6L5 9L10 3" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      Submitted`;
-  } else {
-    badge.className = 'badge badge--pending';
-    badge.innerHTML = `
-      <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
-        <circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.6"/>
-        <path d="M6 3.5V6L7.5 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-      </svg>
-      Pending Request`;
-  }
-}
 
 // ─────────────────────────────────────────────
 //  RENDER SLOTS
@@ -140,6 +122,7 @@ function renderSlots() {
   const sub       = availabilityData?.submission;
   const slots     = sub?.slots || [];
   const finalized = isFinalized();
+  const canDeleteSlots = ['pending', 'returned'].includes(sub?.status);
   container.innerHTML = '';
 
   // Empty state
@@ -182,8 +165,12 @@ function renderSlots() {
       : `<button class="slot__edit-btn" onclick="window.location.href='edit-availability.html?slot=${slotNum}'">
            <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
              <path d="M9.5 2.5L11.5 4.5L4.5 11.5H2.5V9.5L9.5 2.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-           </svg>Edit</button>`;
-
+           </svg>Edit</button>
+         ${canDeleteSlots ? `<button class="slot__delete-btn" type="button" data-slot-id="${slot.id}" aria-label="Delete slot ${slotNum}" title="Delete slot">
+           <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+             <path d="M2.5 4h9M5 4V2.5h4V4M4 4.5l.5 7h5l.5-7M5.8 6.2v3.5M8.2 6.2v3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+           </svg>Delete</button>` : ''}`;
+// Render slot card
     const div = document.createElement('div');
     div.className = 'slot';
     div.innerHTML = `
@@ -201,11 +188,35 @@ function renderSlots() {
             <circle cx="7" cy="7" r="5.5" stroke="white" stroke-width="1.4"/>
             <path d="M7 4V7L9.5 9" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
           </svg>
-          <span class="slot__time-text">${slot.time_label || 'Select time'}</span>
+          <span class="slot__time-text">${AvailabilityUtils.slotLabel(slot) || 'Select time'}</span>
         </button>
       </div>`;
 
     container.appendChild(div);
+  });
+
+  // Delete only draft/returned slots. The backend also checks ownership and status.
+  container.querySelectorAll('.slot__delete-btn').forEach(button => {
+    button.addEventListener('click', async () => {
+      const slotId = Number(button.dataset.slotId);
+      if (!Number.isInteger(slotId) || slotId <= 0) {
+        alert('This slot could not be identified. Please refresh and try again.');
+        return;
+      }
+      if (!window.confirm('Delete this availability slot? This cannot be undone.')) return;
+
+      button.disabled = true;
+      try {
+        await API.deleteSlot(slotId);
+        availabilityData = await API.getMyAvailability();
+        renderSlots();
+        renderAvailStatBadge();
+      } catch (err) {
+        console.error('Failed to delete availability slot:', err);
+        alert(err.message || 'Could not delete this slot. Please try again.');
+        button.disabled = false;
+      }
+    });
   });
 
   // Day toggles — disabled if finalized
@@ -260,6 +271,85 @@ function renderAvailStatBadge() {
   }
 }
 
+
+// ─────────────────────────────────────────────
+//  SEMESTER / ASSIGNMENT / SLOT LIST  (all from the API)
+// ─────────────────────────────────────────────
+const TERM_LABEL = { '1st': '1st Sem', '2nd': '2nd Sem', 'summer': 'Summer' };
+const TERM_LONG  = { '1st': '1st Semester', '2nd': '2nd Semester', 'summer': 'Summer' };
+const setText = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value; };
+
+function renderSemester() {
+  const sem = availabilityData?.semester;
+  if (!sem) {
+    setText('welcomeSub',   'No active semester · Here\'s your dashboard overview.');
+    setText('availCardSub', 'No active semester');
+    setText('semStatValue', '—');
+    setText('semStatBadge', '—');
+    setText('termStat',     '—');
+    return;
+  }
+  const term  = String(sem.semester_term || '').toLowerCase();
+  const short = TERM_LABEL[term] || `${sem.semester_term} Sem`;
+  const long  = TERM_LONG[term]  || `${sem.semester_term} Semester`;
+  const ay    = sem.academic_year || '';
+  const ayShort = /^\d{4}-\d{4}$/.test(ay) ? `${ay.slice(2, 4)}–${ay.slice(-2)}` : ay;
+
+  setText('welcomeSub',   `${long} · AY ${ay.replace('-', '–')} · Here's your dashboard overview.`);
+  setText('availCardSub', `${short} · AY ${ay.replace('-', '–')}`);
+  setText('semStatValue', short);
+  setText('semStatBadge', `AY ${ayShort}`);
+  setText('termStat',     term === '1st' || term === '2nd' ? term : short);
+}
+
+// Same counting rules as teaching-assignments.js so both pages always agree:
+// distinct section names across the faculty member's assigned courses.
+async function renderAssignments() {
+  try {
+    const user = (typeof currentUser !== 'undefined' && currentUser)
+      ? currentUser
+      : (await API.getCurrentUser()).user;
+    const data = await API.getFacultyCourseAssignments();
+    const mine = (data?.faculty || []).find(f => Number(f.id) === Number(user?.id)) ||
+      (data?.faculty || []).find(f => String(f.employee_number || '').toLowerCase() ===
+                                       String(user?.employee_number || '').toLowerCase());
+    const sections = new Set();
+    (mine?.courses || []).forEach(c => (c.sections || []).forEach(sec => sections.add(sec)));
+    const n = sections.size;
+
+    setText('assignStatValue', `${n} Section${n === 1 ? '' : 's'}`);
+    setText('assignStatBadge', n > 0 ? 'Active' : 'None yet');
+    setText('sectionCountStat', String(n));
+  } catch (err) {
+    console.error('Failed to load teaching assignments:', err);
+    setText('assignStatValue', '—');
+    setText('assignStatBadge', '—');
+    setText('sectionCountStat', '—');
+  }
+}
+
+function renderSlotList() {
+  const box = document.getElementById('upcomingSlots');
+  if (!box) return;
+  const slots = AvailabilityUtils.sortSlots
+    ? AvailabilityUtils.sortSlots(availabilityData?.submission?.slots || [])
+    : (availabilityData?.submission?.slots || []);
+  if (!slots.length) {
+    box.innerHTML = '<p class="upcoming__empty" style="font-size:.72rem;opacity:.7;">No availability added yet.</p>';
+    return;
+  }
+  const dots = ['maroon', 'light', 'gold'];
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  box.innerHTML = slots.map((slot, i) => `
+    <div class="upcoming__item">
+      <div class="upcoming__dot upcoming__dot--${dots[i % dots.length]}"></div>
+      <div class="upcoming__info">
+        <p class="upcoming__label">Slot ${esc(slot.slot_number || i + 1)}</p>
+        <p class="upcoming__time">${esc(AvailabilityUtils.slotLabel(slot) || '—')}</p>
+      </div>
+    </div>`).join('');
+}
+
 // ─────────────────────────────────────────────
 //  INIT
 // ─────────────────────────────────────────────
@@ -268,4 +358,7 @@ function renderAvailStatBadge() {
   renderAvailStatBadge();
   renderStatusBadge();
   renderSlots();
+  renderSlotList();
+  renderSemester();
+  renderAssignments();
 })();

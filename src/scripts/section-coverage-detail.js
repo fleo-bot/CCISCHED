@@ -14,206 +14,27 @@ document.getElementById('notifBtn')?.addEventListener('click', () => {
 });
 
 // ─────────────────────────────────────────────
-//  DATA
-//  Each course lists every section with whether
-//  it has been assigned to a faculty member.
+//  DATA — loaded from the real backend, joined against
+//  published Schedule entries to determine what's assigned
 // ─────────────────────────────────────────────
-const COVERAGE_DETAIL = [
-  {
-    code: 'INTE 303',
-    name: 'Capstone Project 1',
-    totalSections: 9,
-    sections: [
-      { label: 'IT4-1', assignedTo: 'Dr. Maria Santos' },
-      { label: 'IT4-2', assignedTo: 'Dr. Maria Santos' },
-      { label: 'IT4-3', assignedTo: 'Prof. James Reyes' },
-      { label: 'IT4-4', assignedTo: 'Prof. James Reyes' },
-      { label: 'IT4-5', assignedTo: 'Dr. Ana Cruz' },
-      { label: 'IT4-6', assignedTo: null },
-      { label: 'IT4-7', assignedTo: null },
-      { label: 'IT4-8', assignedTo: null },
-      { label: 'IT4-9', assignedTo: null },
-    ],
-  },
-  {
-    code: 'COMP 019',
-    name: 'Application Development',
-    totalSections: 9,
-    sections: [
-      { label: 'IT3-1', assignedTo: 'Prof. Rico Mendoza' },
-      { label: 'IT3-2', assignedTo: 'Prof. Rico Mendoza' },
-      { label: 'IT3-3', assignedTo: 'Ms. Laura Bautista' },
-      { label: 'IT3-4', assignedTo: 'Ms. Laura Bautista' },
-      { label: 'IT3-5', assignedTo: null },
-      { label: 'IT3-6', assignedTo: null },
-      { label: 'IT3-7', assignedTo: null },
-      { label: 'IT3-8', assignedTo: null },
-      { label: 'IT3-9', assignedTo: null },
-    ],
-  },
-  {
-    code: 'COMP 035',
-    name: 'Data Mining',
-    totalSections: 9,
-    sections: [
-      { label: 'IT3-1', assignedTo: 'Dr. Kevin Aquino' },
-      { label: 'IT3-2', assignedTo: 'Dr. Kevin Aquino' },
-      { label: 'IT3-3', assignedTo: 'Dr. Kevin Aquino' },
-      { label: 'IT3-4', assignedTo: 'Prof. Janet Garcia' },
-      { label: 'IT3-5', assignedTo: 'Prof. Janet Garcia' },
-      { label: 'IT3-6', assignedTo: 'Prof. Janet Garcia' },
-      { label: 'IT3-7', assignedTo: 'Dr. Robert Villanueva' },
-      { label: 'IT3-8', assignedTo: 'Dr. Robert Villanueva' },
-      { label: 'IT3-9', assignedTo: 'Dr. Robert Villanueva' },
-    ],
-  },
-  {
-    code: 'COMP 050',
-    name: 'Programming 1',
-    totalSections: 9,
-    sections: [
-      { label: 'IT1-1', assignedTo: 'Mr. Carlo Dela Cruz' },
-      { label: 'IT1-2', assignedTo: 'Mr. Carlo Dela Cruz' },
-      { label: 'IT1-3', assignedTo: 'Mr. Carlo Dela Cruz' },
-      { label: 'IT1-4', assignedTo: 'Dr. Patricia Lim' },
-      { label: 'IT1-5', assignedTo: 'Dr. Patricia Lim' },
-      { label: 'IT1-6', assignedTo: 'Dr. Patricia Lim' },
-      { label: 'IT1-7', assignedTo: 'Prof. Edwin Torres' },
-      { label: 'IT1-8', assignedTo: 'Prof. Edwin Torres' },
-      { label: 'IT1-9', assignedTo: 'Prof. Edwin Torres' },
-    ],
-  },
-  {
-    code: 'COMP 040',
-    name: 'Discrete Mathematics',
-    totalSections: 9,
-    sections: [
-      { label: 'IT2-1', assignedTo: 'Dr. Luz Fernandez' },
-      { label: 'IT2-2', assignedTo: 'Dr. Luz Fernandez' },
-      { label: 'IT2-3', assignedTo: 'Dr. Luz Fernandez' },
-      { label: 'IT2-4', assignedTo: 'Prof. Mark Domingo' },
-      { label: 'IT2-5', assignedTo: 'Prof. Mark Domingo' },
-      { label: 'IT2-6', assignedTo: null },
-      { label: 'IT2-7', assignedTo: null },
-      { label: 'IT2-8', assignedTo: null },
-      { label: 'IT2-9', assignedTo: null },
-    ],
-  },
-  {
-    code: 'COMP 033',
-    name: 'Database Administration',
-    totalSections: 9,
-    sections: [
-      { label: 'IT3-1', assignedTo: 'Dr. Maria Santos' },
-      { label: 'IT3-2', assignedTo: 'Dr. Maria Santos' },
-      { label: 'IT3-3', assignedTo: 'Prof. James Reyes' },
-      { label: 'IT3-4', assignedTo: 'Prof. James Reyes' },
-      { label: 'IT3-5', assignedTo: 'Dr. Ana Cruz' },
-      { label: 'IT3-6', assignedTo: 'Dr. Ana Cruz' },
-      { label: 'IT3-7', assignedTo: 'Prof. Rico Mendoza' },
-      { label: 'IT3-8', assignedTo: null },
-      { label: 'IT3-9', assignedTo: null },
-    ],
-  },
-  {
-    code: 'COMP 058',
-    name: 'Data Science',
-    totalSections: 9,
-    sections: [
-      { label: 'IT4-1', assignedTo: 'Dr. Kevin Aquino' },
-      { label: 'IT4-2', assignedTo: 'Dr. Kevin Aquino' },
-      { label: 'IT4-3', assignedTo: 'Dr. Kevin Aquino' },
-      { label: 'IT4-4', assignedTo: 'Prof. Janet Garcia' },
-      { label: 'IT4-5', assignedTo: 'Prof. Janet Garcia' },
-      { label: 'IT4-6', assignedTo: 'Prof. Janet Garcia' },
-      { label: 'IT4-7', assignedTo: 'Dr. Robert Villanueva' },
-      { label: 'IT4-8', assignedTo: 'Dr. Robert Villanueva' },
-      { label: 'IT4-9', assignedTo: 'Dr. Robert Villanueva' },
-    ],
-  },
-  {
-    code: 'COMP 055',
-    name: 'Data Communication',
-    totalSections: 9,
-    sections: [
-      { label: 'IT3-1', assignedTo: 'Ms. Tricia Ramos' },
-      { label: 'IT3-2', assignedTo: 'Ms. Tricia Ramos' },
-      { label: 'IT3-3', assignedTo: 'Mr. Dennis Ocampo' },
-      { label: 'IT3-4', assignedTo: 'Mr. Dennis Ocampo' },
-      { label: 'IT3-5', assignedTo: 'Dr. Luz Fernandez' },
-      { label: 'IT3-6', assignedTo: 'Dr. Luz Fernandez' },
-      { label: 'IT3-7', assignedTo: 'Dr. Luz Fernandez' },
-      { label: 'IT3-8', assignedTo: 'Prof. Mark Domingo' },
-      { label: 'IT3-9', assignedTo: 'Prof. Mark Domingo' },
-    ],
-  },
-  {
-    code: 'COMP 016',
-    name: 'Web Development',
-    totalSections: 9,
-    sections: [
-      { label: 'IT2-1', assignedTo: 'Mr. Carlo Dela Cruz' },
-      { label: 'IT2-2', assignedTo: 'Mr. Carlo Dela Cruz' },
-      { label: 'IT2-3', assignedTo: 'Dr. Patricia Lim' },
-      { label: 'IT2-4', assignedTo: 'Dr. Patricia Lim' },
-      { label: 'IT2-5', assignedTo: 'Dr. Patricia Lim' },
-      { label: 'IT2-6', assignedTo: 'Prof. Edwin Torres' },
-      { label: 'IT2-7', assignedTo: 'Prof. Edwin Torres' },
-      { label: 'IT2-8', assignedTo: 'Prof. Edwin Torres' },
-      { label: 'IT2-9', assignedTo: null },
-    ],
-  },
-  {
-    code: 'COMP 017',
-    name: 'Multimedia',
-    totalSections: 9,
-    sections: [
-      { label: 'IT3-1', assignedTo: 'Ms. Laura Bautista' },
-      { label: 'IT3-2', assignedTo: 'Ms. Laura Bautista' },
-      { label: 'IT3-3', assignedTo: 'Ms. Laura Bautista' },
-      { label: 'IT3-4', assignedTo: 'Prof. Rico Mendoza' },
-      { label: 'IT3-5', assignedTo: 'Prof. Rico Mendoza' },
-      { label: 'IT3-6', assignedTo: 'Prof. Rico Mendoza' },
-      { label: 'IT3-7', assignedTo: 'Dr. Ana Cruz' },
-      { label: 'IT3-8', assignedTo: null },
-      { label: 'IT3-9', assignedTo: null },
-    ],
-  },
-  {
-    code: 'COMP 028',
-    name: 'Network Administration',
-    totalSections: 9,
-    sections: [
-      { label: 'IT3-1', assignedTo: 'Dr. Robert Villanueva' },
-      { label: 'IT3-2', assignedTo: 'Dr. Robert Villanueva' },
-      { label: 'IT3-3', assignedTo: 'Ms. Tricia Ramos' },
-      { label: 'IT3-4', assignedTo: 'Ms. Tricia Ramos' },
-      { label: 'IT3-5', assignedTo: 'Mr. Dennis Ocampo' },
-      { label: 'IT3-6', assignedTo: 'Mr. Dennis Ocampo' },
-      { label: 'IT3-7', assignedTo: null },
-      { label: 'IT3-8', assignedTo: null },
-      { label: 'IT3-9', assignedTo: null },
-    ],
-  },
-  {
-    code: 'ELEC 101',
-    name: 'Mobile Application Dev',
-    totalSections: 9,
-    sections: [
-      { label: 'IT4-1', assignedTo: 'Dr. Kevin Aquino' },
-      { label: 'IT4-2', assignedTo: 'Dr. Kevin Aquino' },
-      { label: 'IT4-3', assignedTo: 'Prof. Janet Garcia' },
-      { label: 'IT4-4', assignedTo: 'Prof. Janet Garcia' },
-      { label: 'IT4-5', assignedTo: null },
-      { label: 'IT4-6', assignedTo: null },
-      { label: 'IT4-7', assignedTo: null },
-      { label: 'IT4-8', assignedTo: null },
-      { label: 'IT4-9', assignedTo: null },
-    ],
-  },
-];
+let COVERAGE_DETAIL = [];
+let OVERALL_PCT     = 0;
 
-const OVERALL_PCT = 82;
+async function loadCoverage() {
+  try {
+    const data = await API.getCoverage();
+    // Skip courses with no sections this semester — they aren't offered, so
+    // they have nothing to be covered (previously shown as a bogus 0/0 "complete").
+    COVERAGE_DETAIL = data.courses.filter(c => c.totalSections > 0);
+    const { total_sections, sections_covered } = data.totals;
+    OVERALL_PCT = total_sections > 0 ? Math.round((sections_covered / total_sections) * 100) : 0;
+    updateStats();
+    renderCourses();
+  } catch (err) {
+    console.error('[Section Coverage] Failed to load:', err);
+  }
+}
+
 
 // ─────────────────────────────────────────────
 //  STATE
@@ -351,5 +172,4 @@ document.getElementById('searchInput')?.addEventListener('input', e => {
 // ─────────────────────────────────────────────
 //  INIT
 // ─────────────────────────────────────────────
-updateStats();
-renderCourses();
+loadCoverage();

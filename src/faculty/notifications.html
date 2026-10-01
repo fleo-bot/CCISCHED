@@ -178,131 +178,14 @@
         <!-- Filter tabs -->
         <div class="notif-tabs">
           <button class="notif-tab notif-tab--active" data-filter="all">All</button>
-          <button class="notif-tab" data-filter="unread">Unread <span class="notif-tab__count" id="unreadCount">3</span></button>
+          <button class="notif-tab" data-filter="unread">Unread <span class="notif-tab__count" id="unreadCount">0</span></button>
           <button class="notif-tab" data-filter="system">System</button>
           <button class="notif-tab" data-filter="chairperson">Chairperson</button>
         </div>
 
         <!-- Notification list -->
         <div class="notif-list" id="notifList">
-
-          <div class="notif-item notif-item--unread" data-type="chairperson">
-            <div class="notif-item__indicator"></div>
-            <div class="notif-item__icon notif-item__icon--chairperson">
-              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/>
-                <path d="M3 19C3 15.686 6.134 13 10 13C13.866 13 17 15.686 17 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="notif-item__body">
-              <div class="notif-item__row">
-                <p class="notif-item__title">Availability form received by Chairperson</p>
-                <span class="notif-item__time">9:14 AM</span>
-              </div>
-              <p class="notif-item__msg">Your submitted availability for 1st Semester A.Y. 2025–2026 was received by Chairperson Christian Roy on May 20, 2026 at 09:14 AM.</p>
-              <span class="notif-item__tag notif-item__tag--chairperson">Chairperson</span>
-            </div>
-            <button class="notif-item__dismiss" title="Dismiss">
-              <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
-                <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-              </svg>
-            </button>
-          </div>
-
-          <div class="notif-item notif-item--unread" data-type="system">
-            <div class="notif-item__indicator"></div>
-            <div class="notif-item__icon notif-item__icon--system">
-              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.8"/>
-                <path d="M10 6v4M10 13v.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="notif-item__body">
-              <div class="notif-item__row">
-                <p class="notif-item__title">Availability submission deadline reminder</p>
-                <span class="notif-item__time">8:00 AM</span>
-              </div>
-              <p class="notif-item__msg">System reminder: Availability forms for 1st Semester are due in 3 days (May 23, 2026). Faculty who have not submitted will receive a follow-up from the Chairperson.</p>
-              <span class="notif-item__tag notif-item__tag--system">System</span>
-            </div>
-            <button class="notif-item__dismiss" title="Dismiss">
-              <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
-                <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-              </svg>
-            </button>
-          </div>
-
-          <div class="notif-item notif-item--unread" data-type="system">
-            <div class="notif-item__indicator"></div>
-            <div class="notif-item__icon notif-item__icon--system">
-              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                <rect x="2" y="3" width="16" height="15" rx="3" stroke="currentColor" stroke-width="1.8"/>
-                <path d="M2 8H18" stroke="currentColor" stroke-width="1.8"/>
-                <rect x="6" y="1" width="2" height="4" rx="1" fill="currentColor"/>
-                <rect x="12" y="1" width="2" height="4" rx="1" fill="currentColor"/>
-              </svg>
-            </div>
-            <div class="notif-item__body">
-              <div class="notif-item__row">
-                <p class="notif-item__title">Semester timetable generated — 1st Sem A.Y. 2025–2026</p>
-                <span class="notif-item__time">2:12 PM</span>
-              </div>
-              <p class="notif-item__msg">The Chairperson has generated the official timetable for 1st Semester A.Y. 2025–2026. 38 sections across 24 faculty members. Pending Dean approval.</p>
-              <span class="notif-item__tag notif-item__tag--system">System</span>
-            </div>
-            <button class="notif-item__dismiss" title="Dismiss">
-              <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
-                <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-              </svg>
-            </button>
-          </div>
-
-          <div class="notif-item" data-type="chairperson">
-            <div class="notif-item__indicator notif-item__indicator--read"></div>
-            <div class="notif-item__icon notif-item__icon--warning">
-              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                <path d="M10 3L18 17H2L10 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                <path d="M10 8v4M10 14v.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="notif-item__body">
-              <div class="notif-item__row">
-                <p class="notif-item__title">Chairperson requests availability resubmission</p>
-                <span class="notif-item__time">9:50 AM</span>
-              </div>
-              <p class="notif-item__msg">Chairperson Christian Roy has returned your availability form for revision. Reason: Slot 3 overlaps with a blocked time window. Please update and resubmit.</p>
-              <span class="notif-item__tag notif-item__tag--warning">Action Required</span>
-            </div>
-            <button class="notif-item__dismiss" title="Dismiss">
-              <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
-                <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-              </svg>
-            </button>
-          </div>
-
-          <div class="notif-item" data-type="system">
-            <div class="notif-item__indicator notif-item__indicator--read"></div>
-            <div class="notif-item__icon notif-item__icon--system">
-              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.8"/>
-                <path d="M10 6v4M10 13v.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="notif-item__body">
-              <div class="notif-item__row">
-                <p class="notif-item__title">New academic year schedule window opened</p>
-                <span class="notif-item__time">May 15</span>
-              </div>
-              <p class="notif-item__msg">The availability submission window for 2nd Semester A.Y. 2025–2026 is now open. Please submit your preferred schedule slots before June 10, 2026.</p>
-              <span class="notif-item__tag notif-item__tag--system">System</span>
-            </div>
-            <button class="notif-item__dismiss" title="Dismiss">
-              <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
-                <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-              </svg>
-            </button>
-          </div>
-
+          <!-- Filled by faculty-notifications.js from GET /api/notifications -->
         </div><!-- /notif-list -->
 
         <!-- Empty state (hidden by default) -->
@@ -323,6 +206,7 @@
 
   <script src="../scripts/api.js"></script>
   <script src="../scripts/auth-check.js"></script>
+  <script src="../scripts/notif-badge.js"></script>
   <script src="../scripts/faculty-notifications.js"></script>
 </body>
 </html>

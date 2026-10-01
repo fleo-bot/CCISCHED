@@ -14,25 +14,28 @@ document.getElementById('notifBtn')?.addEventListener('click', () => {
 });
 
 // ─────────────────────────────────────────────
-//  DATA — mirrors courses.js, extended with yearLevel & sections
+//  DATA — loaded from the real backend
 // ─────────────────────────────────────────────
-let courses = [
-  { code: 'COMP 016', title: 'Web Development',              classification: 'IT Common & Professional Course', yearLevel: 2, units: 3, sections: 5 },
-  { code: 'COMP 015', title: 'Fundamentals of Research',     classification: 'IT Common & Professional Course', yearLevel: 1, units: 3, sections: 6 },
-  { code: 'COMP 001', title: 'Introduction to Computing',    classification: 'IT Common & Professional Course', yearLevel: 1, units: 3, sections: 8 },
-  { code: 'COMP 025', title: 'Project Management',           classification: 'IT Elective Course',             yearLevel: 3, units: 3, sections: 5 },
-  { code: 'INTE 303', title: 'Capstone',                     classification: 'IT Common & Professional Course', yearLevel: 3, units: 6, sections: 8 },
-  { code: 'COMP 018', title: 'Database Administration',      classification: 'IT Common & Professional Course', yearLevel: 3, units: 3, sections: 7 },
-  { code: 'COMP 034', title: 'Introduction to Data Science', classification: 'IT Elective Course',             yearLevel: 1, units: 3, sections: 5 },
-  { code: 'COMP 035', title: 'Data Mining',                  classification: 'IT Elective Course',             yearLevel: 3, units: 3, sections: 5 },
-  { code: 'COMP 019', title: 'Application Development',      classification: 'IT Common & Professional Course', yearLevel: 3, units: 3, sections: 3 },
-  { code: 'COMP 037', title: 'Machine Learning',             classification: 'IT Elective Course',             yearLevel: 2, units: 3, sections: 5 },
-  { code: 'COMP 007', title: 'Operating Systems',            classification: 'IT Common & Professional Course', yearLevel: 2, units: 3, sections: 8 },
-  { code: 'COMP 017', title: 'Multimedia',                   classification: 'IT Elective Course',             yearLevel: 3, units: 3, sections: 5 },
-];
+let courses = [];
 
-// Track unsaved changes
-let dirty = false;
+async function loadCourses() {
+  try {
+    const data = await API.getCourses();
+    courses = data.map(c => ({
+      id:             c.id,
+      code:           c.code,
+      title:          c.title,
+      classification: c.classification || '',
+      yearLevel:      c.yearLevel || '',
+      units:          c.units,
+      sections:       c.sections,
+      description:    c.description || '',
+    }));
+    renderRows();
+  } catch (err) {
+    showToast('Failed to load courses: ' + err.message, 'error');
+  }
+}
 
 // ─────────────────────────────────────────────
 //  RENDER TABLE
@@ -55,6 +58,14 @@ function renderRows() {
       <td class="mc-td--center">${course.sections}</td>
       <td class="mc-td--center">
         <div class="mc-actions">
+          <button class="mc-action-btn mc-action-btn--sections" data-idx="${idx}" title="Manage Sections">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+              <rect x="2" y="2" width="4" height="4" rx="0.7" stroke="currentColor" stroke-width="1.3"/>
+              <rect x="8" y="2" width="4" height="4" rx="0.7" stroke="currentColor" stroke-width="1.3"/>
+              <rect x="2" y="8" width="4" height="4" rx="0.7" stroke="currentColor" stroke-width="1.3"/>
+              <rect x="8" y="8" width="4" height="4" rx="0.7" stroke="currentColor" stroke-width="1.3"/>
+            </svg>
+          </button>
           <button class="mc-action-btn mc-action-btn--edit" data-idx="${idx}" title="Edit">
             <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
               <path d="M9.5 2.5L11.5 4.5L4.5 11.5H2.5V9.5L9.5 2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
@@ -73,14 +84,19 @@ function renderRows() {
   });
 }
 
-renderRows();
+loadCourses();
 
 // ─────────────────────────────────────────────
 //  TABLE BUTTON DELEGATION
 // ─────────────────────────────────────────────
 tbody?.addEventListener('click', e => {
-  const editBtn   = e.target.closest('.mc-action-btn--edit');
-  const deleteBtn = e.target.closest('.mc-action-btn--delete');
+  const editBtn     = e.target.closest('.mc-action-btn--edit');
+  const deleteBtn   = e.target.closest('.mc-action-btn--delete');
+  const sectionsBtn = e.target.closest('.mc-action-btn--sections');
+
+  if (sectionsBtn) {
+    openSectionsModal(parseInt(sectionsBtn.dataset.idx, 10));
+  }
 
   if (editBtn) {
     openEditModal(parseInt(editBtn.dataset.idx, 10));
@@ -88,15 +104,20 @@ tbody?.addEventListener('click', e => {
 
   if (deleteBtn) {
     const idx = parseInt(deleteBtn.dataset.idx, 10);
+    const course = courses[idx];
     const row = deleteBtn.closest('tr');
-    row.style.transition = 'opacity 0.18s';
-    row.style.opacity = '0';
-    setTimeout(() => {
-      courses.splice(idx, 1);
-      dirty = true;
-      renderRows();
-      showToast('Course removed.');
-    }, 180);
+
+    API.deleteCourse(course.id).then(() => {
+      row.style.transition = 'opacity 0.18s';
+      row.style.opacity = '0';
+      setTimeout(() => {
+        courses.splice(idx, 1);
+        renderRows();
+        showToast('Course removed.');
+      }, 180);
+    }).catch(err => {
+      showToast('Failed to delete course: ' + err.message, 'error');
+    });
   }
 });
 
@@ -110,7 +131,8 @@ document.getElementById('addCourseBtn')?.addEventListener('click', () => {
   document.getElementById('editTitle').value          = '';
   document.getElementById('editClassification').value = '';
   document.getElementById('editYearLevel').value      = '';
-  document.getElementById('editSections').value       = '';
+  document.getElementById('editSections').value       = '0';
+  document.getElementById('editSections').disabled    = true;
   document.getElementById('editDescription').value    = '';
   document.getElementById('editModalTitle').textContent = 'ADD COURSE';
   openOverlay();
@@ -132,7 +154,9 @@ function openEditModal(idx) {
   document.getElementById('editTitle').value            = c.title;
   document.getElementById('editClassification').value   = c.classification;
   document.getElementById('editYearLevel').value        = c.yearLevel;
+  // Sections is a real count derived from actual Section rows, not editable here
   document.getElementById('editSections').value         = c.sections;
+  document.getElementById('editSections').disabled      = true;
   document.getElementById('editDescription').value      = c.description || '';
   document.getElementById('editModalTitle').textContent = 'EDIT COURSE';
   openOverlay();
@@ -146,14 +170,13 @@ editCancel?.addEventListener('click', closeOverlay);
 overlay?.addEventListener('click', e => { if (e.target === overlay) closeOverlay(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeOverlay(); });
 
-editSave?.addEventListener('click', () => {
+editSave?.addEventListener('click', async () => {
   const idx         = parseInt(document.getElementById('editRowIndex').value, 10);
   const code        = document.getElementById('editCode').value.trim();
-  const units       = document.getElementById('editUnits').value.trim();
+  const units       = parseInt(document.getElementById('editUnits').value, 10) || 3;
   const title       = document.getElementById('editTitle').value.trim();
   const classif     = document.getElementById('editClassification').value.trim();
   const yearLevel   = document.getElementById('editYearLevel').value.trim();
-  const sections    = parseInt(document.getElementById('editSections').value, 10) || 1;
   const description = document.getElementById('editDescription').value.trim();
 
   if (!code || !title) {
@@ -161,18 +184,203 @@ editSave?.addEventListener('click', () => {
     return;
   }
 
-  const entry = { code, units, title, classification: classif, yearLevel, sections, description };
+  const payload = { code, units, title, classification: classif, yearLevel, description };
 
-  if (idx === -1) {
-    courses.push(entry);
-  } else {
-    courses[idx] = entry;
+  try {
+    if (idx === -1) {
+      const res = await API.addCourse(payload);
+      courses.push({ ...payload, id: res.course.id, sections: 0 });
+      showToast('Course added.');
+    } else {
+      const course = courses[idx];
+      await API.editCourse(course.id, payload);
+      courses[idx] = { ...course, ...payload };
+      showToast('Course updated.');
+    }
+    renderRows();
+    closeOverlay();
+  } catch (err) {
+    showToast('Failed to save course: ' + err.message, 'error');
+  }
+});
+
+// ─────────────────────────────────────────────
+//  SECTIONS MODAL
+// ─────────────────────────────────────────────
+const sectionsOverlay   = document.getElementById('sectionsOverlay');
+const sectionsClose     = document.getElementById('sectionsModalClose');
+const sectionsCloseBtn  = document.getElementById('sectionsCloseBtn');
+const secSaveBtn        = document.getElementById('secSaveBtn');
+const secCancelEditBtn  = document.getElementById('secCancelEditBtn');
+const sectionsTableBody = document.getElementById('sectionsTableBody');
+
+let roomsCache     = null;
+let semestersCache = null;
+let currentSections = [];
+
+function openSectionsOverlay()  { sectionsOverlay?.classList.add('mc-modal-overlay--open'); }
+function closeSectionsOverlay() { sectionsOverlay?.classList.remove('mc-modal-overlay--open'); }
+
+sectionsClose?.addEventListener('click', closeSectionsOverlay);
+sectionsCloseBtn?.addEventListener('click', closeSectionsOverlay);
+sectionsOverlay?.addEventListener('click', e => { if (e.target === sectionsOverlay) closeSectionsOverlay(); });
+
+async function ensureDropdownsLoaded() {
+  if (!roomsCache) {
+    roomsCache = await API.getRooms();
+    const roomSelect = document.getElementById('secRoom');
+    roomSelect.innerHTML = '<option value="">TBA</option>' +
+      roomsCache.map(r => `<option value="${r.id}">${r.room_code} (${r.building})</option>`).join('');
+  }
+  if (!semestersCache) {
+    semestersCache = await API.getSemesters();
+    const semSelect = document.getElementById('secSemester');
+    semSelect.innerHTML = semestersCache.map(s =>
+      `<option value="${s.id}">${s.academic_year} — ${s.semester_term}${s.is_active ? ' (current)' : ''}</option>`
+    ).join('');
+    const active = semestersCache.find(s => s.is_active);
+    if (active) semSelect.value = active.id;
+  }
+}
+
+function resetSectionForm() {
+  document.getElementById('editingSectionId').value = '';
+  document.getElementById('secName').value  = '';
+  document.getElementById('secDays').value  = '';
+  document.getElementById('secStart').value = '';
+  document.getElementById('secEnd').value   = '';
+  document.getElementById('secRoom').value  = '';
+  document.getElementById('secStatus').value = 'open';
+  document.getElementById('sectionFormLabel').textContent = 'ADD NEW SECTION';
+  document.getElementById('secSaveBtnLabel').textContent  = 'Add Section';
+  secCancelEditBtn.style.display = 'none';
+}
+
+function renderSectionsTable() {
+  if (currentSections.length === 0) {
+    sectionsTableBody.innerHTML = `<tr><td colspan="7" class="mc-sections-table__empty">No sections yet — add one below.</td></tr>`;
+    return;
+  }
+  sectionsTableBody.innerHTML = currentSections.map(s => `
+    <tr>
+      <td>${s.section_name}</td>
+      <td>${s.preferred_days || '—'}</td>
+      <td>${s.preferred_time_start && s.preferred_time_end ? `${s.preferred_time_start}–${s.preferred_time_end}` : '—'}</td>
+      <td>${s.room_label}</td>
+      <td>${semestersCache?.find(sem => sem.id === s.semester_id)?.academic_year || '—'}</td>
+      <td style="text-transform:capitalize;">${s.status}</td>
+      <td>
+        <div class="mc-actions">
+          <button class="mc-action-btn mc-action-btn--edit" data-sec-id="${s.id}" title="Edit">
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+              <path d="M9.5 2.5L11.5 4.5L4.5 11.5H2.5V9.5L9.5 2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="mc-action-btn mc-action-btn--delete" data-sec-id="${s.id}" title="Delete">
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+              <path d="M2 3.5h10M5 3.5V2.5a.5.5 0 01.5-.5h3a.5.5 0 01.5.5v1M5.5 6v4.5M8.5 6v4.5M3 3.5l.5 8a1 1 0 001 1h5a1 1 0 001-1l.5-8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function openSectionsModal(courseIdx) {
+  const course = courses[courseIdx];
+  document.getElementById('sectionsCourseIdx').value = courseIdx;
+  document.getElementById('sectionsModalTitle').textContent = `SECTIONS — ${course.code}`;
+  resetSectionForm();
+
+  try {
+    await ensureDropdownsLoaded();
+    currentSections = await API.getSections(course.id);
+    renderSectionsTable();
+    openSectionsOverlay();
+  } catch (err) {
+    showToast('Failed to load sections: ' + err.message, 'error');
+  }
+}
+
+sectionsTableBody?.addEventListener('click', e => {
+  const editBtn   = e.target.closest('.mc-action-btn--edit');
+  const deleteBtn = e.target.closest('.mc-action-btn--delete');
+
+  if (editBtn) {
+    const sec = currentSections.find(s => s.id === parseInt(editBtn.dataset.secId, 10));
+    if (!sec) return;
+    document.getElementById('editingSectionId').value = sec.id;
+    document.getElementById('secName').value   = sec.section_name;
+    document.getElementById('secDays').value   = sec.preferred_days || '';
+    document.getElementById('secStart').value  = sec.preferred_time_start || '';
+    document.getElementById('secEnd').value    = sec.preferred_time_end || '';
+    document.getElementById('secRoom').value   = sec.room_id || '';
+    document.getElementById('secSemester').value = sec.semester_id;
+    document.getElementById('secStatus').value = sec.status;
+    document.getElementById('sectionFormLabel').textContent = `EDITING ${sec.section_name}`;
+    document.getElementById('secSaveBtnLabel').textContent  = 'Update Section';
+    secCancelEditBtn.style.display = '';
   }
 
-  dirty = true;
-  renderRows();
-  closeOverlay();
-  showToast(idx === -1 ? 'Course added.' : 'Course updated.');
+  if (deleteBtn) {
+    const secId = parseInt(deleteBtn.dataset.secId, 10);
+    if (!confirm('Delete this section? This cannot be undone.')) return;
+
+    API.deleteSection(secId).then(async () => {
+      const courseIdx = parseInt(document.getElementById('sectionsCourseIdx').value, 10);
+      currentSections = currentSections.filter(s => s.id !== secId);
+      courses[courseIdx].sections = currentSections.length;
+      renderSectionsTable();
+      renderRows();
+      showToast('Section removed.');
+    }).catch(err => {
+      showToast('Failed to delete section: ' + err.message, 'error');
+    });
+  }
+});
+
+secCancelEditBtn?.addEventListener('click', resetSectionForm);
+
+secSaveBtn?.addEventListener('click', async () => {
+  const courseIdx = parseInt(document.getElementById('sectionsCourseIdx').value, 10);
+  const course = courses[courseIdx];
+  const editingId = document.getElementById('editingSectionId').value;
+
+  const payload = {
+    course_id:            course.id,
+    section_name:         document.getElementById('secName').value.trim(),
+    preferred_days:       document.getElementById('secDays').value.trim(),
+    preferred_time_start: document.getElementById('secStart').value,
+    preferred_time_end:   document.getElementById('secEnd').value,
+    room_id:              document.getElementById('secRoom').value || null,
+    semester_id:          parseInt(document.getElementById('secSemester').value, 10),
+    status:               document.getElementById('secStatus').value,
+  };
+
+  if (!payload.section_name) {
+    showToast('Section name is required.', 'error');
+    return;
+  }
+
+  try {
+    if (editingId) {
+      const res = await API.editSection(editingId, payload);
+      const i = currentSections.findIndex(s => s.id === parseInt(editingId, 10));
+      if (i !== -1) currentSections[i] = res.section;
+      showToast('Section updated.');
+    } else {
+      const res = await API.addSection(payload);
+      currentSections.push(res.section);
+      course.sections = currentSections.length;
+      showToast('Section added.');
+    }
+    renderSectionsTable();
+    renderRows();
+    resetSectionForm();
+  } catch (err) {
+    showToast('Failed to save section: ' + err.message, 'error');
+  }
 });
 
 // ─────────────────────────────────────────────
@@ -183,10 +391,9 @@ document.getElementById('cancelBtn')?.addEventListener('click', () => {
 });
 
 document.getElementById('saveBtn')?.addEventListener('click', () => {
-  // In a real app: POST courses to backend
-  dirty = false;
-  showToast('Changes saved successfully.');
-  setTimeout(() => window.location.href = 'courses.html', 1200);
+  // Every add/edit/delete above already saves to the backend immediately —
+  // this button is just a "done, take me back" action now.
+  window.location.href = 'courses.html';
 });
 
 // ─────────────────────────────────────────────
@@ -207,11 +414,3 @@ function showToast(msg, type = 'success') {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => toastEl.classList.remove('mc-toast--show'), 2800);
 }
-
-// Warn on unload if dirty
-window.addEventListener('beforeunload', e => {
-  if (dirty) {
-    e.preventDefault();
-    e.returnValue = '';
-  }
-});

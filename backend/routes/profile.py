@@ -18,12 +18,18 @@ profile_bp = Blueprint("profile", __name__, url_prefix="/api/profile")
 # Fields the user is allowed to update
 UPDATABLE_FIELDS = [
     "first_name",
+    "middle_name",
     "last_name",
     "email",
+    "age",
+    "gender",
+    "contact_number",
+    "department",
     "specialization",
     "academic_rank",
     "highest_educ_attainment",
     "exp_years",
+    "employment_type",
     "preferred_courses",
     "preferred_days",
     "avatar",
@@ -65,6 +71,18 @@ def update_profile():
                     value = int(value)
                 except (TypeError, ValueError):
                     return jsonify({"error": "exp_years must be an integer."}), 400
+
+            if field == "age":
+                if value in ("", None):
+                    value = None
+                else:
+                    try:
+                        value = int(value)
+                    except (TypeError, ValueError):
+                        return jsonify({"error": "age must be an integer."}), 400
+
+            if field == "gender" and value not in ("male", "female", "", None):
+                return jsonify({"error": "gender must be 'male' or 'female'."}), 400
 
             if field == "avatar" and value not in ("male", "female"):
                 return jsonify({"error": "avatar must be 'male' or 'female'."}), 400

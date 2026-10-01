@@ -10,8 +10,8 @@ const passwordInput  = document.getElementById('password');
 
 // ── Placeholder hints per role ──
 const PLACEHOLDERS = {
-  chairperson: { email: 'jdelacruz@pup.edu.ph', password: '••••••••••••' },
-  faculty:     { email: 'msantos@pup.edu.ph',   password: '••••••••••••' },
+  chairperson: { email: 'chair@pup.edu.ph',    password: '••••••••••••' },
+  faculty:     { email: 'bgarcia@pup.edu.ph',  password: '••••••••••••' },
 };
 
 // ── Switch role ──
@@ -34,6 +34,15 @@ btnFaculty.addEventListener('click',     () => setRole('faculty'));
 const urlRole = new URLSearchParams(window.location.search).get('role');
 if (urlRole === 'faculty' || urlRole === 'chairperson') {
   setRole(urlRole);
+}
+
+// ── Show an error if we were bounced back here for using the wrong role ──
+const urlError = new URLSearchParams(window.location.search).get('error');
+if (urlError === 'access_denied') {
+  const passwordErrorEl = document.getElementById('passwordError');
+  if (passwordErrorEl) {
+    passwordErrorEl.textContent = 'Access denied: that account does not have permission to view that portal. Please log in with the correct account.';
+  }
 }
 
 // ── Password visibility toggle ──
@@ -72,8 +81,9 @@ function validateEmail(v) {
 }
 
 function validatePassword(v) {
-  if (!v)           return 'Password is required.';
-  if (v.length < 6) return 'At least 6 characters required.';
+  if (!v) return 'Password is required.';
+  const minLength = roleInput.value === 'faculty' ? 5 : 5;
+  if (v.length < minLength) return `At least ${minLength} characters required.`;
   return '';
 }
 
@@ -98,9 +108,21 @@ form.addEventListener('submit', async (e) => {
   submitBtn.textContent = 'Logging in…';
 
   try {
-    // Try real API first
     const response = await API.login(email, password);
     const user = response.user;
+    const selectedRole = roleInput.value; // which tab was active when they submitted
+
+    if (user.role !== selectedRole) {
+      // Credentials were valid, but for the other portal. Reject explicitly
+      // instead of silently logging them in and redirecting to their real
+      // portal — end the session we just created so nothing is left active.
+      await API.logout().catch(() => {});
+      submitBtn.classList.remove('loading');
+      submitBtn.textContent = 'LOGIN';
+      const portalName = selectedRole === 'chairperson' ? 'Chairperson' : 'Faculty';
+      passwordError.textContent = `That account is not a ${portalName.toLowerCase()} account. Please switch tabs above, or use the correct portal's credentials.`;
+      return;
+    }
 
     // Redirect based on role from backend
     if (user.role === 'chairperson') {
@@ -109,40 +131,8 @@ form.addEventListener('submit', async (e) => {
       window.location.href = 'faculty/dashboard.html';
     }
   } catch (err) {
-    // If backend is unavailable, use mock credentials for testing
-    console.warn('Backend unavailable, checking mock credentials');
-    
-    const mockUsers = {
-      // Chairperson
-      'jdelacruz@pup.edu.ph': { password: 'chair123', role: 'chairperson', name: 'Christian Rey' },
-      'chairperson@pup.edu.ph': { password: 'admin123', role: 'chairperson', name: 'Christian Rey' },
-      
-      // Faculty
-      'msantos@pup.edu.ph': { password: 'faculty123', role: 'faculty', name: 'Maria Santos' },
-      'acruz@pup.edu.ph': { password: 'faculty123', role: 'faculty', name: 'Ana Cruz' },
-      'faculty@pup.edu.ph': { password: 'faculty123', role: 'faculty', name: 'Test Faculty' },
-    };
-    
-    const mockUser = mockUsers[email.toLowerCase()];
-    
-    if (mockUser && mockUser.password === password) {
-      // Mock successful login - store user info in sessionStorage
-      sessionStorage.setItem('mockUser', JSON.stringify({
-        email: email,
-        role: mockUser.role,
-        name: mockUser.name
-      }));
-      
-      // Redirect based on role
-      if (mockUser.role === 'chairperson') {
-        window.location.href = 'chairperson/dashboard.html';
-      } else {
-        window.location.href = 'faculty/dashboard.html';
-      }
-    } else {
-      submitBtn.classList.remove('loading');
-      submitBtn.textContent = 'LOGIN';
-      passwordError.textContent = 'Invalid email or password. Try the test credentials below.';
-    }
+    submitBtn.classList.remove('loading');
+    submitBtn.textContent = 'LOGIN';
+    passwordError.textContent = err.message || 'Invalid email or password.';
   }
 });

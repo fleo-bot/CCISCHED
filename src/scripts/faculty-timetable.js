@@ -68,6 +68,7 @@ const TIME_COLS = [
   '3:00 - 4:30',
   '4:30 - 6:00',
   '6:00 - 7:30',
+  '7:30 - 9:00 PM',
 ];
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];

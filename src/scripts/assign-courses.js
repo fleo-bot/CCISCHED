@@ -3,9 +3,11 @@
 // ── Topbar date ──
 const topbarDate = document.getElementById('topbarDate');
 if (topbarDate) {
-  const now      = new Date();
-  const dayName  = now.toLocaleDateString('en-US', { weekday: 'long' });
-  const datePart = now.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+  const now = new Date();
+  const dayName = now.toLocaleDateString('en-US', { weekday: 'long' });
+  const datePart = now.toLocaleDateString('en-US', {
+    day: 'numeric', month: 'long', year: 'numeric'
+  });
   topbarDate.textContent = `${dayName}, ${datePart}`;
 }
 
@@ -14,207 +16,215 @@ document.getElementById('notifBtn')?.addEventListener('click', () => {
 });
 
 // ─────────────────────────────────────────────
-//  DATA
+//  LIVE DATABASE STATE
 // ─────────────────────────────────────────────
-const FACULTY = [
-  { id: 'FAC-001', name: 'Dr. Maria Santos',      gender: 'female', dept: 'BSIT', currentLoad: 3 },
-  { id: 'FAC-002', name: 'Prof. James Reyes',     gender: 'male',   dept: 'BSIT', currentLoad: 2 },
-  { id: 'FAC-003', name: 'Dr. Ana Cruz',           gender: 'female', dept: 'BSIT', currentLoad: 1 },
-  { id: 'FAC-004', name: 'Prof. Rico Mendoza',    gender: 'male',   dept: 'BSIT', currentLoad: 0 },
-  { id: 'FAC-005', name: 'Ms. Laura Bautista',    gender: 'female', dept: 'BSIT', currentLoad: 0 },
-  { id: 'FAC-006', name: 'Mr. Carlo Dela Cruz',   gender: 'male',   dept: 'BSIT', currentLoad: 0 },
-  { id: 'FAC-007', name: 'Dr. Patricia Lim',      gender: 'female', dept: 'BSIT', currentLoad: 0 },
-  { id: 'FAC-008', name: 'Prof. Edwin Torres',    gender: 'male',   dept: 'BSIT', currentLoad: 0 },
-  { id: 'FAC-009', name: 'Dr. Kevin Aquino',      gender: 'male',   dept: 'BSCS', currentLoad: 4 },
-  { id: 'FAC-010', name: 'Prof. Janet Garcia',    gender: 'female', dept: 'BSCS', currentLoad: 3 },
-  { id: 'FAC-011', name: 'Dr. Robert Villanueva', gender: 'male',   dept: 'BSCS', currentLoad: 3 },
-  { id: 'FAC-012', name: 'Ms. Tricia Ramos',      gender: 'female', dept: 'BSCS', currentLoad: 2 },
-  { id: 'FAC-013', name: 'Mr. Dennis Ocampo',     gender: 'male',   dept: 'BSCS', currentLoad: 0 },
-  { id: 'FAC-014', name: 'Dr. Luz Fernandez',     gender: 'female', dept: 'BSCS', currentLoad: 0 },
-  { id: 'FAC-015', name: 'Prof. Mark Domingo',    gender: 'male',   dept: 'BSCS', currentLoad: 0 },
-];
+let FACULTY = [];
+let COURSES = [];
+let activeDept = 'all';
+let activeStatus = 'all';   // all | unassigned | assigned
+let selectedCourse = null;
+let searchQuery = '';
 
-// Courses start unassigned; assignedTo tracks the faculty ID once assigned
-const COURSES = [
-  { id: 'CRS-001', code: 'IT 401', name: 'Capstone Project 1',        dept: 'BSIT', units: 3, type: 'Lecture', assignedTo: null },
-  { id: 'CRS-002', code: 'IT 304', name: 'Programming Languages',     dept: 'BSIT', units: 3, type: 'Lecture', assignedTo: null },
-  { id: 'CRS-003', code: 'IT 412', name: 'Data Science & Analytics',  dept: 'BSIT', units: 3, type: 'Lecture', assignedTo: null },
-  { id: 'CRS-004', code: 'IT 211', name: 'Web Development',           dept: 'BSIT', units: 3, type: 'Laboratory', assignedTo: null },
-  { id: 'CRS-005', code: 'IT 315', name: 'Database Administration',   dept: 'BSIT', units: 3, type: 'Laboratory', assignedTo: null },
-  { id: 'CRS-006', code: 'IT 322', name: 'Network Security',          dept: 'BSIT', units: 3, type: 'Lecture', assignedTo: null },
-  { id: 'CRS-007', code: 'CS 401', name: 'Algorithm Design',          dept: 'BSCS', units: 3, type: 'Lecture', assignedTo: null },
-  { id: 'CRS-008', code: 'CS 312', name: 'Machine Learning',          dept: 'BSCS', units: 3, type: 'Lecture', assignedTo: null },
-  { id: 'CRS-009', code: 'CS 215', name: 'Operating Systems',         dept: 'BSCS', units: 3, type: 'Lecture', assignedTo: null },
-  { id: 'CRS-010', code: 'CS 408', name: 'Compiler Design',           dept: 'BSCS', units: 3, type: 'Lecture', assignedTo: null },
-  { id: 'CRS-011', code: 'CS 320', name: 'Software Engineering',      dept: 'BSCS', units: 3, type: 'Lecture', assignedTo: null },
-  { id: 'CRS-012', code: 'CS 218', name: 'Computer Architecture Lab', dept: 'BSCS', units: 1, type: 'Laboratory', assignedTo: null },
-];
+function getCourseType(course) {
+  return course.type || 'Lecture';
+}
 
-// ─────────────────────────────────────────────
-//  STATE
-// ─────────────────────────────────────────────
-let activeDept      = 'all';
-let selectedCourse  = null;
-let searchQuery     = '';
-let assignedCount   = 0; // tracks session assignments
+function getFacultyById(id) {
+  return FACULTY.find(f => Number(f.id) === Number(id));
+}
 
-// ─────────────────────────────────────────────
-//  STATS
-// ─────────────────────────────────────────────
-function updateStats() {
-  const unassigned = COURSES.filter(c => !c.assignedTo).length;
-  document.getElementById('statUnassigned').textContent = unassigned;
-  document.getElementById('statAssigned').textContent   = assignedCount;
-  document.getElementById('statFaculty').textContent    = FACULTY.length;
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>'"]/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    "'": '&#39;',
+    '"': '&quot;'
+  }[char]));
 }
 
 // ─────────────────────────────────────────────
-//  RENDER COURSES LIST
+//  STATS — calculated from the backend response
+// ─────────────────────────────────────────────
+function updateStats() {
+  const unassigned = COURSES.filter(c => c.status !== 'assigned').length;
+  const assigned = COURSES.filter(c => c.status === 'assigned').length;
+
+  document.getElementById('statUnassigned').textContent = unassigned;
+  document.getElementById('statAssigned').textContent = assigned;
+  document.getElementById('statFaculty').textContent = FACULTY.length;
+}
+
+// ─────────────────────────────────────────────
+//  RENDER COURSES
 // ─────────────────────────────────────────────
 function renderCourses() {
   const list = document.getElementById('coursesList');
+  if (!list) return;
+
   list.innerHTML = '';
 
-  const filtered = COURSES.filter(c => {
-    const matchDept   = activeDept === 'all' || c.dept === activeDept;
-    const matchSearch = c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                        c.code.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchDept && matchSearch;
+  const query = searchQuery.trim().toLowerCase();
+  const filtered = COURSES.filter(course => {
+    const matchDept = activeDept === 'all' || course.dept === activeDept;
+    const matchSearch = !query ||
+      String(course.name || '').toLowerCase().includes(query) ||
+      String(course.code || '').toLowerCase().includes(query);
+    const isAssigned = course.status === 'assigned';
+    const matchStatus = activeStatus === 'all' ||
+      (activeStatus === 'assigned' ? isAssigned : !isAssigned);
+    return matchDept && matchSearch && matchStatus;
   });
 
-  if (filtered.length === 0) {
-    list.innerHTML = '<p style="text-align:center;padding:32px;color:rgba(128,0,0,0.40);font-weight:600;font-size:0.88rem;">No courses found.</p>';
+  if (!filtered.length) {
+    list.innerHTML = `
+      <p style="text-align:center;padding:32px;color:rgba(128,0,0,0.40);font-weight:600;font-size:0.88rem;">
+        No courses found.
+      </p>`;
     return;
   }
 
   filtered.forEach(course => {
-    const isAssigned = !!course.assignedTo;
+    const isAssigned = course.status === 'assigned';
     const isSelected = selectedCourse?.id === course.id;
+    const assignedFaculty = course.assignedTo ? getFacultyById(course.assignedTo) : null;
 
     const card = document.createElement('div');
     card.className = `course-card${isAssigned ? ' course-card--assigned' : ''}${isSelected ? ' course-card--selected' : ''}`;
     card.dataset.id = course.id;
 
-    const assignedFaculty = isAssigned ? FACULTY.find(f => f.id === course.assignedTo) : null;
+    const assignmentLabel = isAssigned
+      ? `Assigned${assignedFaculty ? ` · ${escapeHtml(assignedFaculty.name.split(' ').slice(-1)[0])}` : ''}`
+      : '';
+
 
     card.innerHTML = `
       <div class="course-info">
-        <p class="course-code">${course.code}</p>
-        <p class="course-name">${course.name}</p>
-        <p class="course-meta">${course.units} units · ${course.type}</p>
+        <p class="course-code">${escapeHtml(course.code)}</p>
+        <p class="course-name">${escapeHtml(course.name)}</p>
+        <p class="course-meta">${escapeHtml(course.units)} units · ${escapeHtml(getCourseType(course))}</p>
       </div>
       <div class="course-right">
-        <span class="dept-tag dept-tag--${course.dept.toLowerCase()}">${course.dept}</span>
-        ${isAssigned
-          ? `<span class="assigned-tag">Assigned${assignedFaculty ? ` · ${assignedFaculty.name.split(' ').slice(-1)[0]}` : ''}</span>`
-          : ''}
+        <span class="dept-tag dept-tag--${escapeHtml(String(course.dept).toLowerCase())}">${escapeHtml(course.dept)}</span>
+        ${assignmentLabel ? `<span class="assigned-tag">${assignmentLabel}</span>` : ''}
       </div>
     `;
 
-    if (!isAssigned) {
-      card.addEventListener('click', () => selectCourse(course));
-    }
-
+    // Assigned courses remain selectable so the chairperson can edit/reassign them.
+    card.addEventListener('click', () => selectCourse(course));
     list.appendChild(card);
   });
 }
 
 // ─────────────────────────────────────────────
-//  SELECT COURSE → open assignment panel
+//  SELECT COURSE
 // ─────────────────────────────────────────────
 function selectCourse(course) {
   selectedCourse = course;
-  renderCourses(); // re-render to apply selected style
+  renderCourses();
 
   document.getElementById('assignEmpty').style.display = 'none';
-  document.getElementById('assignForm').style.display  = 'flex';
+  document.getElementById('assignForm').style.display = 'flex';
 
-  // Fill course info
   document.getElementById('selectedCourseInfo').innerHTML = `
     <p class="selected-course__label">Selected Course</p>
-    <p class="selected-course__name">${course.name}</p>
-    <p class="selected-course__meta">${course.code} · ${course.units} units · ${course.type} · ${course.dept}</p>
+    <p class="selected-course__name">${escapeHtml(course.name)}</p>
+    <p class="selected-course__meta">
+      ${escapeHtml(course.code)} · ${escapeHtml(course.units)} units ·
+      ${escapeHtml(getCourseType(course))} · ${escapeHtml(course.dept)}
+    </p>
   `;
 
-  // Populate faculty select — show all faculty (dept match first)
   const select = document.getElementById('facultySelect');
   select.innerHTML = '<option value="">— Select faculty member —</option>';
 
   const sorted = [...FACULTY].sort((a, b) => {
     if (a.dept === course.dept && b.dept !== course.dept) return -1;
     if (b.dept === course.dept && a.dept !== course.dept) return 1;
-    return a.currentLoad - b.currentLoad;
+    return (a.currentLoad || 0) - (b.currentLoad || 0) || a.name.localeCompare(b.name);
   });
 
-  sorted.forEach(f => {
+  sorted.forEach(faculty => {
     const opt = document.createElement('option');
-    opt.value = f.id;
-    opt.textContent = `${f.name} (${f.dept} · ${f.currentLoad} course${f.currentLoad !== 1 ? 's' : ''})`;
+    opt.value = faculty.id;
+    opt.textContent = `${faculty.name} (${faculty.dept} · ${faculty.currentLoad} course${faculty.currentLoad !== 1 ? 's' : ''})`;
+    if (Number(course.assignedTo) === Number(faculty.id)) opt.selected = true;
     select.appendChild(opt);
   });
 
-  // Reset state
-  document.getElementById('facultyPreview').style.display = 'none';
-  document.getElementById('confirmAssignBtn').disabled     = true;
+  // Show the existing assignment immediately when editing an assigned course.
+  if (course.assignedTo) {
+    showFacultyPreview(String(course.assignedTo));
+  } else {
+    document.getElementById('facultyPreview').style.display = 'none';
+    document.getElementById('confirmAssignBtn').disabled = true;
+  }
 }
 
 // ─────────────────────────────────────────────
-//  FACULTY SELECT CHANGE
+//  FACULTY PREVIEW
 // ─────────────────────────────────────────────
-document.getElementById('facultySelect')?.addEventListener('change', e => {
-  const facultyId = e.target.value;
-  const preview   = document.getElementById('facultyPreview');
-  const btn       = document.getElementById('confirmAssignBtn');
+function showFacultyPreview(facultyId) {
+  const preview = document.getElementById('facultyPreview');
+  const btn = document.getElementById('confirmAssignBtn');
+  const faculty = getFacultyById(facultyId);
 
-  if (!facultyId) {
+  if (!faculty) {
     preview.style.display = 'none';
     btn.disabled = true;
     return;
   }
 
-  const faculty = FACULTY.find(f => f.id === facultyId);
-  if (!faculty) return;
-
   preview.style.display = 'flex';
   preview.innerHTML = `
     <div class="faculty-preview__avatar">
-      <img src="../assets/images/avatar-${faculty.gender}.svg" alt="${faculty.name}" />
+      <img src="../assets/images/avatar-${escapeHtml(faculty.gender || 'female')}.svg" alt="${escapeHtml(faculty.name)}" />
     </div>
     <div>
-      <p class="faculty-preview__name">${faculty.name}</p>
-      <p class="faculty-preview__load">${faculty.dept} · Current load: ${faculty.currentLoad} course${faculty.currentLoad !== 1 ? 's' : ''}</p>
+      <p class="faculty-preview__name">${escapeHtml(faculty.name)}</p>
+      <p class="faculty-preview__load">
+        ${escapeHtml(faculty.dept)} · Current load: ${faculty.currentLoad || 0} course${faculty.currentLoad !== 1 ? 's' : ''}
+      </p>
     </div>
   `;
-
   btn.disabled = false;
+}
+
+document.getElementById('facultySelect')?.addEventListener('change', e => {
+  showFacultyPreview(e.target.value);
 });
 
 // ─────────────────────────────────────────────
-//  CONFIRM ASSIGNMENT
+//  SAVE ASSIGNMENT TO DATABASE
 // ─────────────────────────────────────────────
-document.getElementById('confirmAssignBtn')?.addEventListener('click', () => {
+document.getElementById('confirmAssignBtn')?.addEventListener('click', async () => {
   const facultyId = document.getElementById('facultySelect').value;
   if (!facultyId || !selectedCourse) return;
 
-  const course  = COURSES.find(c => c.id === selectedCourse.id);
-  const faculty = FACULTY.find(f => f.id === facultyId);
-  if (!course || !faculty) return;
+  const course = selectedCourse;
+  const faculty = getFacultyById(facultyId);
+  const btn = document.getElementById('confirmAssignBtn');
 
-  // Apply assignment
-  course.assignedTo  = facultyId;
-  faculty.currentLoad += 1;
-  assignedCount       += 1;
+  if (!faculty) return;
 
-  // Reset panel
-  selectedCourse = null;
-  document.getElementById('assignForm').style.display  = 'none';
-  document.getElementById('assignEmpty').style.display = 'flex';
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
 
-  // Refresh
-  updateStats();
-  renderCourses();
+  try {
+    await API.assignCourseToFaculty(course.id, Number(facultyId));
 
-  showToast(`✓ ${course.name} assigned to ${faculty.name}`);
+    showToast(`✓ ${course.name} assigned to ${faculty.name}`);
+    await loadAssignmentData();
+
+    selectedCourse = null;
+    document.getElementById('assignForm').style.display = 'none';
+    document.getElementById('assignEmpty').style.display = 'flex';
+  } catch (err) {
+    showToast(`Failed to assign course: ${err.message}`, true);
+  } finally {
+    btn.disabled = !document.getElementById('facultySelect').value;
+    btn.textContent = 'Assign Course';
+  }
 });
 
 // ─────────────────────────────────────────────
@@ -222,26 +232,32 @@ document.getElementById('confirmAssignBtn')?.addEventListener('click', () => {
 // ─────────────────────────────────────────────
 document.getElementById('cancelBtn')?.addEventListener('click', () => {
   selectedCourse = null;
-  document.getElementById('assignForm').style.display  = 'none';
+  document.getElementById('assignForm').style.display = 'none';
   document.getElementById('assignEmpty').style.display = 'flex';
   renderCourses();
 });
 
 // ─────────────────────────────────────────────
-//  DEPARTMENT FILTER CHIPS
+//  FILTERS + SEARCH
 // ─────────────────────────────────────────────
-document.querySelectorAll('.dept-chip').forEach(chip => {
+document.querySelectorAll('#deptFilter .dept-chip').forEach(chip => {
   chip.addEventListener('click', () => {
-    document.querySelectorAll('.dept-chip').forEach(c => c.classList.remove('dept-chip--active'));
+    document.querySelectorAll('#deptFilter .dept-chip').forEach(c => c.classList.remove('dept-chip--active'));
     chip.classList.add('dept-chip--active');
     activeDept = chip.dataset.dept;
     renderCourses();
   });
 });
 
-// ─────────────────────────────────────────────
-//  SEARCH
-// ─────────────────────────────────────────────
+document.querySelectorAll('#statusFilter .status-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('#statusFilter .status-chip').forEach(c => c.classList.remove('dept-chip--active'));
+    chip.classList.add('dept-chip--active');
+    activeStatus = chip.dataset.status;
+    renderCourses();
+  });
+});
+
 document.getElementById('searchInput')?.addEventListener('input', e => {
   searchQuery = e.target.value;
   renderCourses();
@@ -255,14 +271,40 @@ function showToast(message, isError = false) {
   if (!toast) return;
   toast.textContent = message;
   toast.className = 'toast' + (isError ? ' toast--error' : '');
-  // Force reflow
   void toast.offsetWidth;
   toast.classList.add('toast--show');
   setTimeout(() => toast.classList.remove('toast--show'), 3000);
 }
 
 // ─────────────────────────────────────────────
-//  INIT
+//  LOAD LIVE DATA
 // ─────────────────────────────────────────────
-updateStats();
-renderCourses();
+async function loadAssignmentData() {
+  const list = document.getElementById('coursesList');
+  if (list) {
+    list.innerHTML = '<p style="text-align:center;padding:32px;color:rgba(128,0,0,0.40);font-weight:600;font-size:0.88rem;">Loading courses...</p>';
+  }
+
+  try {
+    const data = await API.getCourseAssignments();
+    FACULTY = Array.isArray(data.faculty) ? data.faculty : [];
+    COURSES = Array.isArray(data.courses) ? data.courses : [];
+
+    updateStats();
+    renderCourses();
+  } catch (err) {
+    console.error('[Assign Courses] Failed to load:', err);
+    if (list) {
+      list.innerHTML = `
+        <p style="text-align:center;padding:32px;color:#a00000;font-weight:600;font-size:0.88rem;">
+          Failed to load courses from the backend.<br>
+          <small>${escapeHtml(err.message)}</small>
+        </p>`;
+    }
+    document.getElementById('statUnassigned').textContent = '—';
+    document.getElementById('statAssigned').textContent = '—';
+    document.getElementById('statFaculty').textContent = '—';
+  }
+}
+
+loadAssignmentData();

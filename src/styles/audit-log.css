@@ -1,0 +1,65 @@
+/* =============================================
+   Chairperson — Audit Log
+   Extends faculty-dashboard.css
+============================================= */
+
+.audit-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap; margin-bottom: 16px;
+}
+.audit-header__title { font-size: 1.25rem; font-weight: 900; color: var(--black); letter-spacing: -0.01em; }
+.audit-header__sub   { font-size: 0.75rem; color: #777; margin-top: 4px; max-width: 620px; }
+
+.audit-btn {
+  font: inherit; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+  padding: 9px 16px; border-radius: 10px; border: none;
+  background: var(--maroon); color: #fff;
+}
+.audit-btn:hover:not(:disabled) { background: var(--maroon-dk); }
+.audit-btn:disabled { opacity: .4; cursor: default; }
+.audit-btn--ghost { background: #fff; color: var(--maroon); border: 1px solid var(--border); }
+.audit-btn--ghost:hover:not(:disabled) { background: var(--maroon-lt); }
+
+.audit-filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 16px; }
+.audit-filters select,
+.audit-filters input[type="date"] {
+  font: inherit; font-size: 0.78rem; padding: 8px 10px;
+  border: 1px solid var(--border); border-radius: 10px; background: #fff; color: var(--black);
+}
+.audit-date { font-size: 0.72rem; font-weight: 700; color: #777; display: flex; align-items: center; gap: 6px; }
+
+.audit-card { background: var(--card-bg); border-radius: 16px; overflow-x: auto; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.audit-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+.audit-table th {
+  text-align: left; padding: 12px 16px; font-size: 0.68rem; text-transform: uppercase;
+  letter-spacing: .06em; color: #888; background: #FAFAFA; border-bottom: 1px solid var(--border);
+}
+.audit-table td { padding: 12px 16px; border-bottom: 1px solid #F0F0F0; vertical-align: top; }
+.audit-table tr:last-child td { border-bottom: none; }
+.audit-nowrap { white-space: nowrap; }
+.audit-time  { color: #999; font-size: 0.7rem; }
+.audit-empty { text-align: center; color: #999; padding: 40px 16px !important; }
+
+.audit-user   { font-weight: 700; color: var(--black); }
+.audit-action { font-weight: 700; }
+.audit-cat    { font-size: 0.66rem; text-transform: uppercase; letter-spacing: .05em; color: #999; }
+
+.audit-role {
+  display: inline-block; margin-top: 3px; padding: 2px 8px; border-radius: 999px;
+  font-size: 0.64rem; font-weight: 800; text-transform: capitalize;
+}
+.audit-role--chairperson { background: var(--maroon-lt); color: var(--maroon); }
+.audit-role--faculty     { background: #EAF1FB; color: #2F5F9E; }
+
+.audit-pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 0.68rem; font-weight: 800; white-space: nowrap; }
+.audit-pill--ok   { background: #E8F5DE; color: #3F7A1B; }
+.audit-pill--fail { background: #FDE8E8; color: #B42318; }
+
+.audit-more summary { cursor: pointer; color: var(--maroon); font-size: 0.7rem; font-weight: 700; margin-top: 4px; }
+.audit-more pre {
+  margin-top: 6px; padding: 10px; background: #F7F7F9; border-radius: 8px;
+  font-size: 0.68rem; max-width: 460px; max-height: 220px; overflow: auto; white-space: pre-wrap;
+}
+
+.audit-pager { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; font-size: 0.75rem; color: #777; }
+.audit-pager > div { display: flex; align-items: center; gap: 10px; }

@@ -76,6 +76,14 @@
           <span>Notifications</span>
         </a>
 
+        <a href="audit-log.html" class="sidebar__link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3L4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M8.5 12l2.5 2.5L15.5 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Audit Log</span>
+        </a>
+
       </nav>
 
       <!-- Sidebar illustration -->
@@ -143,7 +151,7 @@
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#800000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <span class="notif-badge">4</span>
+            <span class="notif-badge" style="display:none;">0</span>
           </button>
         </div>
       </header>
@@ -296,6 +304,113 @@
     </div>
   </div>
 
+  <!-- Manage Sections modal -->
+  <div class="mc-modal-overlay" id="sectionsOverlay">
+    <div class="mc-modal mc-modal--wide" role="dialog" aria-modal="true" aria-labelledby="sectionsModalTitle">
+
+      <div class="mc-modal__header">
+        <p class="mc-modal__title" id="sectionsModalTitle">SECTIONS</p>
+        <button class="mc-modal__close" id="sectionsModalClose">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+            <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="mc-modal__body">
+        <input type="hidden" id="sectionsCourseIdx" />
+
+        <div class="mc-sections-table-wrap">
+          <table class="mc-sections-table">
+            <thead>
+              <tr>
+                <th>Section</th>
+                <th>Days</th>
+                <th>Time</th>
+                <th>Room</th>
+                <th>Semester</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="sectionsTableBody">
+              <!-- rows injected by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mc-sections-addrow">
+          <input type="hidden" id="editingSectionId" value="" />
+          <p class="mc-modal__label" id="sectionFormLabel">ADD NEW SECTION</p>
+
+          <div class="mc-modal__row">
+            <div class="mc-modal__field">
+              <label class="mc-modal__label">Section Name</label>
+              <input type="text" class="mc-modal__input" id="secName" placeholder="eg. CS101-A" />
+            </div>
+            <div class="mc-modal__field">
+              <label class="mc-modal__label">Days</label>
+              <input type="text" class="mc-modal__input" id="secDays" placeholder="eg. MWF" />
+            </div>
+          </div>
+
+          <div class="mc-modal__row">
+            <div class="mc-modal__field">
+              <label class="mc-modal__label">Start Time</label>
+              <input type="time" class="mc-modal__input" id="secStart" />
+            </div>
+            <div class="mc-modal__field">
+              <label class="mc-modal__label">End Time</label>
+              <input type="time" class="mc-modal__input" id="secEnd" />
+            </div>
+          </div>
+
+          <div class="mc-modal__row">
+            <div class="mc-modal__field">
+              <label class="mc-modal__label">Room</label>
+              <select class="mc-modal__input" id="secRoom">
+                <option value="">TBA</option>
+              </select>
+            </div>
+            <div class="mc-modal__field">
+              <label class="mc-modal__label">Semester</label>
+              <select class="mc-modal__input" id="secSemester"></select>
+            </div>
+          </div>
+
+          <div class="mc-modal__field">
+            <label class="mc-modal__label">Status</label>
+            <select class="mc-modal__input" id="secStatus">
+              <option value="open">Open</option>
+              <option value="assigned">Assigned</option>
+              <option value="closed">Closed</option>
+            </select>
+          </div>
+
+          <div class="mc-modal__footer" style="padding: 0;">
+            <button class="mc-btn mc-btn--cancel" id="secCancelEditBtn" style="display:none;">
+              Cancel Edit
+            </button>
+            <button class="mc-btn mc-btn--save" id="secSaveBtn">
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                <path d="M2 8L5.5 11.5L12 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span id="secSaveBtnLabel">Add Section</span>
+            </button>
+          </div>
+        </div>
+      </div><!-- /mc-modal__body -->
+
+      <div class="mc-modal__footer">
+        <button class="mc-btn mc-btn--cancel" id="sectionsCloseBtn">Close</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="../scripts/api.js"></script>
+  <script src="../scripts/auth-check.js"></script>
+  <script src="../scripts/notif-badge.js"></script>
   <script src="../scripts/manage-courses.js"></script>
 </body>
 </html>

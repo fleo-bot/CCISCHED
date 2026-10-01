@@ -374,3 +374,10 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Live-data indicator: room status comes from published schedules, not a local toggle. */
+.room-card__source {
+  margin: 4px 0 0;
+  font-size: 10px;
+  color: #888;
+}

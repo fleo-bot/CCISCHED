@@ -307,7 +307,9 @@ function renderSlots(slots, finalized) {
 // ─────────────────────────────────────────────
 async function init() {
   const sub = await loadAvailability();
-  const slots = sub?.slots || [];
+  // API slots (day_indices + time range) → the {dayIndices, times, timeLabel}
+  // cards this page draws. One card per stored slot so "Edit Slot" stays 1:1.
+  const slots = AvailabilityUtils.buildSlotCards(sub?.slots || []);
   const finalized = isFinalized();
 
   renderStatusBadge(finalized);

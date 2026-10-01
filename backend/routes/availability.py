@@ -11,11 +11,15 @@ DELETE /api/availability/slots/<slot_id>     — remove a single slot from a dra
 Chairperson-facing (read):
 GET    /api/availability/all                 — all submissions for active semester
 GET    /api/availability/<submission_id>     — single submission detail
+DELETE /api/availability/<submission_id>     — delete a submission entirely
 """
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
+import csv
+import io
+import re
 
 from flask import Blueprint, jsonify, request
 
@@ -30,6 +34,17 @@ from models import (
 from routes.auth import current_user, login_required, role_required
 
 availability_bp = Blueprint("availability", __name__, url_prefix="/api/availability")
+
+
+# ── CSV import constants ─────────────────────
+DAY_NAME_TO_INDEX = {
+    "Monday": 0, "Tuesday": 1, "Wednesday": 2,
+    "Thursday": 3, "Friday": 4, "Saturday": 5, "Sunday": 6,
+}
+REQUIRED_IMPORT_COLUMNS = {"faculty_id", "day_of_week", "start_time", "end_time"}
+OPTIONAL_IMPORT_COLUMNS = {"shift_block", "availability_id"}
+FACULTY_ID_RE = re.compile(r"^FA-\d{3}$")
+TIME_RE = re.compile(r"^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$")
 
 
 # ── helpers ──────────────────────────────────
@@ -212,12 +227,150 @@ def delete_slot(slot_id: int):
     return jsonify({"message": "Slot deleted."}), 200
 
 
+# ── Chairperson: CSV availability import ─────
+@availability_bp.post("/import-csv")
+@login_required
+@role_required("chairperson")
+def import_availability_csv():
+    """
+    Import faculty availability from a CSV file into the same
+    availability_submissions / availability_slots tables used by the UI.
+
+    Required columns: faculty_id, day_of_week, start_time, end_time.
+    Optional columns: shift_block, availability_id (ignored).
+
+    Faculty IDs must match an existing users.employee_number in FA-### format.
+    Invalid/unmatched rows are intentionally skipped without per-row errors.
+    The semester is selected strictly by today's date falling within its
+    start_date/end_date range.
+    """
+    upload = request.files.get("file")
+    if not upload or not upload.filename:
+        return jsonify({"error": "Please select a CSV file to import."}), 400
+
+    if not upload.filename.lower().endswith(".csv"):
+        return jsonify({"error": "Only CSV files are accepted."}), 400
+
+    # Match the import to the semester whose date range contains today.
+    today = date.today()
+    semester = (Semester.query
+                .filter(Semester.start_date.isnot(None), Semester.end_date.isnot(None))
+                .filter(Semester.start_date <= today, Semester.end_date >= today)
+                .order_by(Semester.start_date.desc())
+                .first())
+    if not semester:
+        return jsonify({
+            "error": "No semester date range contains today's date. The availability CSV was not imported.",
+            "imported": 0,
+            "skipped": 0,
+        }), 409
+
+    raw = upload.read()
+    try:
+        text = raw.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        return jsonify({"error": "The CSV file must be UTF-8 encoded."}), 400
+
+    reader = csv.DictReader(io.StringIO(text))
+    if not reader.fieldnames:
+        return jsonify({"error": "The CSV file has no header row."}), 400
+
+    headers = {str(h).strip() for h in reader.fieldnames if h is not None}
+    missing = REQUIRED_IMPORT_COLUMNS - headers
+    if missing:
+        return jsonify({
+            "error": "The CSV is missing required columns: " + ", ".join(sorted(missing)) + "."
+        }), 400
+
+    # Import only rows that pass the documented matching rules.
+    grouped: dict[int, list[dict]] = {}
+    skipped = 0
+    for row in reader:
+        faculty_code = str(row.get("faculty_id", "")).strip()
+        day_name = str(row.get("day_of_week", "")).strip()
+        start = str(row.get("start_time", "")).strip()
+        end = str(row.get("end_time", "")).strip()
+        shift = str(row.get("shift_block", "") or "").strip()
+
+        # Required fields and exact formats are deliberately strict.
+        if not FACULTY_ID_RE.fullmatch(faculty_code):
+            skipped += 1
+            continue
+        if day_name not in DAY_NAME_TO_INDEX:
+            skipped += 1
+            continue
+        if not TIME_RE.fullmatch(start) or not TIME_RE.fullmatch(end):
+            skipped += 1
+            continue
+        if start >= end:
+            skipped += 1
+            continue
+
+        user = User.query.filter_by(employee_number=faculty_code, role="faculty").first()
+        if not user:
+            skipped += 1
+            continue
+
+        grouped.setdefault(user.id, []).append({
+            "day_index": DAY_NAME_TO_INDEX[day_name],
+            "start": start[:5],
+            "end": end[:5],
+            "shift": shift,
+        })
+
+    imported_faculty = 0
+    imported_slots = 0
+
+    for faculty_id, rows in grouped.items():
+        submission = AvailabilitySubmission.query.filter_by(
+            faculty_id=faculty_id, semester_id=semester.id
+        ).first()
+
+        if submission is None:
+            submission = AvailabilitySubmission(
+                faculty_id=faculty_id,
+                semester_id=semester.id,
+                status="submitted",
+                submitted_at=datetime.now(timezone.utc),
+            )
+            db.session.add(submission)
+            db.session.flush()
+        else:
+            # The CSV represents the complete availability set for the
+            # matched faculty, so replace their existing imported slots.
+            AvailabilitySlot.query.filter_by(submission_id=submission.id).delete()
+            submission.status = "submitted"
+            submission.submitted_at = submission.submitted_at or datetime.now(timezone.utc)
+
+        for slot_number, row in enumerate(rows, start=1):
+            db.session.add(AvailabilitySlot(
+                submission_id=submission.id,
+                slot_number=slot_number,
+                day_indices=str(row["day_index"]),
+                time_start=row["start"],
+                time_end=row["end"],
+                time_label=f'{row["start"]} – {row["end"]}',
+            ))
+            imported_slots += 1
+
+        imported_faculty += 1
+
+    db.session.commit()
+    return jsonify({
+        "message": "Availability CSV imported successfully.",
+        "semester": semester.to_dict(),
+        "imported_faculty": imported_faculty,
+        "imported_slots": imported_slots,
+        "skipped_rows": skipped,
+    }), 200
+
+
 # ── Chairperson: list all submissions ────────
 @availability_bp.get("/all")
 @login_required
 @role_required("chairperson")
 def get_all_submissions():
-    """Return all submissions for the active semester with their status."""
+    """Return all submissions for the active semester with their status and slots."""
     sem = _active_semester()
     if not sem:
         return jsonify({"submissions": [], "message": "No active semester."}), 200
@@ -225,7 +378,7 @@ def get_all_submissions():
     subs = AvailabilitySubmission.query.filter_by(semester_id=sem.id).all()
     return jsonify({
         "semester":    sem.to_dict(),
-        "submissions": [s.to_dict(include_slots=False) for s in subs],
+        "submissions": [s.to_dict(include_slots=True) for s in subs],
         "counts": {
             "total":     len(subs),
             "submitted": sum(1 for s in subs if s.status == "submitted"),
@@ -246,3 +399,16 @@ def get_submission(submission_id: int):
     if not sub:
         return jsonify({"error": "Submission not found."}), 404
     return jsonify({"submission": sub.to_dict()}), 200
+
+
+@availability_bp.delete("/<int:submission_id>")
+@login_required
+@role_required("chairperson")
+def delete_submission(submission_id: int):
+    sub = db.session.get(AvailabilitySubmission, submission_id)
+    if not sub:
+        return jsonify({"error": "Submission not found."}), 404
+
+    db.session.delete(sub)   # cascades to slots via relationship
+    db.session.commit()
+    return jsonify({"message": "Submission deleted."}), 200

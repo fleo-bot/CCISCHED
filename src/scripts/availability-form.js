@@ -37,39 +37,22 @@ function isFinalized() {
          availabilityData?.submission?.status === 'approved';
 }
 
-// Convert API slot to localStorage format for backward compat with UI
-function apiSlotToLocal(slot) {
-  return {
-    dayIndices: slot.day_indices || [],
-    times: [slot.time_label],
-    timeLabel: slot.time_label,
-  };
+// Same as loadAvailability() but lets errors through, so a save never runs
+// against a failed load (which would look like "no existing slots" and wipe them).
+async function fetchAvailability() {
+  availabilityData = await API.getMyAvailability();
+  return availabilityData.submission;
 }
 
-// Convert buildSlotData output to API format
-function localSlotToApi(slotData, slotNumber) {
-  // Extract start/end from "7:00 AM – 5:00 PM"
-  const match = slotData.timeLabel.match(/(\d+):(\d+)\s*([AP]M)\s*–\s*(\d+):(\d+)\s*([AP]M)/i);
-  let timeStart = '08:00', timeEnd = '17:00';
-  
-  if (match) {
-    const to24 = (h, m, mer) => {
-      let hour = parseInt(h);
-      if (mer.toUpperCase() === 'PM' && hour !== 12) hour += 12;
-      if (mer.toUpperCase() === 'AM' && hour === 12) hour = 0;
-      return `${String(hour).padStart(2,'0')}:${m}`;
-    };
-    timeStart = to24(match[1], match[2], match[3]);
-    timeEnd = to24(match[4], match[5], match[6]);
-  }
+// Stored slots in slot_number order (the order every page numbers them in)
+function storedSlots() {
+  return AvailabilityUtils.sortSlots(availabilityData?.submission?.slots);
+}
 
-  return {
-    slot_number: slotNumber,
-    day_indices: slotData.dayIndices,
-    time_start: timeStart,
-    time_end: timeEnd,
-    time_label: slotData.timeLabel,
-  };
+// The stored slot being edited — matched by slot_number, falling back to position
+function findEditedSlot(slots) {
+  const byNumber = slots.findIndex(s => s.slot_number === slotNum);
+  return byNumber !== -1 ? byNumber : (slots[slotNum - 1] ? slotNum - 1 : -1);
 }
 
 // ─────────────────────────────────────────────
@@ -95,17 +78,7 @@ if (isEdit && slotNum) {
 // ─────────────────────────────────────────────
 //  TIMETABLE
 // ─────────────────────────────────────────────
-const TIME_SLOTS = [
-  '7:30 - 9:00',
-  '9:00 - 10:30',
-  '10:30 - 12:00',
-  '12:00 - 1:30',
-  '1:30 - 3:00',
-  '3:00 - 4:30',
-  '4:30 - 6:00',
-  '6:00 - 7:30',
-  '7:30 - 9:00 PM',
-];
+const TIME_SLOTS = AvailabilityUtils.TIME_BLOCKS.map(b => b.label);
 
 const DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -118,11 +91,12 @@ function buildTable() {
   let savedTimes      = [];
 
   if (isEdit && slotNum) {
-    const slots = loadSlots();
-    const slot  = slots[slotNum - 1];
-    if (slot) {
-      savedDayIndices = slot.dayIndices || [];
-      savedTimes      = slot.times || [];
+    const slots = storedSlots();
+    const idx   = findEditedSlot(slots);
+    const range = idx !== -1 && AvailabilityUtils.slotRange(slots[idx]);
+    if (range) {
+      savedDayIndices = slots[idx].day_indices || [];
+      savedTimes      = AvailabilityUtils.blocksWithin(range);
     }
   }
 
@@ -151,7 +125,6 @@ function buildTable() {
   });
 }
 
-buildTable();
 
 // ─────────────────────────────────────────────
 //  FINALIZATION GUARD — applied after table build
@@ -195,7 +168,13 @@ function applyFinalizedLock() {
   }
 }
 
-applyFinalizedLock();
+// Both the pre-filled checkboxes (edit mode) and the finalized lock depend on
+// the saved submission, so wait for it before drawing anything.
+(async function initForm() {
+  await loadAvailability();
+  buildTable();
+  applyFinalizedLock();
+})();
 
 // ─────────────────────────────────────────────
 //  GATHER SELECTIONS
@@ -210,40 +189,52 @@ function gatherSelections() {
   return results;
 }
 
-function buildSlotData(selections) {
-  const daySet   = new Set();
-  const timeSet  = new Set();
-  const timeIdxs = new Set();
+// Turn the ticked cells into stored slots. A stored slot is a set of days
+// plus ONE continuous time range, so each day's ticked rows are split into
+// contiguous runs and days that share the same run are grouped into one slot.
+// Two separate blocks on the same day therefore become two slots, instead of
+// one range that silently swallows the gap between them.
+function selectionsToSlots(selections) {
+  const U = AvailabilityUtils;
 
+  const rowsByDay = new Map();
   selections.forEach(({ timeIdx, dayIdx }) => {
-    daySet.add(dayIdx);
-    timeSet.add(TIME_SLOTS[timeIdx]);
-    timeIdxs.add(timeIdx);
+    if (!rowsByDay.has(dayIdx)) rowsByDay.set(dayIdx, new Set());
+    rowsByDay.get(dayIdx).add(timeIdx);
   });
 
-  const sortedIdxs = [...timeIdxs].sort((a, b) => a - b);
-
-  function toDisplay(token) {
-    token = token.trim();
-    if (/[AP]M/i.test(token)) return token;
-    const [hStr, mStr] = token.split(':');
-    let h = parseInt(hStr, 10);
-    const m = mStr || '00';
-    const suffix  = h >= 12 ? 'PM' : 'AM';
-    const display = h === 0 ? 12 : h > 12 ? h - 12 : h;
-    return `${display}:${m} ${suffix}`;
-  }
-
-  const firstSlot  = TIME_SLOTS[sortedIdxs[0]];
-  const lastSlot   = TIME_SLOTS[sortedIdxs[sortedIdxs.length - 1]];
-  const startToken = firstSlot.split(' - ')[0];
-  const endToken   = lastSlot.split(' - ')[1];
-
-  return {
-    dayIndices: [...daySet].sort(),
-    times:      [...timeSet],
-    timeLabel:  `${toDisplay(startToken)} – ${toDisplay(endToken)}`,
+  const groups = new Map();   // "firstRow-lastRow" → { first, last, days }
+  const addRun = (day, first, last) => {
+    const key = `${first}-${last}`;
+    if (!groups.has(key)) groups.set(key, { first, last, days: [] });
+    groups.get(key).days.push(day);
   };
+
+  rowsByDay.forEach((rowSet, day) => {
+    const rows = [...rowSet].sort((a, b) => a - b);
+    let first = rows[0];
+    let last  = rows[0];
+    rows.slice(1).forEach(r => {
+      if (r === last + 1) { last = r; return; }
+      addRun(day, first, last);
+      first = last = r;
+    });
+    addRun(day, first, last);
+  });
+
+  // Times come straight from the grid rows — never guessed from their text
+  return [...groups.values()]
+    .sort((a, b) => a.first - b.first || a.last - b.last)
+    .map(g => {
+      const start = U.TIME_BLOCKS[g.first].start;
+      const end   = U.TIME_BLOCKS[g.last].end;
+      return {
+        day_indices: g.days.sort((a, b) => a - b),
+        time_start:  U.toClock24(start),
+        time_end:    U.toClock24(end),
+        time_label:  `${U.fmtClock(start)} – ${U.fmtClock(end)}`,
+      };
+    });
 }
 
 // ─────────────────────────────────────────────
@@ -261,19 +252,20 @@ if (addBtn) {
       alert('Please select at least one time slot before adding.');
       return;
     }
-    const slotData = buildSlotData(selections);
-    
-    // Load existing slots from API
-    const sub = await loadAvailability();
-    const existingSlots = sub?.slots || [];
-    
-    // Add new slot
-    const newSlotNumber = existingSlots.length + 1;
-    const apiSlots = [
-      ...existingSlots.map((s, i) => localSlotToApi(apiSlotToLocal(s), i + 1)),
-      localSlotToApi(slotData, newSlotNumber)
-    ];
-    
+    const newSlots = selectionsToSlots(selections);
+
+    // Re-read what's stored so we append to the latest version
+    let sub;
+    try {
+      sub = await fetchAvailability();
+    } catch (err) {
+      alert('Could not load your current availability: ' + err.message);
+      return;
+    }
+
+    const apiSlots = [...AvailabilityUtils.sortSlots(sub?.slots), ...newSlots]
+      .map((s, i) => AvailabilityUtils.toPayload(s, i + 1));
+
     try {
       await API.saveAvailability(apiSlots);
       window.location.href = 'dashboard.html';
@@ -298,15 +290,27 @@ if (saveBtn) {
       alert('Please select at least one time slot.');
       return;
     }
-    const slotData = buildSlotData(selections);
-    
-    // Load existing, replace the one being edited
-    const sub = await loadAvailability();
-    const existingSlots = sub?.slots || [];
-    existingSlots[slotNum - 1] = apiSlotToLocal(localSlotToApi(slotData, slotNum));
-    
-    const apiSlots = existingSlots.map((s, i) => localSlotToApi(apiSlotToLocal(s), i + 1));
-    
+    const newSlots = selectionsToSlots(selections);
+
+    let sub;
+    try {
+      sub = await fetchAvailability();
+    } catch (err) {
+      alert('Could not load your current availability: ' + err.message);
+      return;
+    }
+
+    // Replace the slot being edited with what is now ticked (which may be
+    // more than one slot if the selection has gaps), then renumber.
+    const existing = AvailabilityUtils.sortSlots(sub?.slots);
+    const idx = findEditedSlot(existing);
+    if (idx === -1) {
+      alert('This slot no longer exists.');
+      return;
+    }
+    existing.splice(idx, 1, ...newSlots);
+    const apiSlots = existing.map((s, i) => AvailabilityUtils.toPayload(s, i + 1));
+
     try {
       await API.saveAvailability(apiSlots);
       window.location.href = 'dashboard.html';

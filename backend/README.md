@@ -97,20 +97,24 @@ hist.csv     ─┘   (Random Forest      │
 
 ## Data files
 
-All in `data/`:
+All in `data/` (read directly by `init_db.py`; also re-importable from the chairperson CSV import page):
 
-| File                        | Rows | Used by                        |
-|-----------------------------|------|--------------------------------|
-| faculty.csv                 | 50   | RF features + CP-SAT H2/H3    |
-| courses.csv                 | 20   | RF features + section lookup   |
-| Sections.csv                | 20   | CP-SAT — assignment unit       |
-| Rooms.csv                   | 20   | CP-SAT H5 room conflict check  |
-| Sememster.csv               | 20   | Active semester scoping        |
-| historical_assignments.csv  | 15   | RF training data               |
+| File                                         | Rows  | Used by                                              |
+|----------------------------------------------|-------|------------------------------------------------------|
+| CCISched-Semester.csv                        | 12    | Semesters; the active one is picked from today's date |
+| CCISched-Courses.csv                         | 57    | Courses (`department` = IT/CS track, `college` = CCIS) |
+| CCISched-Rooms.csv                           | 24    | Rooms                                                |
+| CCISched-Program-Curriculum.csv              | 83    | Which courses each program/year/term needs           |
+| CCISched-Sections.csv                        | 52    | Cohorts; course sections are derived from curriculum |
+| CCISched-Faculty.csv                         | 55    | Faculty accounts, RF features, CP-SAT load limits    |
+| CCISched-Chairpersons.csv                    | 1     | Chairperson accounts (CP-### ids)                    |
+| CCISched-Faculty-Course-Qualifications.csv   | 1,283 | Faculty-course qualifications                        |
+| CCISched-Faculty-Availability-Matrix.csv     | 3,297 | Availability; only the active semester is seeded     |
+| CCISched-Historical-Data.csv                 | 1,664 | RF training data (read directly by `app.py`)         |
 
-> Note: `historical_assignments.course_id` holds **section_id** values (401-420)
-> that map directly to `Sections.csv section_id`. This is intentional — the
-> RF trains on section-level history, not raw course-level history.
+> Faculty `specialization` values are course titles (e.g. "Software Engineering 2"). The RF
+> matches them to courses by title/numbered family (see `rf_model.py`); the older broad areas
+> ("Machine Learning", "Network Administration", ...) still use the keyword map.
 
 ## CP-SAT hard constraints
 
@@ -121,3 +125,7 @@ All in `data/`:
 | H3 | Faculty assigned only when their availability overlaps section days |
 | H4 | No faculty time-conflict: two sections on same day can't overlap in time |
 | H5 | No room double-booking: validated from `Sections.csv room_id` |
+
+### Updating seed CSV data
+
+Place the latest CSV exports in `backend/data/` using these exact filenames: `CCISched-Semester.csv`, `CCISched-Courses.csv`, `CCISched-Rooms.csv`, `CCISched-Program-Curriculum.csv`, `CCISched-Sections.csv`, `CCISched-Faculty.csv`, `CCISched-Faculty-Course-Qualifications.csv`, `CCISched-Faculty-Availability-Matrix.csv`, and `CCISched-Historical-Data.csv`. The seeder reads these filenames directly. Availability is imported only for the semester whose date range contains the day you run `python init_db.py`; AM/PM times are normalized to 24-hour format. The chairperson seed file (`CCISched-Chairpersons.csv`) is kept separately and was preserved because it was not included in the latest data archive. Back up your database before reseeding.

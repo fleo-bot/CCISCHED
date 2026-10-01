@@ -659,6 +659,34 @@ body {
   color: var(--white);
 }
 
+.slot__delete-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid rgba(180, 35, 35, 0.45);
+  background: transparent;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #b42323;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.slot__delete-btn:hover:not(:disabled) {
+  background: #b42323;
+  border-color: #b42323;
+  color: #fff;
+}
+
+.slot__delete-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
 .slot__row {
   display: flex;
   align-items: center;

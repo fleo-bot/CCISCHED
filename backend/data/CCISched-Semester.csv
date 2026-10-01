@@ -1,0 +1,13 @@
+semester id,academic_year,semester_term,start_date,end_date,max_units_per_faculty,is_active
+20231,2023-2024,1st Term,September 25 2023,11-Feb-24,,
+20232,2023-2024,2nd Term,"February 28,2024",14-Jul-24,,
+20233,2023-2024,3rd Term,22-Jul-24,4-Sep-24,,
+20241,2024-2025,1st Term,9-Sep-24,28-Jan-25,,
+20242,2024-2025,2nd Term,17-Feb-25,29-Jun-25,,
+20243,2024-2025,3rd Term,14-Jul-25,29-Aug-25,,
+20251,2025-2026,1st Term,1-Sep-25,17-Jan-26,,
+20252,2025-2026,2nd Term,9-Feb-26,21-Jun-26,,
+20253,2025-2026,3rd Term,29-Jun-26,8-Aug-26,,
+20261,2026-2027,1st Term,17-Aug-26,22-Dec-26,,
+20262,2026-2027,2nd Term,20-Jan-27,30-May-27,,
+20263,2026-2027,3rd Term,---,---,,

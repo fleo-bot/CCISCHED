@@ -14,93 +14,40 @@ document.getElementById('notifBtn')?.addEventListener('click', () => {
 });
 
 // ─────────────────────────────────────────────
-//  FACULTY SUBMISSION DATA — from API
+//  DATA — loaded from the real backend
 // ─────────────────────────────────────────────
 let facultySubmissions = [];
-let semester = null;
 
 async function loadSubmissions() {
   try {
-    const response = await API.getAllSubmissions();
-    facultySubmissions = response.submissions || [];
-    semester = response.semester;
-    
+    const [subsResult, faculty] = await Promise.all([
+      API.getAllSubmissions(),
+      API.getFacultyList().catch(() => []),
+    ]);
+
+    const typeByFacultyId = {};
+    faculty.forEach(f => { typeByFacultyId[f.id] = f.employment_type || 'Full Time'; });
+
+    facultySubmissions = (subsResult.submissions || []).map(s => ({
+      id:            s.id,
+      faculty_id:    s.faculty_id,
+      faculty_name:  s.faculty_name || 'Unknown',
+      type:          typeByFacultyId[s.faculty_id] || 'Faculty',
+      status:        s.status,
+      submittedDate: s.submitted_at
+        ? new Date(s.submitted_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+        : null,
+      submittedAtRaw: s.submitted_at,
+      // Same grouping the detail page uses, so the two always agree
+      slotCount:     AvailabilityUtils.buildSlotCards(s.slots || [], { merge: true }).length,
+    }));
+
     renderStats();
-    renderTable();
+    renderTable(activeFilter, searchQuery, sortBy);
   } catch (err) {
-    console.error('Failed to load submissions:', err);
+    console.error('[Submissions] Failed to load:', err);
   }
 }
-    workflowStatus: 'pending',
-  },
-  {
-    id: 6,
-    name: 'Carla Mendoza',
-    type: 'Part-Time',
-    submitted: true,
-    submittedDate: 'Aug 16, 2026',
-    slots: [
-      { dayIndices: [0,1,2,3], times: ['9:00 - 10:30'], timeLabel: '9:00 AM – 10:30 AM' },
-    ],
-    preference: '9:00 - 10:30',
-    status: 'Current Submission',
-    workflowStatus: 'pending',
-  },
-  {
-    id: 7,
-    name: 'Mark Villanueva',
-    type: 'Full-Time',
-    submitted: true,
-    submittedDate: 'Aug 9, 2026',
-    slots: [
-      { dayIndices: [0,1,2,3,4], times: ['7:30 - 9:00','9:00 - 10:30'], timeLabel: '7:30 AM – 10:30 AM' },
-      { dayIndices: [0,1,4],     times: ['10:30 - 12:00'], timeLabel: '10:30 AM – 12:00 PM' },
-    ],
-    preference: '9:00 - 10:30',
-    status: 'Current Submission',
-    workflowStatus: 'pending',
-  },
-  {
-    id: 8,
-    name: 'Sofia Dela Peña',
-    type: 'Full-Time',
-    submitted: true,
-    submittedDate: 'Aug 17, 2026',
-    slots: [
-      { dayIndices: [0,1,2,3,4], times: ['7:30 - 9:00','9:00 - 10:30'], timeLabel: '7:30 AM – 10:30 AM' },
-    ],
-    preference: '7:30 - 9:00',
-    status: 'Current Submission',
-    workflowStatus: 'pending',
-  },
-  {
-    id: 9,
-    name: 'Rico Aguilar',
-    type: 'Part-Time',
-    submitted: true,
-    submittedDate: 'Aug 18, 2026',
-    slots: [
-      { dayIndices: [0,2,4], times: ['12:00 - 1:30'], timeLabel: '12:00 PM – 1:30 PM' },
-    ],
-    preference: '12:00 - 1:30',
-    status: 'Current Submission',
-    workflowStatus: 'pending',
-  },
-];
-
-// Load from sessionStorage or use defaults
-let FACULTY_SUBMISSIONS = [];
-try {
-  const stored = sessionStorage.getItem('cp_submissions');
-  FACULTY_SUBMISSIONS = stored ? JSON.parse(stored) : DEFAULT_FACULTY_SUBMISSIONS;
-} catch {
-  FACULTY_SUBMISSIONS = DEFAULT_FACULTY_SUBMISSIONS;
-}
-
-// ─────────────────────────────────────────────
-//  SAVE TO sessionStorage so detail page can read it
-// ─────────────────────────────────────────────
-sessionStorage.setItem('cp_submissions', JSON.stringify(FACULTY_SUBMISSIONS));
 
 // ─────────────────────────────────────────────
 //  SUMMARY CHIPS
@@ -108,11 +55,11 @@ sessionStorage.setItem('cp_submissions', JSON.stringify(FACULTY_SUBMISSIONS));
 function renderStats() {
   const el = document.getElementById('csSummaryChips');
   if (!el) return;
-  
-  const total = facultySubmissions.length;
+
+  const total     = facultySubmissions.length;
   const submitted = facultySubmissions.filter(f => f.status === 'submitted').length;
-  const approved = facultySubmissions.filter(f => f.status === 'approved').length;
-  const pending = facultySubmissions.filter(f => f.status === 'pending').length;
+  const approved  = facultySubmissions.filter(f => f.status === 'approved').length;
+  const pending   = facultySubmissions.filter(f => f.status === 'pending').length;
 
   el.innerHTML = `
     <span class="cs-chip cs-chip--total">${total} Total</span>
@@ -128,6 +75,30 @@ function renderStats() {
 }
 
 // ─────────────────────────────────────────────
+//  STATUS BADGE
+// ─────────────────────────────────────────────
+function statusBadge(status) {
+  const map = {
+    approved:  `<span class="cs-status cs-status--approved">
+                  <svg width="9" height="9" viewBox="0 0 12 12" fill="none">
+                    <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Approved
+                </span>`,
+    submitted: `<span class="cs-status cs-status--submitted">
+                  <svg width="9" height="9" viewBox="0 0 12 12" fill="none">
+                    <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Submitted
+                </span>`,
+    returned:  `<span class="cs-status cs-status--returned">↑ Returned</span>`,
+    rejected:  `<span class="cs-status cs-status--rejected">✗ Rejected</span>`,
+    pending:   `<span class="cs-status cs-status--pending">⏳ Pending</span>`,
+  };
+  return map[status] || map.pending;
+}
+
+// ─────────────────────────────────────────────
 //  GET INITIALS
 // ─────────────────────────────────────────────
 function initials(name) {
@@ -137,153 +108,112 @@ function initials(name) {
 // ─────────────────────────────────────────────
 //  RENDER ROWS
 // ─────────────────────────────────────────────
-function renderTable(filter = 'all', query = '') {
+function renderTable(filter = 'all', query = '', sort = 'name') {
   const body    = document.getElementById('csBody');
   const countEl = document.getElementById('csCount');
   if (!body) return;
 
   const q = query.trim().toLowerCase();
 
-  const filtered = facultySubmissions.filter(f => {
-    const matchStatus = filter === 'all'
-      || (filter === 'submitted' && f.status === 'submitted')
-      || (filter === 'approved' && f.status === 'approved')
-      || (filter === 'pending'   && f.status === 'pending');
-    const matchQuery = !q || f.faculty_name.toLowerCase().includes(q);
+  let filtered = facultySubmissions.filter(f => {
+    const matchStatus = filter === 'all' || f.status === filter;
+    const matchQuery  = !q || f.faculty_name.toLowerCase().includes(q);
     return matchStatus && matchQuery;
+  });
+
+  filtered = filtered.slice().sort((a, b) => {
+    if (sort === 'date') {
+      // Undated (never submitted) entries sort last
+      if (!a.submittedAtRaw && !b.submittedAtRaw) return a.faculty_name.localeCompare(b.faculty_name);
+      if (!a.submittedAtRaw) return 1;
+      if (!b.submittedAtRaw) return -1;
+      return new Date(b.submittedAtRaw) - new Date(a.submittedAtRaw);   // newest first
+    }
+    return a.faculty_name.localeCompare(b.faculty_name);
   });
 
   if (countEl) countEl.textContent = `${filtered.length} faculty`;
 
   if (!filtered.length) {
-    body.innerHTML = `
-      <div class="cs-empty">
-        <p>No submissions match the current filter.</p>
-      </div>`;
+    body.innerHTML = `<div class="cs-empty"><p>No submissions match the current filter.</p></div>`;
     return;
   }
 
-  body.innerHTML = filtered.map(f => {
-    const statusBadge = 
-      f.status === 'approved' ? `<span class="cs-status cs-status--approved">
-        <svg width="9" height="9" viewBox="0 0 12 12" fill="none">
-          <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Approved
-      </span>` :
-      f.status === 'submitted' ? `<span class="cs-status cs-status--submitted">
-        <svg width="9" height="9" viewBox="0 0 12 12" fill="none">
-          <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Submitted
-      </span>` :
-      f.status === 'returned' ? `<span class="cs-status cs-status--returned">
-        <svg width="9" height="9" viewBox="0 0 12 12" fill="none">
-          <path d="M6 2V10M6 2L3 5M6 2L9 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-        Returned
-      </span>` :
-      `<span class="cs-status cs-status--pending">Pending</span>`;
-    
-    return `
-      <div class="cs-row">
-        <div class="cs-row__name">
-          <div class="cs-row__avatar">${initials(f.faculty_name)}</div>
-          <div>
-            <p class="cs-row__name-text">${f.faculty_name}</p>
-          </div>
-        </div>
-        <span class="cs-row__type">Faculty</span>
-        <div class="cs-row__slots">
-          <span class="cs-slot-count ${(f.slots?.length || 0) === 0 ? 'cs-slot-count--zero' : ''}">${f.slots?.length || 0}</span>
-        </div>
-        <div class="cs-row__status">${statusBadge}</div>
-        <div class="cs-row__actions">
-          <button class="cs-action-btn" onclick="viewSubmission(${f.id})" title="View details">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M1 8C1 8 3.5 3 8 3C12.5 3 15 8 15 8C15 8 12.5 13 8 13C3.5 13 1 8 1 8Z" stroke="currentColor" stroke-width="1.5"/>
-            </svg>
-          </button>
-        </div>
+  body.innerHTML = filtered.map(f => `
+    <div class="cs-row">
+      <div class="cs-row__name">
+        <div class="cs-row__avatar">${initials(f.faculty_name)}</div>
+        <div><p class="cs-row__name-text">${f.faculty_name}</p></div>
       </div>
-    `;
-  }).join('');
-}
-                   </svg>
-                   Approved
-                 </span>`
-              : f.workflowStatus === 'returned'
-              ? `<span class="cs-status cs-status--returned">↑ Returned</span>`
-              : f.workflowStatus === 'rejected'
-              ? `<span class="cs-status cs-status--rejected">✗ Rejected</span>`
-              : `<span class="cs-status cs-status--submitted">
-                   <svg width="9" height="9" viewBox="0 0 12 12" fill="none">
-                     <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                   </svg>
-                   Submitted
-                 </span>`)
-          : `<span class="cs-status cs-status--pending">⏳ Pending</span>`
-        }
+      <span class="cs-row__type">${f.type}</span>
+      <div class="cs-row__slots">
+        <span class="cs-slot-count ${f.slotCount === 0 ? 'cs-slot-count--zero' : ''}">${f.slotCount}</span>
       </div>
-
-      <!-- Date -->
+      <div class="cs-row__status">${statusBadge(f.status)}</div>
       <span class="cs-row__date">${f.submittedDate || '—'}</span>
-
-      <!-- Actions -->
       <div class="cs-row__actions">
-        ${f.submitted
-          ? `<a href="submission-detail.html?id=${f.id}" class="cs-view-btn">
-               <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
-                 <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4"/>
-                 <circle cx="7" cy="7" r="2" fill="currentColor"/>
-               </svg>
-               View Detail
-             </a>`
-          : `<button class="cs-remind-btn" data-id="${f.id}">
-               <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
-                 <path d="M7 1.5C4.79 1.5 3 3.29 3 5.5v3.5L1.5 11h11L11 9V5.5C11 3.29 9.21 1.5 7 1.5Z"
-                   stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
-                 <path d="M5.5 11a1.5 1.5 0 003 0" stroke="currentColor" stroke-width="1.4"/>
-               </svg>
-               Send Reminder
-             </button>`
-        }
+        <button class="cs-view-btn" data-view="${f.id}" title="View details">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M1 8C1 8 3.5 3 8 3C12.5 3 15 8 15 8C15 8 12.5 13 8 13C3.5 13 1 8 1 8Z" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          View
+        </button>
+        <button class="cs-delete-btn" data-delete="${f.id}" data-name="${f.faculty_name}" title="Delete submission">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+            <path d="M2 4h12M6 4V2.7a.7.7 0 01.7-.7h2.6a.7.7 0 01.7.7V4M12.3 4l-.6 9.3a1 1 0 01-1 .9H5.3a1 1 0 01-1-.9L3.7 4"
+                  stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
       </div>
-
     </div>
   `).join('');
 
-  // Wire remind buttons
-  body.querySelectorAll('.cs-remind-btn').forEach(btn => {
+  body.querySelectorAll('[data-view]').forEach(btn => {
     btn.addEventListener('click', () => {
-      const f = FACULTY_SUBMISSIONS[parseInt(btn.dataset.id, 10)];
-      showToast(`Reminder sent to ${f.name}`);
+      window.location.href = `submission-detail.html?id=${btn.dataset.view}`;
     });
+  });
+
+  body.querySelectorAll('[data-delete]').forEach(btn => {
+    btn.addEventListener('click', () => handleDelete(btn.dataset.delete, btn.dataset.name));
   });
 }
 
-// ─────────────────────────────────────────────
-//  VIEW SUBMISSION DETAIL
-// ─────────────────────────────────────────────
-function viewSubmission(submissionId) {
-  window.location.href = `submission-detail.html?id=${submissionId}`;
+async function handleDelete(submissionId, name) {
+  if (!confirm(`Delete ${name}'s availability submission? This cannot be undone.`)) return;
+
+  try {
+    await API.deleteSubmission(submissionId);
+    facultySubmissions = facultySubmissions.filter(f => String(f.id) !== String(submissionId));
+    renderStats();
+    renderTable(activeFilter, searchQuery, sortBy);
+    showToast(`${name}'s submission deleted.`);
+  } catch (err) {
+    showToast('Failed to delete submission: ' + err.message);
+  }
 }
 
 // ─────────────────────────────────────────────
-//  FILTER + SEARCH
+//  FILTER + SEARCH + SORT
 // ─────────────────────────────────────────────
 let activeFilter = 'all';
 let searchQuery  = '';
+let sortBy       = 'name';
 
 document.getElementById('statusFilter')?.addEventListener('change', function () {
   activeFilter = this.value;
-  renderTable(activeFilter, searchQuery);
+  renderTable(activeFilter, searchQuery, sortBy);
+});
+
+document.getElementById('sortBy')?.addEventListener('change', function () {
+  sortBy = this.value;
+  renderTable(activeFilter, searchQuery, sortBy);
 });
 
 document.getElementById('searchInput')?.addEventListener('input', function () {
   searchQuery = this.value;
-  renderTable(activeFilter, searchQuery);
+  renderTable(activeFilter, searchQuery, sortBy);
 });
 
 // ─────────────────────────────────────────────
@@ -307,4 +237,3 @@ function showToast(msg) {
 //  INIT
 // ─────────────────────────────────────────────
 loadSubmissions();
-

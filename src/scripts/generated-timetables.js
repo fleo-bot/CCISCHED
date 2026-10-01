@@ -46,27 +46,31 @@ try {
 /**
  * Map the backend faculty_data array into the shape this page's
  * renderRows() expects:
- *   { id, name, profileHref, courses: string[] }
+ *   { id, name, profileHref, courses: string[], courseDetails }
+ * courseDetails (code/title/section/days/time/units) is carried through
+ * for the PDF export, which needs real columns rather than one bundled
+ * display string.
  */
 function _buildFacultyData(apiResult) {
   if (!apiResult?.faculty_data?.length) return null;
   return apiResult.faculty_data.map(f => ({
-    id:          f.id,
-    name:        f.name,
-    profileHref: 'assignment-detail.html',
-    courses:     f.courses,  // already "CS101 – Introduction to Computing"
+    id:             f.id,
+    name:           f.name,
+    profileHref:    'assignment-detail.html',
+    courses:        f.courses,        // already "CS101 – Introduction to Computing"
+    courseDetails:  f.course_details || [],
   }));
 }
 
-const FACULTY_DATA = _buildFacultyData(_apiResult) ?? [
-  // ── Fallback shown when backend is not running ──
-  {
-    id: 1,
-    name: 'Ana Cruz',
-    profileHref: 'assignment-detail.html',
-    courses: ['CS101 – Introduction to Computing'],
-  },
-];
+const FACULTY_DATA = _buildFacultyData(_apiResult);
+
+if (!FACULTY_DATA) {
+  const tableBody = document.getElementById('gtTableBody');
+  if (tableBody) {
+    tableBody.innerHTML = `<div class="gt-empty"><p class="gt-empty__text">ERROR: NO GENERATED TIMETABLE DATA IS AVAILABLE.</p></div>`;
+  }
+}
+
 
 // ─────────────────────────────────────────────
 //  RENDER
@@ -75,6 +79,7 @@ const tableBody = document.getElementById('gtTableBody');
 
 function renderRows(data) {
   if (!tableBody) return;
+  if (!Array.isArray(data)) return;
   tableBody.innerHTML = '';
 
   if (!data.length) {
@@ -158,146 +163,128 @@ tableBody?.addEventListener('click', e => {
 //  ACTION BUTTONS
 // ─────────────────────────────────────────────
 document.getElementById('exportPdfBtn')?.addEventListener('click', exportAllToPDF);
+document.getElementById('printPdfBtn')?.addEventListener('click', printAllPDF);
 
-document.getElementById('distributeBtn')?.addEventListener('click', () => {
-  // Navigate to the schedule dashboard; the ?distributed=1 flag
-  // tells that page to show the success notification on arrival.
-  window.location.href = `schedule.html?distributed=1`;
-});
+document.getElementById('distributeBtn')?.addEventListener('click', async (e) => {
+  const btn = e.currentTarget;
 
-// ─────────────────────────────────────────────
-//  PDF EXPORT  — print-based, no dependencies
-// ─────────────────────────────────────────────
-function exportAllToPDF() {
-  const win = window.open('', '_blank', 'width=900,height=700');
-  if (!win) {
-    showToast('Pop-up blocked. Please allow pop-ups and try again.', 'warn');
+  if (!_apiResult?.assignments?.length) {
+    alert('No generated assignments found to distribute. Please generate a schedule first.');
     return;
   }
 
-  const rows = FACULTY_DATA.map(faculty => `
-    <div class="faculty-block">
-      <p class="faculty-name">${faculty.name}</p>
-      <table>
-        <thead>
-          <tr><th>Assigned Courses &amp; Sections</th></tr>
-        </thead>
-        <tbody>
-          ${faculty.courses.map(c => `<tr><td>${c}</td></tr>`).join('')}
-        </tbody>
-      </table>
-    </div>
-  `).join('');
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Distributing…';
 
-  win.document.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="UTF-8"/>
-      <title>Generated Timetables — ${ayParam} ${semParam}</title>
-      <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-          font-family: 'Raleway', 'Segoe UI', Arial, sans-serif;
-          color: #111;
-          background: #fff;
-          padding: 40px 48px;
-        }
-        .doc-header {
-          background: #800000;
-          color: #fff;
-          padding: 20px 28px;
-          border-radius: 10px;
-          margin-bottom: 28px;
-        }
-        .doc-header h1 {
-          font-size: 1.2rem;
-          font-weight: 900;
-          letter-spacing: 0.12em;
-        }
-        .doc-header p {
-          font-size: 0.78rem;
-          opacity: 0.70;
-          margin-top: 4px;
-          letter-spacing: 0.06em;
-        }
-        .faculty-block {
-          margin-bottom: 24px;
-          border: 1.5px solid rgba(128,0,0,0.18);
-          border-radius: 8px;
-          overflow: hidden;
-          page-break-inside: avoid;
-        }
-        .faculty-name {
-          background: rgba(128,0,0,0.07);
-          color: #800000;
-          font-size: 0.88rem;
-          font-weight: 800;
-          padding: 10px 16px;
-          border-bottom: 1px solid rgba(128,0,0,0.12);
-        }
-        table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-        thead tr {
-          background: #800000;
-        }
-        thead th {
-          color: #fff;
-          font-size: 0.68rem;
-          font-weight: 700;
-          letter-spacing: 0.10em;
-          text-transform: uppercase;
-          padding: 8px 16px;
-          text-align: left;
-        }
-        tbody td {
-          padding: 8px 16px;
-          font-size: 0.80rem;
-          color: #111;
-          border-bottom: 1px solid rgba(128,0,0,0.07);
-        }
-        tbody tr:last-child td { border-bottom: none; }
-        tbody tr:nth-child(even) td { background: #fff8f8; }
-        .doc-footer {
-          margin-top: 32px;
-          font-size: 0.68rem;
-          color: #999;
-          text-align: center;
-          border-top: 1px solid #eee;
-          padding-top: 14px;
-        }
-        @media print {
-          body { padding: 24px 32px; }
-          .no-print { display: none; }
-        }
-      </style>
-    </head>
-    <body>
-      <div class="doc-header">
-        <h1>GENERATED TIMETABLES</h1>
-        <p>${ayParam} &nbsp;·&nbsp; ${semParam}</p>
-      </div>
+  try {
+    await API.publishSchedule(_apiResult.assignments);
+    // Navigate to the schedule dashboard; the ?distributed=1 flag
+    // tells that page to show the success notification on arrival.
+    window.location.href = `schedule.html?distributed=1`;
+  } catch (err) {
+    alert('Failed to distribute schedule: ' + err.message);
+    btn.disabled = false;
+    btn.textContent = originalText;
+  }
+});
 
-      ${rows}
+// ─────────────────────────────────────────────
+//  PDF EXPORT — real, direct file download via jsPDF + autoTable
+//  (previously opened a print dialog and relied on the user manually
+//  choosing "Save as PDF" themselves)
+// ─────────────────────────────────────────────
+function buildTimetablesPDF() {
+  if (!FACULTY_DATA.length) {
+    showToast('No generated timetable data to export.', 'error');
+    return null;
+  }
+  if (!window.jspdf?.jsPDF) {
+    showToast('PDF library failed to load — check your connection and try again.', 'error');
+    return null;
+  }
 
-      <div class="doc-footer">
-        CCISched &nbsp;·&nbsp; Generated on ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-      </div>
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+  const MAROON  = [128, 0, 0];
+  const margin  = 40;
+  const pageW   = doc.internal.pageSize.getWidth();
+  const pageH   = doc.internal.pageSize.getHeight();
+  let y = margin;
 
-      <script>
-        window.onload = function() {
-          window.print();
-          window.onafterprint = function() { window.close(); };
-        };
-      <\/script>
-    </body>
-    </html>
-  `);
+  doc.setFillColor(...MAROON);
+  doc.rect(margin, y, pageW - margin * 2, 46, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.text('GENERATED TIMETABLES', margin + 14, y + 20);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.text(`${ayParam}   \u00b7   ${semParam}`, margin + 14, y + 36);
+  y += 46 + 22;
 
-  win.document.close();
-  showToast('Opening print dialog…');
+  FACULTY_DATA.forEach(faculty => {
+    if (y > pageH - 110) { doc.addPage(); y = margin; }
+    doc.setTextColor(...MAROON);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9.5);
+    doc.text(faculty.name, margin, y);
+    y += 8;
+
+    // Prefer the structured per-course data (real Day/Time/Units columns);
+    // fall back to the single bundled display string if it's ever missing.
+    const hasDetails = faculty.courseDetails && faculty.courseDetails.length;
+    const head = hasDetails
+      ? [['Code', 'Course', 'Section', 'Day & Time', 'Units']]
+      : [['Assigned Courses & Sections']];
+    const body = hasDetails
+      ? faculty.courseDetails.map(c => [
+          c.code, c.title, c.section,
+          c.days ? `${c.days}, ${c.time}` : '\u2014',
+          String(c.units),
+        ])
+      : faculty.courses.map(c => [c]);
+
+    doc.autoTable({
+      startY: y,
+      margin: { left: margin, right: margin },
+      head, body,
+      theme: 'striped',
+      styles: { fontSize: 8.5, cellPadding: 5, textColor: [30, 30, 30] },
+      headStyles: { fillColor: MAROON, textColor: 255, fontSize: 8, fontStyle: 'bold' },
+      alternateRowStyles: { fillColor: [255, 248, 248] },
+    });
+    y = doc.lastAutoTable.finalY + 20;
+  });
+
+  const pageCount = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(150);
+    doc.text(
+      `CCISched   \u00b7   Generated on ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}   \u00b7   Page ${i} of ${pageCount}`,
+      pageW / 2, pageH - 20, { align: 'center' }
+    );
+  }
+
+  const ay  = ayParam.replace(/\s+/g, '');
+  const sem = semParam.replace(/\s+/g, '');
+  return { doc, filename: `Timetable_${ay}_${sem}.pdf` };
+}
+
+function exportAllToPDF() {
+  const result = buildTimetablesPDF();
+  if (!result) return;
+  result.doc.save(result.filename);
+  showToast('PDF saved.');
+}
+
+function printAllPDF() {
+  const result = buildTimetablesPDF();
+  if (!result) return;
+  printPdfDoc(result.doc);
 }
 
 // ─────────────────────────────────────────────

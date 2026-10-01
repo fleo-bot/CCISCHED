@@ -157,14 +157,9 @@
 
             <div class="profile-left__avatar-wrap">
               <img src="../assets/images/avatar-female.svg" alt="Avatar" class="profile-left__avatar" />
-              <button class="profile-left__avatar-btn" title="Change photo">
-                <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
-                  <path d="M11 2.5L13.5 5L5 13.5H2.5V11L11 2.5Z" stroke="white" stroke-width="1.6" stroke-linejoin="round"/>
-                </svg>
-              </button>
             </div>
 
-            <p class="profile-left__name">Maria Santos</p>
+            <p class="profile-left__name">Loading…</p>
             <p class="profile-left__role">Faculty</p>
 
             <nav class="profile-tabs">
@@ -209,51 +204,51 @@
                 <div class="form-row form-row--3">
                   <div class="form-field">
                     <label class="form-label">First Name</label>
-                    <input type="text" class="form-input" value="Maria" />
+                    <input type="text" class="form-input" id="firstName" />
                   </div>
                   <div class="form-field">
                     <label class="form-label">Middle Name</label>
-                    <input type="text" class="form-input" value="Doyen" />
+                    <input type="text" class="form-input" id="middleName" />
                   </div>
                   <div class="form-field">
                     <label class="form-label">Last Name</label>
-                    <input type="text" class="form-input" value="Santos" />
+                    <input type="text" class="form-input" id="lastName" />
                   </div>
                 </div>
 
                 <div class="form-row form-row--2">
                   <div class="form-field">
                     <label class="form-label">Email Address</label>
-                    <input type="email" class="form-input" value="m.santos@psu.edu.ph" />
+                    <input type="email" class="form-input" id="email" />
                   </div>
                   <div class="form-field form-field--sm">
                     <label class="form-label">Age</label>
-                    <input type="number" class="form-input" value="40" min="18" max="99" />
+                    <input type="number" class="form-input" id="age" min="18" max="99" />
                   </div>
                 </div>
 
                 <div class="form-row form-row--2">
                   <div class="form-field">
                     <label class="form-label">Role</label>
-                    <input type="text" class="form-input" value="Faculty" readonly />
+                    <input type="text" class="form-input" id="role" readonly />
                   </div>
                   <div class="form-field">
                     <label class="form-label">Department</label>
-                    <input type="text" class="form-input" value="Department of Information Technology" />
+                    <input type="text" class="form-input" id="department" />
                   </div>
                 </div>
 
                 <div class="form-row form-row--2">
                   <div class="form-field">
                     <label class="form-label">Gender</label>
-                    <select class="form-input form-select">
-                      <option value="female" selected>Female</option>
+                    <select class="form-input form-select" id="gender">
+                      <option value="female">Female</option>
                       <option value="male">Male</option>
                     </select>
                   </div>
                   <div class="form-field">
                     <label class="form-label">Contact Number</label>
-                    <input type="text" class="form-input" value="+63 912 345 6789" />
+                    <input type="text" class="form-input" id="contactNumber" />
                   </div>
                 </div>
 
@@ -287,43 +282,46 @@
                 <div class="form-row form-row--2">
                   <div class="form-field">
                     <label class="form-label">Academic Rank</label>
-                    <input type="text" class="form-input" value="Instructor I" />
+                    <input type="text" class="form-input" id="rank" />
                   </div>
                   <div class="form-field">
                     <label class="form-label">Years of Experience</label>
-                    <input type="number" class="form-input" value="5" min="0" />
+                    <input type="number" class="form-input" id="experience" min="0" />
                   </div>
                 </div>
 
                 <div class="form-row form-row--2">
                   <div class="form-field">
                     <label class="form-label">Specialization</label>
-                    <input type="text" class="form-input" value="Web Development" />
+                    <input type="text" class="form-input" id="specialization" />
                   </div>
                   <div class="form-field">
                     <label class="form-label">Subject Assigned</label>
-                    <input type="text" class="form-input" value="3 Subjects Assigned" readonly />
+                    <input type="text" class="form-input" id="subjectsAssigned" readonly />
                   </div>
                 </div>
 
                 <div class="form-row form-row--1">
                   <div class="form-field">
                     <label class="form-label">Preferred Courses</label>
-                    <input type="text" class="form-input" value="COMP 001, COMP 002, GEED 012" placeholder="eg. COMP 001, COMP 002" />
+                    <input type="text" class="form-input" id="preferredCourses" placeholder="eg. COMP 001, COMP 002" />
                   </div>
                 </div>
 
                 <div class="form-row form-row--2">
                   <div class="form-field">
                     <label class="form-label">Employment Type</label>
-                    <select class="form-input form-select">
-                      <option selected>Full Time</option>
+                    <select class="form-input form-select" id="employmentType">
+                      <option>Permanent</option>
+                      <option>Temporary</option>
                       <option>Part Time</option>
+                      <option>Full Time</option>
+                      <option>Designee</option>
                     </select>
                   </div>
                   <div class="form-field">
                     <label class="form-label">Highest Educational Attainment</label>
-                    <input type="text" class="form-input" value="MIS Information Technology, PUP Manila" />
+                    <input type="text" class="form-input" id="education" />
                   </div>
                 </div>
 
@@ -392,21 +390,6 @@
                           <circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.7"/>
                         </svg>
                       </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-row form-row--1">
-                  <div class="form-field">
-                    <label class="form-label">Two-Factor Authentication</label>
-                    <div class="tfa-row">
-                      <label class="tfa-toggle" id="tfaToggle">
-                        <input type="checkbox" id="tfaCheckbox" />
-                        <span class="tfa-track">
-                          <span class="tfa-thumb"></span>
-                        </span>
-                        <span class="tfa-label" id="tfaLabel">Enable</span>
-                      </label>
                     </div>
                   </div>
                 </div>

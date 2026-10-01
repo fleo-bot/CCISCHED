@@ -120,6 +120,13 @@
   gap: 8px;
 }
 
+.panel-filters {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
 .dept-chip {
   padding: 6px 16px;
   background: transparent;
@@ -184,16 +191,17 @@
 }
 
 .course-card--assigned {
-  opacity: 0.55;
-  cursor: default;
+  /* Assigned courses are still editable by the chairperson. */
+  opacity: 1;
+  cursor: pointer;
   background: rgba(39, 174, 96, 0.04);
   border-color: rgba(39, 174, 96, 0.30);
 }
 
 .course-card--assigned:hover {
-  transform: none;
-  box-shadow: none;
-  border-color: rgba(39, 174, 96, 0.30);
+  transform: translateX(3px);
+  box-shadow: 0 3px 10px rgba(128, 0, 0, 0.08);
+  border-color: rgba(39, 174, 96, 0.50);
 }
 
 .course-info {

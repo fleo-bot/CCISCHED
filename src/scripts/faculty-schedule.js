@@ -9,11 +9,21 @@ if (topbarDate) {
   topbarDate.textContent = `${dayName}, ${datePart}`;
 }
 
-// ── Populate print header (hidden on screen, visible in print) ──
-const printFacultyName = document.getElementById('printFacultyName');
-if (printFacultyName) {
-  printFacultyName.textContent = 'Maria Santos';
+// ── Populate faculty name shown on this page (toolbar pill + hidden print
+//    header) with the real logged-in user, once auth-check.js confirms it ──
+function applyCurrentUserToPage(user) {
+  if (!user) return;
+  const fullName = `${user.first_name} ${user.last_name}`;
+
+  const printFacultyName = document.getElementById('printFacultyName');
+  if (printFacultyName) printFacultyName.textContent = fullName;
+
+  const toolbarName = document.querySelector('.sched-toolbar__name span');
+  if (toolbarName) toolbarName.textContent = fullName;
 }
+
+document.addEventListener('authReady', (e) => applyCurrentUserToPage(e.detail));
+if (typeof currentUser !== 'undefined' && currentUser) applyCurrentUserToPage(currentUser);
 
 const printSemester = document.getElementById('printSemester');
 if (printSemester) {

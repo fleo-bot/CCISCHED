@@ -23,46 +23,34 @@ document.getElementById('manageBtn')?.addEventListener('click', () => {
 //  DATA
 // ─────────────────────────────────────────────
 
-const COURSES = [
-  { code: 'INTE 303', title: 'Capstone Project 1',           classification: 'IT COMMON & PROFESSIONAL COURSE' },
-  { code: 'COMP 019', title: 'Applications Development',     classification: 'IT COMMON & PROFESSIONAL COURSE' },
-  { code: 'COMP 011', title: 'Introduction to Computing',    classification: 'IT COMMON & PROFESSIONAL COURSE' },
-  { code: 'COMP 002', title: 'Computer Programming',         classification: 'IT COMMON & PROFESSIONAL COURSE' },
-  { code: 'COMP 035', title: 'Data Mining',                  classification: 'IT ELECTIVE COURSE'              },
-  { code: 'COMP 016', title: 'Web Development',              classification: 'IT COMMON & PROFESSIONAL COURSE' },
-  { code: 'COMP 017', title: 'Multimedia',                   classification: 'IT COMMON & PROFESSIONAL COURSE' },
-  { code: 'COMP 021', title: 'Systems Analysis & Design',    classification: 'IT COMMON & PROFESSIONAL COURSE' },
-  { code: 'COMP 028', title: 'Network Administration',       classification: 'IT COMMON & PROFESSIONAL COURSE' },
-  { code: 'COMP 033', title: 'Database Administration',      classification: 'IT COMMON & PROFESSIONAL COURSE' },
-  { code: 'COMP 040', title: 'Discrete Mathematics',         classification: 'IT COMMON & PROFESSIONAL COURSE' },
-  { code: 'COMP 042', title: 'Data Structures',              classification: 'IT COMMON & PROFESSIONAL COURSE' },
-  { code: 'ELEC 101', title: 'Mobile Application Dev',       classification: 'IT ELECTIVE COURSE'              },
-  { code: 'ELEC 102', title: 'Machine Learning',             classification: 'IT ELECTIVE COURSE'              },
-  { code: 'ELEC 103', title: 'Cloud Computing',              classification: 'IT ELECTIVE COURSE'              },
-  { code: 'COMP 050', title: 'Programming 1',                classification: 'IT COMMON & PROFESSIONAL COURSE' },
-  { code: 'COMP 051', title: 'Programming 2',                classification: 'IT COMMON & PROFESSIONAL COURSE' },
-  { code: 'COMP 055', title: 'Data Communication',           classification: 'IT COMMON & PROFESSIONAL COURSE' },
-  { code: 'COMP 058', title: 'Data Science',                 classification: 'IT ELECTIVE COURSE'              },
-  { code: 'COMP 060', title: 'Application Development',      classification: 'IT COMMON & PROFESSIONAL COURSE' },
-];
+// ─────────────────────────────────────────────
+//  DATA — loaded from the real backend
+// ─────────────────────────────────────────────
+let COURSES = [];
+let activeFilter = 'all';
+let activeOffer  = 'all';     // all | offered | not_offered
+let searchQuery  = '';
+// course code -> number of sections in the active semester (from /coverage).
+// A course counts as "offered" when it has at least one section.
+let SECTIONS_BY_CODE = null;   // null until coverage has loaded
 
-// Section assignment coverage per course (name + pct)
-const COVERAGE = [
-  { name: 'Capstone Project 1',        pct: 5  },
-  { name: 'Application Development',   pct: 4  },
-  { name: 'Data Mining',               pct: 9  },
-  { name: 'Programming 1',             pct: 9  },
-  { name: 'Discrete Mathematics',      pct: 5  },
-  { name: 'Database Administration',   pct: 7  },
-  { name: 'Data Science',              pct: 9  },
-  { name: 'Data Communication',        pct: 9  },
-  { name: 'Web Development',           pct: 8  },
-  { name: 'Multimedia',                pct: 7  },
-  { name: 'Network Administration',    pct: 6  },
-  { name: 'Mobile Application Dev',    pct: 4  },
-];
+async function loadCourses() {
+  try {
+    const data = await API.getCourses();
+    COURSES = data.map(c => ({
+      code:           c.code,
+      title:          c.title,
+      classification: c.classification || 'IT COMMON & PROFESSIONAL COURSE',
+    }));
+    renderTable(activeFilter, searchQuery);
+    animateCount('statCourses', COURSES.length);
+    updateOfferedLabel();
+  } catch (err) {
+    console.error('[Courses] Failed to load:', err);
+  }
+}
 
-const OVERALL_PCT = 82;
+// Section assignment coverage per course — loaded live in loadCoverage()
 
 // ─────────────────────────────────────────────
 //  BUILD COURSES TABLE
@@ -73,36 +61,72 @@ function badgeClass(classification) {
   return classification.includes('ELECTIVE') ? 'crs-badge--elective' : 'crs-badge--common';
 }
 
+function sectionCount(code) {
+  if (!SECTIONS_BY_CODE) return null;          // coverage not loaded yet
+  return SECTIONS_BY_CODE.get(code) || 0;
+}
+
+function updateOfferedLabel() {
+  const lbl = document.getElementById('statCoursesLbl');
+  if (!lbl || !SECTIONS_BY_CODE || !COURSES.length) return;
+  const offered = COURSES.filter(c => sectionCount(c.code) > 0).length;
+  lbl.textContent = `COURSES · ${offered} OFFERED`;
+}
+
 function renderTable(filter = 'all', query = '') {
   if (!tbody) return;
   tbody.innerHTML = '';
 
   COURSES.forEach(course => {
-    const matchFilter = filter === 'all' || course.classification === filter;
+    const isElective = course.classification.toLowerCase().includes('elective');
+    const matchFilter = filter === 'all' ||
+      (filter === 'elective' && isElective) ||
+      (filter === 'common'   && !isElective);
+
+    const n = sectionCount(course.code);
+    const matchOffer = activeOffer === 'all' || n === null ||
+      (activeOffer === 'offered' ? n > 0 : n === 0);
+
     const matchQuery  = query === '' ||
       course.code.toLowerCase().includes(query) ||
       course.title.toLowerCase().includes(query) ||
       course.classification.toLowerCase().includes(query);
 
-    if (!matchFilter || !matchQuery) return;
+    if (!matchFilter || !matchOffer || !matchQuery) return;
+
+    let offeringCell = '<span class="crs-badge crs-badge--not-offered">…</span>';
+    if (n !== null) {
+      offeringCell = n > 0
+        ? `<span class="crs-badge crs-badge--offered">Offered · ${n} section${n === 1 ? '' : 's'}</span>`
+        : '<span class="crs-badge crs-badge--not-offered">Not offered</span>';
+    }
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${course.code}</td>
       <td>${course.title}</td>
       <td><span class="crs-badge ${badgeClass(course.classification)}">${course.classification}</span></td>
+      <td>${offeringCell}</td>
     `;
     tbody.appendChild(tr);
   });
 }
 
 renderTable();
+loadCourses();
 
 // ─────────────────────────────────────────────
 //  FILTER PILLS
 // ─────────────────────────────────────────────
-let activeFilter = 'all';
-let searchQuery  = '';
+
+document.querySelectorAll('.crs-offer-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.crs-offer-pill').forEach(p => p.classList.remove('crs-offer-pill--active'));
+    pill.classList.add('crs-offer-pill--active');
+    activeOffer = pill.dataset.offer;
+    renderTable(activeFilter, searchQuery);
+  });
+});
 
 document.querySelectorAll('.crs-filter-pill').forEach(pill => {
   pill.addEventListener('click', () => {
@@ -122,36 +146,57 @@ document.getElementById('crsSearch')?.addEventListener('input', function () {
 });
 
 // ─────────────────────────────────────────────
-//  COVERAGE BARS
+//  COVERAGE BARS — loaded from the real backend
 // ─────────────────────────────────────────────
 const coverageList  = document.getElementById('coverageList');
 const overallBadge  = document.getElementById('overallBadge');
 
-if (overallBadge) overallBadge.textContent = `${OVERALL_PCT}% Overall`;
+async function loadCoverage() {
+  try {
+    const data = await API.getCoverage();
+    const { total_sections, sections_covered } = data.totals;
+    const overallPct = total_sections > 0 ? Math.round((sections_covered / total_sections) * 100) : 0;
 
-if (coverageList) {
-  COVERAGE.forEach(item => {
-    const row = document.createElement('div');
-    row.className = 'crs-cov-row';
-    row.innerHTML = `
-      <span class="crs-cov-name" title="${item.name}">${item.name}</span>
-      <div class="crs-cov-track">
-        <div class="crs-cov-fill" data-pct="${item.pct}"></div>
-      </div>
-      <span class="crs-cov-pct">${item.pct}/9</span>
-    `;
-    coverageList.appendChild(row);
-  });
+    SECTIONS_BY_CODE = new Map(data.courses.map(c => [c.code, c.totalSections]));
+    renderTable(activeFilter, searchQuery);
+    updateOfferedLabel();
 
-  // Animate bars in after paint
-  requestAnimationFrame(() => {
-    setTimeout(() => {
-      coverageList.querySelectorAll('.crs-cov-fill').forEach(fill => {
-        const pct = parseInt(fill.dataset.pct, 10);
-        fill.style.width = ((pct / 9) * 100).toFixed(1) + '%';
+    if (overallBadge) overallBadge.textContent = `${overallPct}% Overall`;
+    animateCount('statSections', total_sections);
+    animateCount('statAssigned', sections_covered);
+
+    if (coverageList) {
+      coverageList.innerHTML = '';
+      // Only courses actually offered this semester (have >= 1 section).
+      // Courses with 0 sections (e.g. other-term courses) are not "unassigned",
+      // they just aren't being offered, so they're left out of the coverage bars.
+      data.courses.filter(c => c.totalSections > 0).forEach(course => {
+        const row = document.createElement('div');
+        row.className = 'crs-cov-row';
+        row.innerHTML = `
+          <span class="crs-cov-name" title="${course.name}">${course.name}</span>
+          <div class="crs-cov-track">
+            <div class="crs-cov-fill" data-covered="${course.coveredSections}" data-total="${course.totalSections}"></div>
+          </div>
+          <span class="crs-cov-pct">${course.coveredSections}/${course.totalSections}</span>
+        `;
+        coverageList.appendChild(row);
       });
-    }, 120);
-  });
+
+      // Animate bars in after paint
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          coverageList.querySelectorAll('.crs-cov-fill').forEach(fill => {
+            const covered = parseInt(fill.dataset.covered, 10);
+            const total   = parseInt(fill.dataset.total, 10) || 1;
+            fill.style.width = ((covered / total) * 100).toFixed(1) + '%';
+          });
+        }, 120);
+      });
+    }
+  } catch (err) {
+    console.error('[Courses] Failed to load coverage:', err);
+  }
 }
 
 // ─────────────────────────────────────────────
@@ -169,8 +214,4 @@ function animateCount(id, target, duration = 800) {
   requestAnimationFrame(step);
 }
 
-setTimeout(() => {
-  animateCount('statCourses',  50);
-  animateCount('statSections', 78);
-  animateCount('statAssigned', 31);
-}, 100);
+loadCoverage();

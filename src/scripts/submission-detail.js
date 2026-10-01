@@ -16,157 +16,69 @@ document.getElementById('notifBtn')?.addEventListener('click', () => {
 // ─────────────────────────────────────────────
 //  CONSTANTS
 // ─────────────────────────────────────────────
-const TIME_SLOTS = [
-  '7:30 - 9:00',
-  '9:00 - 10:30',
-  '10:30 - 12:00',
-  '12:00 - 1:30',
-  '1:30 - 3:00',
-  '3:00 - 4:30',
-  '4:30 - 6:00',
-  '6:00 - 7:30',
-  '7:30 - 9:00 PM',
-];
+// Timetable rows come from the shared helpers (availability-utils.js)
+const TIME_SLOTS = AvailabilityUtils.TIME_BLOCKS.map(b => b.label);
 
 const DAY_LABELS = ['M', 'T', 'W', 'T', 'F', 'S'];
 const DAY_FULL   = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-// ─────────────────────────────────────────────
-//  LOAD DATA — from sessionStorage written by chairperson-submissions.js
-//  Fall back to embedded data so direct URL access still works
-// ─────────────────────────────────────────────
-const FALLBACK_DATA = [
-  {
-    id: 0, name: 'Ana Cruz', type: 'Full-Time', submitted: true,
-    submittedDate: 'Aug 12, 2026',
-    slots: [
-      { dayIndices: [0,2,4], times: ['7:30 - 9:00','9:00 - 10:30'], timeLabel: '7:30 AM – 10:30 AM' },
-      { dayIndices: [1,3],   times: ['10:30 - 12:00','12:00 - 1:30'], timeLabel: '10:30 AM – 1:30 PM' },
-    ],
-    preference: '10:30 - 12:00', 
-    status: 'Current Submission',
-    workflowStatus: 'pending',
-  },
-  {
-    id: 1, name: 'Andrea Gonzales', type: 'Part-Time', submitted: true,
-    submittedDate: 'Aug 14, 2026',
-    slots: [
-      { dayIndices: [0,1,2,3], times: ['9:00 - 10:30','10:30 - 12:00'], timeLabel: '9:00 AM – 12:00 PM' },
-    ],
-    preference: '9:00 - 10:30', 
-    status: 'Current Submission',
-    workflowStatus: 'pending',
-  },
-  {
-    id: 2, name: 'Ben Torres', type: 'Designee | Chairperson', submitted: true,
-    submittedDate: 'Aug 10, 2026',
-    slots: [
-      { dayIndices: [0,2], times: ['10:30 - 12:00','12:00 - 1:30'], timeLabel: '10:30 AM – 1:30 PM' },
-    ],
-    preference: '10:30 - 12:00', 
-    status: 'Current Submission',
-    workflowStatus: 'approved',
-  },
-  {
-    id: 3, name: 'Juan Dela Cruz', type: 'Part-Time', submitted: true,
-    submittedDate: 'Aug 13, 2026',
-    slots: [
-      { dayIndices: [0,1,2,3,4], times: ['7:30 - 9:00','9:00 - 10:30'], timeLabel: '7:30 AM – 10:30 AM' },
-      { dayIndices: [0,2,4],     times: ['10:30 - 12:00'], timeLabel: '10:30 AM – 12:00 PM' },
-    ],
-    preference: '9:00 - 10:30', 
-    status: 'Current Submission',
-    workflowStatus: 'pending',
-  },
-  {
-    id: 4, name: 'Maria Santos', type: 'Full-Time', submitted: true,
-    submittedDate: 'Aug 15, 2026',
-    slots: [
-      { dayIndices: [0,1,2,3,4], times: ['9:00 - 10:30','12:00 - 1:30'], timeLabel: '9:00 AM – 1:30 PM' },
-    ],
-    preference: '9:00 - 10:30', 
-    status: 'Current Submission',
-    workflowStatus: 'pending',
-  },
-  {
-    id: 5, name: 'Leo Reyes', type: 'Full-Time', submitted: true,
-    submittedDate: 'Aug 11, 2026',
-    slots: [
-      { dayIndices: [0,1,2,3,4], times: ['10:30 - 12:00','12:00 - 1:30'], timeLabel: '10:30 AM – 1:30 PM' },
-    ],
-    preference: '10:30 - 12:00', 
-    status: 'Current Submission',
-    workflowStatus: 'pending',
-  },
-  {
-    id: 6, name: 'Carla Mendoza', type: 'Part-Time', submitted: true,
-    submittedDate: 'Aug 16, 2026',
-    slots: [
-      { dayIndices: [0,1,2,3], times: ['9:00 - 10:30'], timeLabel: '9:00 AM – 10:30 AM' },
-    ],
-    preference: '9:00 - 10:30', 
-    status: 'Current Submission',
-    workflowStatus: 'pending',
-  },
-  {
-    id: 7, name: 'Mark Villanueva', type: 'Full-Time', submitted: true,
-    submittedDate: 'Aug 9, 2026',
-    slots: [
-      { dayIndices: [0,1,2,3,4], times: ['7:30 - 9:00','9:00 - 10:30'], timeLabel: '7:30 AM – 10:30 AM' },
-      { dayIndices: [0,1,4],     times: ['10:30 - 12:00'], timeLabel: '10:30 AM – 12:00 PM' },
-    ],
-    preference: '9:00 - 10:30', 
-    status: 'Current Submission',
-    workflowStatus: 'pending',
-  },
-  {
-    id: 8, name: 'Sofia Dela Peña', type: 'Full-Time', submitted: true,
-    submittedDate: 'Aug 17, 2026',
-    slots: [
-      { dayIndices: [0,1,2,3,4], times: ['7:30 - 9:00','9:00 - 10:30'], timeLabel: '7:30 AM – 10:30 AM' },
-    ],
-    preference: '7:30 - 9:00', 
-    status: 'Current Submission',
-    workflowStatus: 'pending',
-  },
-  {
-    id: 9, name: 'Rico Aguilar', type: 'Part-Time', submitted: true,
-    submittedDate: 'Aug 18, 2026',
-    slots: [
-      { dayIndices: [0,2,4], times: ['12:00 - 1:30'], timeLabel: '12:00 PM – 1:30 PM' },
-    ],
-    preference: '12:00 - 1:30', 
-    status: 'Current Submission',
-    workflowStatus: 'pending',
-  },
+// Shifts used for the "Preferred Time" summary (minutes since midnight)
+const SHIFTS = [
+  { name: 'Morning',   start:    0, end:  720 },
+  { name: 'Afternoon', start:  720, end: 1080 },
+  { name: 'Evening',   start: 1080, end: 1440 },
 ];
 
-function loadSubmissions() {
-  try {
-    const raw = sessionStorage.getItem('cp_submissions');
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length) return parsed;
-    }
-  } catch { /* fall through */ }
-  // Initialize with fallback and save to sessionStorage
-  sessionStorage.setItem('cp_submissions', JSON.stringify(FALLBACK_DATA));
-  return FALLBACK_DATA;
-}
-
-// ─────────────────────────────────────────────
-//  READ ?id= FROM URL
-// ─────────────────────────────────────────────
-const params     = new URLSearchParams(window.location.search);
-const targetId   = parseInt(params.get('id') ?? '0', 10);
-const allFaculty = loadSubmissions();
-const faculty    = allFaculty.find(f => f.id === targetId) ?? allFaculty[0];
+// Workflow status (availability_submissions.status) → what the page shows
+const STATUS_UI = {
+  pending: {
+    sub: 'No submission yet',
+    badgeClass: 'sd-status-badge--pending',
+    badgeHTML: '⏳ Pending',
+  },
+  submitted: {
+    sub: 'Availability submitted',
+    badgeClass: 'sd-status-badge--submitted',
+    badgeHTML: `
+      <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+        <path d="M2 6L5 9L10 3" stroke="white" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Submitted`,
+  },
+  approved: {
+    sub: 'Approved',
+    badgeClass: 'sd-status-badge--approved',
+    badgeHTML: `
+      <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+        <path d="M2 6L5 9L10 3" stroke="white" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Approved`,
+  },
+  returned: {
+    sub: 'Returned for revision',
+    badgeClass: 'sd-status-badge--returned',
+    badgeHTML: '↑ Returned',
+  },
+  rejected: {
+    sub: 'Rejected',
+    badgeClass: 'sd-status-badge--rejected',
+    badgeHTML: '✗ Rejected',
+  },
+};
 
 // ─────────────────────────────────────────────
 //  HELPERS
 // ─────────────────────────────────────────────
+function esc(value) {
+  return String(value ?? '').replace(/[&<>"']/g, c => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+  ));
+}
+
 function initials(name) {
-  return name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+  return (name || '').split(' ').filter(Boolean).map(w => w[0]).slice(0, 2).join('').toUpperCase();
 }
 
 // Count total availability cells across all slots
@@ -182,51 +94,122 @@ function daysCovered(slots) {
   return set.size;
 }
 
+// There is no "preferred time" column in the database, so summarise which
+// parts of the day the faculty's submitted windows fall in.
+function summarizePreferredTime(cards) {
+  const names = SHIFTS
+    .filter(sh => cards.some(c => c.range && c.range.start < sh.end && c.range.end > sh.start))
+    .map(sh => sh.name);
+  return names.length ? names.join(', ') : '—';
+}
+
+function formatDate(iso) {
+  if (!iso) return null;
+  const d = new Date(iso);
+  return isNaN(d) ? null : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function semesterLabels(sem) {
+  if (!sem) return { long: '—', short: '—' };
+  const ay = String(sem.academic_year || '').replace('-', '–');
+  return {
+    long:  `${sem.semester_term} Semester · AY ${ay}`,
+    short: `${sem.semester_term} Sem · AY ${ay}`,
+  };
+}
+
 // ─────────────────────────────────────────────
-//  RENDER BREADCRUMB + PAGE TITLE
+//  LOAD DATA — from the backend (MySQL via /api/availability/<id>)
+//  The ?id= in the URL is availability_submissions.id
 // ─────────────────────────────────────────────
-const sdBreadcrumb = document.getElementById('sdBreadcrumb');
+const params       = new URLSearchParams(window.location.search);
+const submissionId = parseInt(params.get('id'), 10);
+
+let faculty       = null;   // view model for the submission being shown
+let navList       = [];     // reviewable submissions, in list order, for prev/next
+
+async function loadSubmission() {
+  if (!Number.isFinite(submissionId)) {
+    throw new Error('No submission was selected.');
+  }
+
+  const [detail, all, facultyList] = await Promise.all([
+    API.getSubmission(submissionId),
+    API.getAllSubmissions().catch(() => ({ submissions: [] })),
+    API.getFacultyList().catch(() => []),
+  ]);
+
+  const sub = detail.submission;
+  const typeByFacultyId = {};
+  facultyList.forEach(f => { typeByFacultyId[f.id] = (f.employment_type || 'Full Time').replace(/ /g, '-'); });
+
+  const cards = AvailabilityUtils.buildSlotCards(sub.slots, { merge: true });
+  const sem   = sub.semester;
+
+  faculty = {
+    id:            sub.id,
+    facultyId:     sub.faculty_id,
+    name:          sub.faculty_name || 'Unknown',
+    type:          typeByFacultyId[sub.faculty_id] || 'Faculty',
+    status:        sub.status,                       // pending | submitted | approved | returned | rejected
+    submitted:     sub.status !== 'pending',         // finalized by the faculty
+    submittedDate: formatDate(sub.submitted_at),
+    remarks:       sub.remarks,
+    slots:         cards,
+    preference:    summarizePreferredTime(cards),
+    semester:      semesterLabels(sem),
+    // "Current" = belongs to the active semester
+    statusLabel:   sem && sem.is_active === false ? 'Previous Submission' : 'Current Submission',
+  };
+
+  // Prev / next walks the same submissions the list shows, in its default (name) order
+  navList = (all.submissions || [])
+    .filter(s => s.status !== 'pending')
+    .sort((a, b) => (a.faculty_name || '').localeCompare(b.faculty_name || ''));
+}
+
+// ─────────────────────────────────────────────
+//  RENDER BREADCRUMB + PAGE TITLE + STATUS
+// ─────────────────────────────────────────────
+const sdBreadcrumb  = document.getElementById('sdBreadcrumb');
 const sdFacultyName = document.getElementById('sdFacultyName');
 const sdFacultySub  = document.getElementById('sdFacultySub');
 const sdStatusBadge = document.getElementById('sdStatusBadge');
+const sdInfoCard    = document.getElementById('sdInfoCard');
+const sdSlotsEl     = document.getElementById('sdSlots');
 
-if (sdBreadcrumb)  sdBreadcrumb.textContent  = faculty.name;
-if (sdFacultyName) sdFacultyName.textContent  = faculty.name;
-if (sdFacultySub)  sdFacultySub.textContent   =
-  `1st Semester · AY 2025–2026 · ${faculty.type} · ${faculty.submitted ? 'Availability submitted' : 'No submission yet'}`;
+function renderHeader() {
+  const ui = STATUS_UI[faculty.status] || STATUS_UI.pending;
 
-if (sdStatusBadge) {
-  if (faculty.submitted) {
-    sdStatusBadge.className = 'sd-status-badge sd-status-badge--submitted';
-    sdStatusBadge.innerHTML = `
-      <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
-        <path d="M2 6L5 9L10 3" stroke="white" stroke-width="1.8"
-              stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      Submitted`;
-  } else {
-    sdStatusBadge.className = 'sd-status-badge sd-status-badge--pending';
-    sdStatusBadge.innerHTML = `⏳ Pending`;
+  if (sdBreadcrumb)  sdBreadcrumb.textContent  = faculty.name;
+  if (sdFacultyName) sdFacultyName.textContent = faculty.name;
+  if (sdFacultySub)  sdFacultySub.textContent  =
+    `${faculty.semester.long} · ${faculty.type} · ${ui.sub}`;
+
+  if (sdStatusBadge) {
+    sdStatusBadge.className = `sd-status-badge ${ui.badgeClass}`;
+    sdStatusBadge.innerHTML = ui.badgeHTML;
   }
 }
 
 // ─────────────────────────────────────────────
 //  RENDER INFO CARD
 // ─────────────────────────────────────────────
-const sdInfoCard = document.getElementById('sdInfoCard');
+function renderInfoCard() {
+  if (!sdInfoCard) return;
 
-if (sdInfoCard) {
-  const cells    = totalCells(faculty.slots);
-  const days     = daysCovered(faculty.slots);
+  const cells     = totalCells(faculty.slots);
+  const days      = daysCovered(faculty.slots);
   const slotCount = faculty.slots.length;
 
+  sdInfoCard.style.display = '';
   sdInfoCard.innerHTML = `
     <div class="sd-info-card__header">
       <div style="display:flex;align-items:center;gap:14px;">
-        <div class="sd-info-card__avatar">${initials(faculty.name)}</div>
+        <div class="sd-info-card__avatar">${esc(initials(faculty.name))}</div>
         <div>
-          <p class="sd-info-card__title">${faculty.name.toUpperCase()}</p>
-          <p class="sd-info-card__semester">1st Semester · AY 2025–2026</p>
+          <p class="sd-info-card__title">${esc(faculty.name.toUpperCase())}</p>
+          <p class="sd-info-card__semester">${esc(faculty.semester.long)}</p>
         </div>
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
@@ -257,27 +240,27 @@ if (sdInfoCard) {
     <div class="sd-info-card__body">
       <div class="sd-info-field">
         <span class="sd-info-label">Faculty Name</span>
-        <div class="sd-info-value">${faculty.name}</div>
+        <div class="sd-info-value">${esc(faculty.name)}</div>
       </div>
       <div class="sd-info-field">
         <span class="sd-info-label">Faculty Type</span>
-        <div class="sd-info-value">${faculty.type}</div>
+        <div class="sd-info-value">${esc(faculty.type)}</div>
       </div>
       <div class="sd-info-field">
         <span class="sd-info-label">Submission Status</span>
-        <div class="sd-info-value">${faculty.status || 'No submission yet'}</div>
+        <div class="sd-info-value">${esc(faculty.submitted ? faculty.statusLabel : 'No submission yet')}</div>
       </div>
       <div class="sd-info-field">
         <span class="sd-info-label">Date Submitted</span>
-        <div class="sd-info-value">${faculty.submittedDate || '—'}</div>
+        <div class="sd-info-value">${esc(faculty.submittedDate || '—')}</div>
       </div>
       <div class="sd-info-field">
         <span class="sd-info-label">Preferred Time</span>
-        <div class="sd-info-value">${faculty.preference || '—'}</div>
+        <div class="sd-info-value">${esc(faculty.preference || '—')}</div>
       </div>
       <div class="sd-info-field">
         <span class="sd-info-label">Semester</span>
-        <div class="sd-info-value">1st Sem · AY 2025–2026</div>
+        <div class="sd-info-value">${esc(faculty.semester.short)}</div>
       </div>
     </div>
   `;
@@ -286,8 +269,6 @@ if (sdInfoCard) {
 // ─────────────────────────────────────────────
 //  RENDER TIMETABLE SLOTS
 // ─────────────────────────────────────────────
-const sdSlotsEl = document.getElementById('sdSlots');
-
 function renderSlots() {
   if (!sdSlotsEl) return;
   sdSlotsEl.innerHTML = '';
@@ -305,7 +286,7 @@ function renderSlots() {
         </div>
         <p class="sd-no-submission__title">NO AVAILABILITY SUBMITTED</p>
         <p class="sd-no-submission__sub">
-          ${faculty.name} has not submitted an availability schedule<br>
+          ${esc(faculty.name)} has not submitted an availability schedule<br>
           for the current semester.
         </p>
         <button class="sd-remind-btn" id="sdRemindBtn">
@@ -331,10 +312,10 @@ function renderSlots() {
   }).join('');
 
   faculty.slots.forEach((slot, idx) => {
-    const slotNum    = idx + 1;
-    const dayIndices = slot.dayIndices || [];
-    const checkedTimes = slot.times   || [];
-    const timeLabel  = slot.timeLabel || '—';
+    const slotNum      = idx + 1;
+    const dayIndices   = slot.dayIndices || [];
+    const checkedTimes = slot.times      || [];
+    const timeLabel    = slot.timeLabel  || '—';
 
     // Day pills
     const dayPillsHTML = DAY_LABELS.map((lbl, i) => {
@@ -365,7 +346,7 @@ function renderSlots() {
               <circle cx="7" cy="7" r="5.5" stroke="white" stroke-width="1.4"/>
               <path d="M7 4V7L9.5 9" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
             </svg>
-            ${timeLabel}
+            ${esc(timeLabel)}
           </span>
           <div class="sd-slot__days-row">${dayPillsHTML}</div>
         </div>
@@ -392,51 +373,39 @@ function renderSlots() {
   });
 }
 
-renderSlots();
-
 // ─────────────────────────────────────────────
 //  PREV / NEXT FACULTY NAVIGATION
 // ─────────────────────────────────────────────
-const submittedOnly = allFaculty.filter(f => f.submitted);
-const currentNavIdx = submittedOnly.findIndex(f => f.id === faculty.id);
-
-const prevBtn = document.getElementById('sdPrevBtn');
-const nextBtn = document.getElementById('sdNextBtn');
+const prevBtn  = document.getElementById('sdPrevBtn');
+const nextBtn  = document.getElementById('sdNextBtn');
 const navLabel = document.getElementById('sdNavLabel');
 
 function updateNav() {
   if (!prevBtn || !nextBtn) return;
 
-  const hasPrev = currentNavIdx > 0;
-  const hasNext = currentNavIdx < submittedOnly.length - 1;
+  const idx     = navList.findIndex(s => s.id === faculty.id);
+  const hasPrev = idx > 0;
+  const hasNext = idx !== -1 && idx < navList.length - 1;
 
   prevBtn.disabled = !hasPrev;
   prevBtn.style.opacity = hasPrev ? '1' : '0.35';
 
   nextBtn.disabled = !hasNext;
-  nextBtn.style.cssText = hasNext ? '' : 'opacity:0.35';
+  nextBtn.style.opacity = hasNext ? '1' : '0.35';
 
   if (navLabel) {
-    navLabel.textContent =
-      `${currentNavIdx + 1} / ${submittedOnly.length} submitted`;
+    navLabel.textContent = idx === -1
+      ? `— / ${navList.length} submitted`
+      : `${idx + 1} / ${navList.length} submitted`;
   }
+
+  prevBtn.onclick = () => {
+    if (hasPrev) window.location.href = `submission-detail.html?id=${navList[idx - 1].id}`;
+  };
+  nextBtn.onclick = () => {
+    if (hasNext) window.location.href = `submission-detail.html?id=${navList[idx + 1].id}`;
+  };
 }
-
-prevBtn?.addEventListener('click', () => {
-  if (currentNavIdx > 0) {
-    const prev = submittedOnly[currentNavIdx - 1];
-    window.location.href = `submission-detail.html?id=${prev.id}`;
-  }
-});
-
-nextBtn?.addEventListener('click', () => {
-  if (currentNavIdx < submittedOnly.length - 1) {
-    const next = submittedOnly[currentNavIdx + 1];
-    window.location.href = `submission-detail.html?id=${next.id}`;
-  }
-});
-
-updateNav();
 
 // ─────────────────────────────────────────────
 //  APPROVAL WORKFLOW — Show/Hide Action Buttons
@@ -446,14 +415,11 @@ const sdApproveBtn    = document.getElementById('sdApproveBtn');
 const sdReturnBtn     = document.getElementById('sdReturnBtn');
 const sdRejectBtn     = document.getElementById('sdRejectBtn');
 
-// Show action buttons only if submitted and workflow status is pending
+// The backend only lets a chairperson review submissions that are 'submitted'
 function updateActionButtons() {
-  if (sdActionButtons && faculty.submitted && faculty.workflowStatus === 'pending') {
-    sdActionButtons.style.display = 'flex';
-  }
+  if (!sdActionButtons) return;
+  sdActionButtons.style.display = faculty && faculty.status === 'submitted' ? 'flex' : 'none';
 }
-
-updateActionButtons();
 
 // ─────────────────────────────────────────────
 //  APPROVAL WORKFLOW — Modal Logic
@@ -581,91 +547,52 @@ sdRejectBtn?.addEventListener('click', () => openModal('reject'));
 sdModalCancelBtn?.addEventListener('click', closeModal);
 sdModalBackdrop?.addEventListener('click', closeModal);
 
-sdModalConfirmBtn?.addEventListener('click', () => {
-  if (!currentAction) return;
+sdModalConfirmBtn?.addEventListener('click', async () => {
+  if (!currentAction || !faculty) return;
 
+  const action = currentAction;
   const reason = sdReasonInput?.value.trim() || '';
 
   // Validate reason for return action
-  if (currentAction === 'return' && !reason) {
+  if (action === 'return' && !reason) {
     showToast('Please provide a reason for returning', 'error');
     return;
   }
 
-  // Update faculty workflow status
-  faculty.workflowStatus = currentAction === 'approve' ? 'approved' : 
-                           currentAction === 'return' ? 'returned' : 
-                           'rejected';
-
-  // Save updated data back to sessionStorage
-  const allFacultyUpdated = allFaculty.map(f => 
-    f.id === faculty.id ? { ...f, workflowStatus: faculty.workflowStatus, returnReason: reason } : f
-  );
-  
+  // Persist the decision through the backend (also notifies the faculty)
+  sdModalConfirmBtn.disabled = true;
+  let result;
   try {
-    sessionStorage.setItem('cp_submissions', JSON.stringify(allFacultyUpdated));
-  } catch { /* silent fail */ }
+    if (action === 'approve')      result = await API.approveSubmission(faculty.id);
+    else if (action === 'return')  result = await API.returnSubmission(faculty.id, reason);
+    else                           result = await API.rejectSubmission(faculty.id, reason);
+  } catch (err) {
+    sdModalConfirmBtn.disabled = false;
+    showToast(err.message || 'Something went wrong — please try again.', 'error');
+    return;
+  }
 
-  // Create notification record (simulation)
-  const notificationData = {
-    facultyId: faculty.id,
-    facultyName: faculty.name,
-    action: currentAction,
-    reason: reason,
-    timestamp: new Date().toISOString(),
-  };
-
-  // Store notification in sessionStorage (for faculty notification system)
-  try {
-    const existing = sessionStorage.getItem('faculty_notifications') || '[]';
-    const notifications = JSON.parse(existing);
-    notifications.push(notificationData);
-    sessionStorage.setItem('faculty_notifications', JSON.stringify(notifications));
-  } catch { /* silent fail */ }
+  const newStatus = result?.submission?.status
+    ?? (action === 'approve' ? 'approved' : action === 'return' ? 'returned' : 'rejected');
+  faculty.status  = newStatus;
+  faculty.remarks = result?.submission?.remarks ?? null;
 
   // Show success message
   let message = '';
-  if (currentAction === 'approve') {
+  if (action === 'approve') {
     message = `✓ ${faculty.name}'s submission has been approved`;
-  } else if (currentAction === 'return') {
+  } else if (action === 'return') {
     message = `↑ Submission returned to ${faculty.name}`;
-  } else if (currentAction === 'reject') {
+  } else if (action === 'reject') {
     message = `✗ ${faculty.name}'s submission has been rejected`;
   }
 
   closeModal();
   showToast(message, 'success');
 
-  // Hide action buttons after action is taken
-  if (sdActionButtons) sdActionButtons.style.display = 'none';
-
-  // Update status badge
-  if (sdStatusBadge) {
-    if (currentAction === 'approve') {
-      sdStatusBadge.className = 'sd-status-badge sd-status-badge--approved';
-      sdStatusBadge.innerHTML = `
-        <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
-          <path d="M2 6L5 9L10 3" stroke="white" stroke-width="1.8"
-                stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Approved`;
-    } else if (currentAction === 'return') {
-      sdStatusBadge.className = 'sd-status-badge sd-status-badge--returned';
-      sdStatusBadge.innerHTML = `↑ Returned`;
-    } else if (currentAction === 'reject') {
-      sdStatusBadge.className = 'sd-status-badge sd-status-badge--rejected';
-      sdStatusBadge.innerHTML = `✗ Rejected`;
-    }
-  }
-
-  // Update page subtitle
-  if (sdFacultySub) {
-    let statusText = currentAction === 'approve' ? 'Approved' :
-                     currentAction === 'return' ? 'Returned for revision' :
-                     'Rejected';
-    sdFacultySub.textContent =
-      `1st Semester · AY 2025–2026 · ${faculty.type} · ${statusText}`;
-  }
+  // Refresh badge, subtitle and action buttons from the new status
+  renderHeader();
+  updateActionButtons();
 });
 
 // ─────────────────────────────────────────────
@@ -686,3 +613,57 @@ function showToast(msg, type = 'success') {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => toastEl.classList.remove('cs-toast--show'), 2800);
 }
+
+// ─────────────────────────────────────────────
+//  LOAD ERROR STATE
+// ─────────────────────────────────────────────
+function showLoadError(message) {
+  if (sdBreadcrumb)  sdBreadcrumb.textContent  = 'Detail';
+  if (sdFacultyName) sdFacultyName.textContent = 'Submission unavailable';
+  if (sdFacultySub)  sdFacultySub.textContent  = '—';
+  if (sdInfoCard)    sdInfoCard.style.display  = 'none';
+  if (navLabel)      navLabel.textContent      = '— / —';
+  if (prevBtn)       prevBtn.disabled = true;
+  if (nextBtn)       nextBtn.disabled = true;
+  if (sdActionButtons) sdActionButtons.style.display = 'none';
+
+  if (sdSlotsEl) {
+    sdSlotsEl.innerHTML = `
+      <div class="sd-no-submission">
+        <div class="sd-no-submission__icon">
+          <svg width="26" height="26" viewBox="0 0 48 48" fill="none">
+            <path d="M24 6L44 40H4L24 6Z" stroke="white" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M24 19v10" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="24" cy="33" r="1.8" fill="white"/>
+          </svg>
+        </div>
+        <p class="sd-no-submission__title">COULD NOT LOAD SUBMISSION</p>
+        <p class="sd-no-submission__sub">${esc(message)}</p>
+      </div>
+    `;
+  }
+}
+
+// ─────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────
+async function init() {
+  if (sdInfoCard) sdInfoCard.style.display = 'none';   // nothing to show until data arrives
+  if (sdSlotsEl)  sdSlotsEl.innerHTML = '<p class="cs-page-sub">Loading submission…</p>';
+
+  try {
+    await loadSubmission();
+  } catch (err) {
+    console.error('[SubmissionDetail] Failed to load:', err);
+    showLoadError(err.message || 'Please try again.');
+    return;
+  }
+
+  renderHeader();
+  renderInfoCard();
+  renderSlots();
+  updateNav();
+  updateActionButtons();
+}
+
+init();

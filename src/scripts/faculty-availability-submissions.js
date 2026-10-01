@@ -5,7 +5,9 @@ const topbarDate = document.getElementById('topbarDate');
 if (topbarDate) {
   const now      = new Date();
   const dayName  = now.toLocaleDateString('en-US', { weekday: 'long' });
-  const datePart = now.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+  const datePart = now.toLocaleDateString('en-US', {
+    day: 'numeric', month: 'long', year: 'numeric'
+  });
   topbarDate.textContent = `${dayName}, ${datePart}`;
 }
 
@@ -15,33 +17,98 @@ document.getElementById('notifBtn')?.addEventListener('click', () => {
 
 // ─────────────────────────────────────────────
 //  DATA
-//  In production this would come from the API.
-//  "submitted" faculty have a submittedOn date;
-//  "pending" faculty have submittedOn = null.
+//  This page used to contain a hard-coded SUBMISSIONS array.  That meant
+//  the table could never reflect the MySQL database.
+//
+//  We now load:
+//    1. /api/manage/faculty       -> every faculty account
+//    2. /api/availability/all     -> submissions + availability_slots
+//
+//  The two responses are merged by faculty_id so faculty with no submission
+//  still appear as Pending.
 // ─────────────────────────────────────────────
-const SUBMISSIONS = [
-  { id: 'FAC-001', name: 'Dr. Maria Santos',      gender: 'female', dept: 'BSIT', status: 'submitted', submittedOn: 'Aug 28, 2026' },
-  { id: 'FAC-002', name: 'Prof. James Reyes',     gender: 'male',   dept: 'BSIT', status: 'submitted', submittedOn: 'Aug 29, 2026' },
-  { id: 'FAC-003', name: 'Dr. Ana Cruz',           gender: 'female', dept: 'BSIT', status: 'submitted', submittedOn: 'Aug 27, 2026' },
-  { id: 'FAC-004', name: 'Prof. Rico Mendoza',    gender: 'male',   dept: 'BSIT', status: 'submitted', submittedOn: 'Aug 30, 2026' },
-  { id: 'FAC-005', name: 'Ms. Laura Bautista',    gender: 'female', dept: 'BSIT', status: 'pending',   submittedOn: null },
-  { id: 'FAC-006', name: 'Mr. Carlo Dela Cruz',   gender: 'male',   dept: 'BSIT', status: 'pending',   submittedOn: null },
-  { id: 'FAC-007', name: 'Dr. Patricia Lim',      gender: 'female', dept: 'BSIT', status: 'submitted', submittedOn: 'Aug 31, 2026' },
-  { id: 'FAC-008', name: 'Prof. Edwin Torres',    gender: 'male',   dept: 'BSIT', status: 'pending',   submittedOn: null },
-  { id: 'FAC-009', name: 'Dr. Kevin Aquino',      gender: 'male',   dept: 'BSCS', status: 'submitted', submittedOn: 'Aug 28, 2026' },
-  { id: 'FAC-010', name: 'Prof. Janet Garcia',    gender: 'female', dept: 'BSCS', status: 'submitted', submittedOn: 'Sep 1, 2026' },
-  { id: 'FAC-011', name: 'Dr. Robert Villanueva', gender: 'male',   dept: 'BSCS', status: 'submitted', submittedOn: 'Aug 29, 2026' },
-  { id: 'FAC-012', name: 'Ms. Tricia Ramos',      gender: 'female', dept: 'BSCS', status: 'submitted', submittedOn: 'Aug 30, 2026' },
-  { id: 'FAC-013', name: 'Mr. Dennis Ocampo',     gender: 'male',   dept: 'BSCS', status: 'pending',   submittedOn: null },
-  { id: 'FAC-014', name: 'Dr. Luz Fernandez',     gender: 'female', dept: 'BSCS', status: 'submitted', submittedOn: 'Sep 1, 2026' },
-  { id: 'FAC-015', name: 'Prof. Mark Domingo',    gender: 'male',   dept: 'BSCS', status: 'pending',   submittedOn: null },
-];
-
-// ─────────────────────────────────────────────
-//  STATE
-// ─────────────────────────────────────────────
+let SUBMISSIONS = [];
 let activeFilter = 'all';
 let searchQuery  = '';
+
+function esc(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[char]);
+}
+
+function departmentCode(faculty) {
+  const raw = String(faculty?.department || '').trim();
+  const value = raw.toLowerCase();
+
+  // Supports both the seeded values (IT/CS) and full department names.
+  if (value === 'it' || value.includes('information technology')) return 'BSIT';
+  if (value === 'cs' || value.includes('computer science')) return 'BSCS';
+  if (value === 'is' || value.includes('information systems')) return 'BSIS';
+
+  // If your database already stores BSIT/BSCS, keep that value.
+  if (/^bs(it|cs|is)$/i.test(raw)) return raw.toUpperCase();
+
+  return raw || 'CCIS';
+}
+
+function normalizeStatus(submission) {
+  // The list page has only two filters: Submitted and Pending.
+  // A faculty is considered submitted once they have a non-pending
+  // submission (submitted/approved/rejected/returned).
+  return submission && submission.status && submission.status !== 'pending'
+    ? 'submitted'
+    : 'pending';
+}
+
+function formatSubmittedDate(isoDate) {
+  if (!isoDate) return null;
+  const date = new Date(isoDate);
+  if (Number.isNaN(date.getTime())) return null;
+
+  return date.toLocaleDateString('en-US', {
+    month: 'short', day: 'numeric', year: 'numeric'
+  });
+}
+
+async function loadSubmissions() {
+  const [facultyList, submissionResponse] = await Promise.all([
+    API.getFacultyList(),
+    API.getAllSubmissions(),
+  ]);
+
+  const submissions = submissionResponse?.submissions || [];
+  const byFacultyId = new Map(
+    submissions.map(submission => [Number(submission.faculty_id), submission])
+  );
+
+  // Build one row per faculty, not one row per submission.
+  // This is important because a faculty member without an
+  // availability_submissions row must still appear as Pending.
+  SUBMISSIONS = (Array.isArray(facultyList) ? facultyList : []).map(faculty => {
+    const submission = byFacultyId.get(Number(faculty.id)) || null;
+    const displayStatus = normalizeStatus(submission);
+
+    return {
+      id: faculty.id,
+      submissionId: submission?.id ?? null,
+      employeeNumber: faculty.employee_number || '',
+      name: faculty.full_name || `${faculty.first_name || ''} ${faculty.last_name || ''}`.trim(),
+      gender: (faculty.gender || 'male').toLowerCase(),
+      dept: departmentCode(faculty),
+      status: displayStatus,
+      backendStatus: submission?.status || 'pending',
+      submittedOn: formatSubmittedDate(submission?.submitted_at),
+    };
+  });
+
+  updateStats();
+  renderTable();
+}
 
 // ─────────────────────────────────────────────
 //  UPDATE SUMMARY STATS
@@ -49,16 +116,13 @@ let searchQuery  = '';
 function updateStats() {
   const total     = SUBMISSIONS.length;
   const submitted = SUBMISSIONS.filter(f => f.status === 'submitted').length;
-  const pending   = total - submitted;
-  const rate      = Math.round((submitted / total) * 100);
+  const pending   = SUBMISSIONS.filter(f => f.status === 'pending').length;
+  const rate      = total ? Math.round((submitted / total) * 100) : 0;
 
   document.getElementById('statTotal').textContent     = total;
   document.getElementById('statSubmitted').textContent = submitted;
   document.getElementById('statPending').textContent   = pending;
   document.getElementById('statRate').textContent      = rate + '%';
-
-  // Also sync dashboard notification badge on the pending stat
-  // (For demo purposes only — in production this comes from shared state)
 }
 
 // ─────────────────────────────────────────────
@@ -67,12 +131,19 @@ function updateStats() {
 function renderTable() {
   const tbody      = document.getElementById('submissionsTableBody');
   const emptyState = document.getElementById('emptyState');
-  tbody.innerHTML  = '';
+
+  if (!tbody || !emptyState) return;
+  tbody.innerHTML = '';
+
+  const query = searchQuery.trim().toLowerCase();
 
   const filtered = SUBMISSIONS.filter(f => {
     const matchesFilter = activeFilter === 'all' || f.status === activeFilter;
-    const matchesSearch = f.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          f.id.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch =
+      f.name.toLowerCase().includes(query) ||
+      String(f.employeeNumber).toLowerCase().includes(query) ||
+      String(f.id).toLowerCase().includes(query);
+
     return matchesFilter && matchesSearch;
   });
 
@@ -85,35 +156,37 @@ function renderTable() {
 
   filtered.forEach(f => {
     const tr = document.createElement('tr');
+    const avatarGender = f.gender === 'female' ? 'female' : 'male';
+    const hasSubmission = Number.isFinite(Number(f.submissionId));
+
+    const actionHTML = hasSubmission
+      ? `<button class="view-btn" onclick="window.location.href='submission-detail.html?id=${encodeURIComponent(f.submissionId)}'">View</button>`
+      : `<button class="view-btn" disabled title="No availability submission yet">View</button>`;
 
     tr.innerHTML = `
       <td>
         <div class="td-faculty">
           <div class="td-avatar">
-            <img src="../assets/images/avatar-${f.gender}.svg" alt="${f.name}" />
+            <img src="../assets/images/avatar-${avatarGender}.svg" alt="${esc(f.name)}" />
           </div>
           <div>
-            <p class="td-name">${f.name}</p>
-            <p class="td-id">${f.id}</p>
+            <p class="td-name">${esc(f.name)}</p>
+            <p class="td-id">${esc(f.employeeNumber || `FAC-${String(f.id).padStart(3, '0')}`)}</p>
           </div>
         </div>
       </td>
       <td>
-        <span class="dept-badge dept-badge--${f.dept.toLowerCase()}">${f.dept}</span>
+        <span class="dept-badge dept-badge--${esc(f.dept.toLowerCase())}">${esc(f.dept)}</span>
       </td>
       <td style="font-size:0.85rem; color:${f.submittedOn ? '#333' : 'rgba(128,0,0,0.35)'};">
-        ${f.submittedOn || '—'}
+        ${esc(f.submittedOn || '—')}
       </td>
       <td>
         <span class="status-badge status-badge--${f.status}">
           ${f.status === 'submitted' ? 'Submitted' : 'Pending'}
         </span>
       </td>
-      <td>
-        <button class="view-btn" onclick="window.location.href='submission-detail.html?id=${encodeURIComponent(f.id)}'">
-          View
-        </button>
-      </td>
+      <td>${actionHTML}</td>
     `;
 
     tbody.appendChild(tr);
@@ -125,7 +198,10 @@ function renderTable() {
 // ─────────────────────────────────────────────
 document.querySelectorAll('.filter-tab').forEach(tab => {
   tab.addEventListener('click', () => {
-    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('filter-tab--active'));
+    document.querySelectorAll('.filter-tab').forEach(t =>
+      t.classList.remove('filter-tab--active')
+    );
+
     tab.classList.add('filter-tab--active');
     activeFilter = tab.dataset.filter;
     renderTable();
@@ -135,13 +211,27 @@ document.querySelectorAll('.filter-tab').forEach(tab => {
 // ─────────────────────────────────────────────
 //  SEARCH
 // ─────────────────────────────────────────────
-document.getElementById('searchInput')?.addEventListener('input', e => {
-  searchQuery = e.target.value;
+document.getElementById('searchInput')?.addEventListener('input', event => {
+  searchQuery = event.target.value;
   renderTable();
 });
 
 // ─────────────────────────────────────────────
-//  INIT
+//  INIT — wait for auth-check.js, then load real data
 // ─────────────────────────────────────────────
-updateStats();
-renderTable();
+let _submissionsLoaded = false;
+async function initSubmissions() {
+  if (_submissionsLoaded) return;
+  _submissionsLoaded = true;
+  try {
+    await loadSubmissions();
+  } catch (err) {
+    console.error('Failed to load faculty submissions:', err);
+    const empty = document.getElementById('emptyState');
+    if (empty) {
+      empty.textContent = 'Could not load submissions. Please refresh the page.';
+      empty.style.display = 'block';
+    }
+  }
+}
+document.addEventListener('authReady', initSubmissions);

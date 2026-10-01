@@ -381,9 +381,11 @@
   width: 100%;
 }
 
-/* Checked — filled maroon */
+/* Checked — maroon outline with a maroon check */
 .vs-table__cell--checked {
-  background: var(--maroon);
+  background: var(--maroon-lt, #FFF0F0);
+  border: 1.5px solid var(--maroon, #800000);
+  border-radius: 4px;
   position: relative;
 }
 
@@ -394,7 +396,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 6L5 9L10 3' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 6L5 9L10 3' stroke='%23800000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -414,7 +416,8 @@
 }
 
 .vs-table tbody tr:has(.vs-table__cell--checked):hover .vs-table__cell--checked {
-  background: var(--maroon-dk);
+  background: var(--maroon-lt, #FFF0F0);
+  border-color: var(--maroon-dk, #600000);
 }
 
 /* ── Empty state ── */
@@ -488,7 +491,7 @@
   }
 
   .vs-slot__header { background: #800000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .vs-table__cell--checked { background: #800000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .vs-table__cell--checked { background: #FFF0F0 !important; border: 1.5px solid #800000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
 
 /* ── Slot list spacing ── */

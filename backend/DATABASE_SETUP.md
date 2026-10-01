@@ -7,13 +7,13 @@ This guide walks you through setting up the database backend for CCISched.
 ## What You Need
 
 1. **Python 3.10+** — already installed
-2. **PostgreSQL** (recommended) or **SQLite** (easier for dev/testing)
+2. **MySQL** (recommended) or **SQLite** (easier for dev/testing)
 
 ---
 
 ## Quick Start (SQLite — no installation needed)
 
-If you want to test everything locally without installing PostgreSQL:
+If you want to test everything locally without installing MySQL:
 
 ```powershell
 cd backend
@@ -39,37 +39,38 @@ Default accounts:
 
 ---
 
-## Production Setup (PostgreSQL)
+## Production Setup (MySQL)
 
-### 1. Install PostgreSQL
+### 1. Install MySQL
 
 **Windows:**
-Download from [postgresql.org](https://www.postgresql.org/download/windows/)
+Download from [mysql.com](https://dev.mysql.com/downloads/installer/)
 
 **macOS (Homebrew):**
 ```bash
-brew install postgresql@15
-brew services start postgresql@15
+brew install mysql
+brew services start mysql
 ```
 
 **Linux (Ubuntu):**
 ```bash
 sudo apt update
-sudo apt install postgresql postgresql-contrib
-sudo systemctl start postgresql
+sudo apt install mysql-server
+sudo systemctl start mysql
 ```
 
 ### 2. Create the Database
 
 ```bash
-# Switch to postgres user (Linux/Mac) or open psql as admin (Windows)
-psql -U postgres
+# Open the MySQL shell as admin
+mysql -u root -p
 
-# Inside psql:
-CREATE DATABASE ccisched;
-CREATE USER ccisched_user WITH PASSWORD 'your_password_here';
-GRANT ALL PRIVILEGES ON DATABASE ccisched TO ccisched_user;
-\q
+# Inside the mysql shell:
+CREATE DATABASE ccisched CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'ccisched_user'@'localhost' IDENTIFIED BY 'your_password_here';
+GRANT ALL PRIVILEGES ON ccisched.* TO 'ccisched_user'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
 ```
 
 ### 3. Configure Environment
@@ -78,7 +79,7 @@ Edit `backend/.env`:
 
 ```env
 SECRET_KEY=change-this-to-a-random-string
-DATABASE_URL=postgresql://ccisched_user:your_password_here@localhost:5432/ccisched
+DATABASE_URL=mysql+pymysql://ccisched_user:your_password_here@localhost:3306/ccisched
 PORT=5000
 ```
 
@@ -90,6 +91,34 @@ pip install -r requirements.txt
 python init_db.py
 python app.py
 ```
+
+---
+
+## Re-seeding with a new data export
+
+`init_db.py` only adds and updates rows -- it never deletes. If you are replacing an
+older export (courses, qualifications, sections, etc. that no longer exist in the new
+files), start from an empty database so nothing stale is left behind:
+
+```sql
+DROP DATABASE ccisched_sept30;
+CREATE DATABASE ccisched_sept30 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+```powershell
+cd backend
+python init_db.py
+```
+
+If you would rather keep your current database, widen the one column that is too small
+for the new data instead of dropping everything:
+
+```sql
+ALTER TABLE users MODIFY preferred_courses TEXT;
+```
+
+(Use your own database name from `DATABASE_URL`. This also removes accounts, audit log
+entries and anything else created since the last seed.)
 
 ---
 
@@ -176,14 +205,17 @@ In-app notifications for both roles.
 **"No module named 'database'"**  
 Make sure you're in the `backend/` directory when running scripts.
 
-**"could not connect to server"**  
-PostgreSQL isn't running. Start it:
-- Windows: Services → PostgreSQL
-- Mac: `brew services start postgresql@15`
-- Linux: `sudo systemctl start postgresql`
+**"Can't connect to MySQL server"**  
+MySQL isn't running. Start it:
+- Windows: Services → MySQL
+- Mac: `brew services start mysql`
+- Linux: `sudo systemctl start mysql`
 
-**"relation does not exist"**  
+**"Table 'ccisched.xxx' doesn't exist"**  
 Tables weren't created. Run: `python init_db.py`
+
+**"Access denied for user"**  
+Double-check the username/password in `DATABASE_URL` match what you created with `CREATE USER` above, and that you ran `FLUSH PRIVILEGES;`.
 
 **"Unauthorized" on every API call**  
 You need to log in first via `POST /api/auth/login` and the frontend must send cookies with every request.
