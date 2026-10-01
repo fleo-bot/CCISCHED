@@ -5,7 +5,10 @@
  * Handles fetch, credentials, error responses, and redirects.
  */
 
-const API_BASE = "http://localhost:5000/api";
+// Use production backend URL (Render) or fallback to localhost for development
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? "http://localhost:5000/api"
+  : "https://ccisched-backend.onrender.com/api";
 
 /**
  * Make an authenticated API request.
