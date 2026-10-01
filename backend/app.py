@@ -77,6 +77,10 @@ def create_app():
     # Database (SQLAlchemy + sessions)
     configure_db(app)
 
+    # Auto-initialize database BEFORE any routes are registered
+    from auto_init_db import auto_init_database
+    auto_init_database(app)
+
     # CORS — allow frontend on localhost:5500
     CORS(app, supports_credentials=True, origins=[
         "http://127.0.0.1:5500", "http://localhost:5500",
@@ -114,10 +118,6 @@ def create_app():
     # Audit log: records every state-changing action by chairperson/faculty
     from audit import register_audit
     register_audit(app)
-
-    # Auto-initialize database on first startup (production deployments)
-    from auto_init_db import auto_init_database
-    auto_init_database(app)
 
     # Register legacy CSV-based scheduler routes (kept for backward compat)
     register_scheduler_routes(app)
