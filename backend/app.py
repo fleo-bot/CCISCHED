@@ -467,7 +467,7 @@ def register_scheduler_routes(app: Flask):
 
     @app.get("/api/debug/seed-chairperson")
     def seed_chairperson_now():
-        """Force create chairperson account manually"""
+        """Force create chairperson account manually with detailed error reporting"""
         from werkzeug.security import generate_password_hash
         
         try:
@@ -477,11 +477,17 @@ def register_scheduler_routes(app: Flask):
                 return jsonify({
                     "message": "Chairperson already exists!",
                     "email": existing.email,
-                    "name": f"{existing.first_name} {existing.last_name}"
+                    "name": f"{existing.first_name} {existing.last_name}",
+                    "id": existing.id
                 })
             
-            # Create chairperson manually (let PostgreSQL auto-assign ID)
+            # Get the max ID to avoid conflicts
+            max_id_result = db.session.execute(db.text("SELECT MAX(id) FROM users")).scalar()
+            next_id = (max_id_result or 0) + 1
+            
+            # Create chairperson manually with explicit ID
             chair = User(
+                id=next_id,  # Explicit ID to avoid conflicts
                 employee_number="CP-000",
                 first_name="Dustin",
                 middle_name="D.",
@@ -502,18 +508,29 @@ def register_scheduler_routes(app: Flask):
             )
             
             db.session.add(chair)
+            db.session.flush()  # Flush first to catch errors before commit
             db.session.commit()
+            
+            # Verify it was created
+            verify = User.query.filter_by(email="johndustin@pup.edu.ph").first()
             
             return jsonify({
                 "message": "Chairperson created successfully!",
                 "email": "johndustin@pup.edu.ph",
                 "password": "cp000",
-                "login_instructions": "You can now log in at https://ccisched.vercel.app/login.html"
+                "id": chair.id,
+                "verified": verify is not None,
+                "login_url": "https://ccisched.vercel.app/login.html"
             })
             
         except Exception as e:
             db.session.rollback()
-            return jsonify({"error": str(e)}), 500
+            import traceback
+            return jsonify({
+                "error": str(e),
+                "type": type(e).__name__,
+                "traceback": traceback.format_exc()
+            }), 500
 
     @app.post("/api/generate/assignment")
     @login_required
