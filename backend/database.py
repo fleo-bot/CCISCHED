@@ -37,6 +37,10 @@ def configure_db(app):
     # pointed at the PyMySQL driver explicitly for SQLAlchemy.
     if db_url.startswith("mysql://"):
         db_url = db_url.replace("mysql://", "mysql+pymysql://", 1)
+    
+    # PostgreSQL (Render uses postgres:// but SQLAlchemy needs postgresql://)
+    if db_url.startswith("postgres://"):
+        db_url = db_url.replace("postgres://", "postgresql://", 1)
 
     engine_options = {
         "pool_pre_ping": True,          # auto-reconnect on stale connections
@@ -45,8 +49,12 @@ def configure_db(app):
 
     # MySQL defaults to latin1 unless told otherwise — force utf8mb4 so
     # names, remarks, etc. can safely contain any Unicode character.
-    if db_url.startswith("mysql"):
-        engine_options["connect_args"] = {"charset": "utf8mb4"}
+    if db_url.startswith("mysql") or db_url.startswith("postgresql"):
+        if db_url.startswith("mysql"):
+            engine_options["connect_args"] = {"charset": "utf8mb4"}
+        else:
+            # PostgreSQL: ensure UTF-8 encoding
+            engine_options["connect_args"] = {"client_encoding": "utf8"}
 
     app.config["SQLALCHEMY_DATABASE_URI"]        = db_url
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False

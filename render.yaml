@@ -21,10 +21,11 @@ services:
       - key: FLASK_ENV
         value: production
 
-  # MySQL Database
+  # PostgreSQL Database (free tier)
 databases:
   - name: ccisched-db
     databaseName: ccisched
     user: ccisched_user
     plan: free
     region: singapore
+    # Note: Render's free tier only supports PostgreSQL, not MySQL

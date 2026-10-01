@@ -5,8 +5,9 @@ flask-sqlalchemy==3.1.1
 werkzeug==3.0.1
 python-dotenv==1.0.0
 
-# Database
-PyMySQL==1.1.1
+# Database (PostgreSQL for production, PyMySQL for local development)
+psycopg2-binary==2.9.9  # PostgreSQL adapter for production
+PyMySQL==1.1.1  # MySQL adapter for local development
 cryptography==42.0.5  # Required for PyMySQL with certain MySQL configs
 
 # Data processing & ML
