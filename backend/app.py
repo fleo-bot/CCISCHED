@@ -446,6 +446,41 @@ def register_scheduler_routes(app: Flask):
             "chairpersons": [{"email": u.email, "name": f"{u.first_name} {u.last_name}"} for u in chairs]
         })
 
+    @app.post("/api/debug/create-demo-chair")
+    def create_demo_chair():
+        """Create a demo chairperson account for testing"""
+        from werkzeug.security import generate_password_hash
+        
+        # Check if already exists
+        existing = User.query.filter_by(email="chair@pup.edu.ph").first()
+        if existing:
+            return jsonify({"message": "Demo chairperson already exists", "email": "chair@pup.edu.ph"})
+        
+        # Create demo chairperson
+        chair = User(
+            employee_number="ADMIN-000",
+            first_name="Admin",
+            last_name="Chairperson",
+            email="chair@pup.edu.ph",
+            password_hash=generate_password_hash("chair1234"),
+            role="chairperson",
+            specialization="Department Administration",
+            academic_rank="Department Chair",
+            highest_educ_attainment="PhD",
+            exp_years=10,
+            employment_type="Full Time",
+            max_units=0,
+            avatar="female"
+        )
+        db.session.add(chair)
+        db.session.commit()
+        
+        return jsonify({
+            "message": "Demo chairperson created successfully!",
+            "email": "chair@pup.edu.ph",
+            "password": "chair1234"
+        })
+
     @app.post("/api/generate/assignment")
     @login_required
     @role_required("chairperson")
