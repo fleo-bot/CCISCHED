@@ -438,6 +438,14 @@ def register_scheduler_routes(app: Flask):
             "active_semester":   active_sem.to_dict() if active_sem else {},
         })
 
+    @app.get("/api/debug/users")
+    def debug_users():
+        """Debug endpoint to list chairperson accounts"""
+        chairs = User.query.filter_by(role="chairperson").all()
+        return jsonify({
+            "chairpersons": [{"email": u.email, "name": f"{u.first_name} {u.last_name}"} for u in chairs]
+        })
+
     @app.post("/api/generate/assignment")
     @login_required
     @role_required("chairperson")
