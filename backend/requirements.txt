@@ -6,7 +6,7 @@ werkzeug==3.0.1
 python-dotenv==1.0.0
 
 # Database (PostgreSQL for production, PyMySQL for local development)
-psycopg2-binary==2.9.9  # PostgreSQL adapter for production
+psycopg[binary]==3.2.3  # PostgreSQL adapter for production (SQLAlchemy 2.0+)
 PyMySQL==1.1.1  # MySQL adapter for local development
 cryptography==42.0.5  # Required for PyMySQL with certain MySQL configs
 
