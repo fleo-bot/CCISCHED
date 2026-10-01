@@ -5,7 +5,7 @@
  * Handles fetch, credentials, error responses, and redirects.
  */
 
-const API_BASE = "https://respectful-liberation-production-7366.up.railway.app/api";
+const API_BASE = "http://localhost:5000/api";
 
 /**
  * Make an authenticated API request.

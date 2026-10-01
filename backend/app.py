@@ -77,11 +77,10 @@ def create_app():
     # Database (SQLAlchemy + sessions)
     configure_db(app)
 
-    # CORS — allow frontend on localhost and Netlify
+    # CORS — allow frontend on localhost:5500
     CORS(app, supports_credentials=True, origins=[
         "http://127.0.0.1:5500", "http://localhost:5500",
         "http://127.0.0.1:5501", "http://localhost:5501",
-        "https://ccisched.netlify.app",
     ])
 
     # Register database API blueprints
@@ -811,15 +810,10 @@ def register_scheduler_routes(app: Flask):
 
 
 # ──────────────────────────────────────────────
-#  Module-level app instance (for gunicorn: `gunicorn app:app`)
-# ──────────────────────────────────────────────
-app = create_app()
-
-
-# ──────────────────────────────────────────────
 #  Entry point
 # ──────────────────────────────────────────────
 if __name__ == "__main__":
+    app = create_app()
     port = int(os.environ.get("PORT", 5000))
     print(f"\n  CCISched backend  →  http://localhost:{port}")
     print(f"  Solver: {'CP-SAT (OR-Tools)' if ORTOOLS_AVAILABLE else 'Greedy fallback (install ortools)'}\n")
