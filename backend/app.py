@@ -115,6 +115,10 @@ def create_app():
     from audit import register_audit
     register_audit(app)
 
+    # Auto-initialize database on first startup (production deployments)
+    from auto_init_db import auto_init_database
+    auto_init_database(app)
+
     # Register legacy CSV-based scheduler routes (kept for backward compat)
     register_scheduler_routes(app)
 

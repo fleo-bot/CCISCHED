@@ -20,6 +20,8 @@ services:
         value: 10000
       - key: FLASK_ENV
         value: production
+      - key: AUTO_INIT_DB
+        value: true
 
   # PostgreSQL Database (free tier)
 databases:
