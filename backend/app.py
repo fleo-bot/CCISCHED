@@ -448,25 +448,52 @@ def register_scheduler_routes(app: Flask):
 
     @app.get("/api/debug/seed-chairperson")
     def seed_chairperson_now():
-        """Force seed chairperson from CSV immediately"""
+        """Force create chairperson account manually"""
+        from werkzeug.security import generate_password_hash
+        
         try:
-            from init_db import seed_chairpersons, seed_demo_accounts
+            # Check if already exists
+            existing = User.query.filter_by(email="johndustin@pup.edu.ph").first()
+            if existing:
+                return jsonify({
+                    "message": "Chairperson already exists!",
+                    "email": existing.email,
+                    "name": f"{existing.first_name} {existing.last_name}"
+                })
             
-            # Seed chairpersons from CSV
-            seed_chairpersons(app)
+            # Create chairperson manually (let PostgreSQL auto-assign ID)
+            chair = User(
+                employee_number="CP-000",
+                first_name="Dustin",
+                middle_name="D.",
+                last_name="Santos",
+                email="johndustin@pup.edu.ph",
+                password_hash=generate_password_hash("cp000"),
+                role="chairperson",
+                gender="male",
+                contact_number="+63 067 143 8700",
+                department="Department of Information Technology",
+                specialization="",
+                academic_rank="",
+                highest_educ_attainment="",
+                exp_years=0,
+                employment_type="Full Time",
+                max_units=0,
+                avatar="male"
+            )
             
-            # Also seed demo accounts
-            seed_demo_accounts(app)
-            
-            # Check results
-            chairs = User.query.filter_by(role="chairperson").all()
+            db.session.add(chair)
+            db.session.commit()
             
             return jsonify({
-                "message": "Chairpersons seeded successfully!",
-                "count": len(chairs),
-                "chairpersons": [{"email": u.email, "name": f"{u.first_name} {u.last_name}"} for u in chairs]
+                "message": "Chairperson created successfully!",
+                "email": "johndustin@pup.edu.ph",
+                "password": "cp000",
+                "login_instructions": "You can now log in at https://ccisched.vercel.app/login.html"
             })
+            
         except Exception as e:
+            db.session.rollback()
             return jsonify({"error": str(e)}), 500
 
     @app.post("/api/generate/assignment")
