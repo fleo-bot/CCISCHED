@@ -480,11 +480,14 @@ def seed_chairpersons(app):
                       f"last_name, webmail): {emp_no or email or '<blank>'}")
                 continue
 
-            user = User.query.filter_by(employee_number=emp_no).first()
+            user = User.query.filter_by(email=email).first()
             is_new = user is None
             if is_new:
                 user = User(employee_number=emp_no)
                 db.session.add(user)
+            elif user.employee_number != emp_no:
+                # Email exists but different employee number - update it
+                user.employee_number = emp_no
 
             gender = _map_gender(_clean(row.get("gender")))
             age_raw = _clean(row.get("age"))
