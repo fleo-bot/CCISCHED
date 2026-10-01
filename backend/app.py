@@ -464,6 +464,69 @@ def register_scheduler_routes(app: Flask):
             "password": "cp000",
             "id": chair.id
         })
+    
+    @app.get("/api/debug/create-demo-faculty")
+    def create_demo_faculty():
+        """Create a demo faculty account with NO availability for demonstration"""
+        from werkzeug.security import generate_password_hash
+        
+        try:
+            # Check if already exists
+            existing = User.query.filter_by(email="demo.faculty@pup.edu.ph").first()
+            if existing:
+                return jsonify({
+                    "message": "Demo faculty already exists!",
+                    "email": existing.email,
+                    "password": "faculty123",
+                    "name": f"{existing.first_name} {existing.last_name}"
+                })
+            
+            # Get the max ID to avoid conflicts
+            max_id_result = db.session.execute(db.text("SELECT MAX(id) FROM users")).scalar()
+            next_id = (max_id_result or 0) + 1
+            
+            # Create demo faculty with no availability
+            faculty = User(
+                id=next_id,
+                employee_number="DEMO-FAC-999",
+                first_name="Demo",
+                last_name="Faculty",
+                email="demo.faculty@pup.edu.ph",
+                password_hash=generate_password_hash("faculty123"),
+                role="faculty",
+                gender="male",
+                age=35,
+                contact_number="+63 912 345 6789",
+                department="Department of Information Technology",
+                specialization="Software Engineering",
+                academic_rank="Assistant Professor",
+                highest_educ_attainment="Masters",
+                exp_years=5,
+                employment_type="Full Time",
+                max_units=21,
+                avatar="male"
+            )
+            
+            db.session.add(faculty)
+            db.session.flush()
+            db.session.commit()
+            
+            return jsonify({
+                "message": "Demo faculty created successfully!",
+                "email": "demo.faculty@pup.edu.ph",
+                "password": "faculty123",
+                "name": "Demo Faculty",
+                "note": "This account has NO availability submitted - perfect for demonstration!",
+                "login_url": "https://ccisched.vercel.app/login.html"
+            })
+            
+        except Exception as e:
+            db.session.rollback()
+            import traceback
+            return jsonify({
+                "error": str(e),
+                "traceback": traceback.format_exc()
+            }), 500
 
     @app.get("/api/debug/seed-chairperson")
     def seed_chairperson_now():
